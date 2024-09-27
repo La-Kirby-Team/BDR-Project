@@ -3,7 +3,7 @@
 
 ## Project Overview
 
-This project involves building a relational database system to manage the inventory of a wine cave (cellar), where a user can track different types of wines, their quantities, suppliers, and sales transactions. The goal is to create a user-friendly system to keep track of wine stock, add new acquisitions, and manage sales, ensuring that the wine cave always has the right supply on hand.
+This project involves building a relational database system to manage the inventory of a wine cave (cellar), where a user can track different types of wines, their quantities, suppliers, and transactions. The goal is to create a user-friendly system to keep track of wine stock, add new acquisitions, and manage the removal of wines from the inventory, ensuring that the wine cave always has the right supply on hand.
 
 ---
 
@@ -27,7 +27,8 @@ The **Wine Cave Inventory Management System** is designed to assist wine cave ow
 - Add new wines to the inventory.
 - Update details of existing wines.
 - Monitor stock levels and receive low-stock alerts.
-- Track sales and generate detailed reports on the wine inventory.
+- Remove wines from the inventory with reasons (e.g., sold, gifted, damaged).
+- View the history of added and removed wines.
 
 ---
 
@@ -36,15 +37,16 @@ The **Wine Cave Inventory Management System** is designed to assist wine cave ow
 ### Functional Requirements
 1. Add, update, or remove wines.
 2. Track stock levels and receive notifications when stock is low.
-3. Record sales transactions with customer details.
+3. Remove wines from the inventory with a reason for removal (e.g., sold, gifted, damaged).
 4. View detailed information about each wine (e.g., varietal, vintage, price, supplier).
-5. Generate inventory reports (total stock, low-stock wines, most popular wines).
+5. View history of added and removed wines (date, reason, quantity).
 
 ### Data Requirements
 - Wine details (name, varietal, vintage, price, supplier)
 - Supplier details (name, contact information)
 - Stock details (quantity, reorder level)
-- Sales details (date, customer, quantity sold)
+- Wine removal details (date, reason for removal, quantity removed)
+- Wine addition details (date, supplier, quantity added)
 
 ---
 
@@ -54,7 +56,8 @@ The ER model for the Wine Cave Inventory System includes the following entities:
 - **Wine** (WineID, Name, Varietal, Vintage, Price)
 - **Supplier** (SupplierID, Name, Contact)
 - **Stock** (StockID, WineID, Quantity, ReorderLevel)
-- **Sale** (SaleID, Date, WineID, Quantity, CustomerName)
+- **Removal** (RemovalID, Date, WineID, Quantity, Reason)
+- **Addition** (AdditionID, Date, WineID, Quantity, SupplierID)
 
 ---
 
@@ -84,12 +87,20 @@ CREATE TABLE Stock (
     ReorderLevel INT
 );
 
-CREATE TABLE Sale (
-    SaleID SERIAL PRIMARY KEY,
+CREATE TABLE Removal (
+    RemovalID SERIAL PRIMARY KEY,
     Date DATE,
     WineID INT REFERENCES Wine(WineID),
     Quantity INT,
-    CustomerName VARCHAR(255)
+    Reason VARCHAR(255)
+);
+
+CREATE TABLE Addition (
+    AdditionID SERIAL PRIMARY KEY,
+    Date DATE,
+    WineID INT REFERENCES Wine(WineID),
+    Quantity INT,
+    SupplierID INT REFERENCES Supplier(SupplierID)
 );
 ```
 ---
@@ -100,16 +111,16 @@ CREATE TABLE Sale (
 Users can add new wines to the inventory by entering details such as the wine's name, varietal, vintage, price, and supplier. This allows the system to keep track of all the different wines in the cave.
 
 ### 2. **Track Wine Stock**
-The system displays real-time stock levels for each wine, making it easy for the user to see which wines are running low. The stock is updated automatically when new bottles are added or sales are recorded.
+The system displays real-time stock levels for each wine, making it easy for the user to see which wines are running low. The stock is updated automatically when new bottles are added or removed from the inventory.
 
-### 3. **Record Sales**
-Sales transactions can be recorded in the system by selecting the wine sold, entering the quantity, and providing customer details. The stock levels are automatically updated after every sale.
+### 3. **Remove Wines**
+Users can remove wines from the inventory, specifying the reason for removal (e.g., sold, gifted, damaged). This helps track why wines were removed and ensures stock levels are accurately reflected.
 
 ### 4. **Low Stock Alerts**
 The system generates alerts when the quantity of a wine falls below the designated reorder level, allowing the user to restock before running out.
 
-### 5. **Generate Inventory Reports**
-Users can generate inventory reports that show the total number of bottles in stock, wines that are running low, and sales trends over time. This provides a clear overview of the cave’s inventory.
+### 5. **View History**
+Users can view the history of added and removed wines. This includes details such as the date, quantity, supplier for added wines, and reason for removal for removed wines (e.g., sold, gifted, damaged). This provides a clear audit trail of changes to the wine cave's inventory.
 
 ---
 
@@ -125,12 +136,11 @@ Users can generate inventory reports that show the total number of bottles in st
 
 ## Known Bugs
 
-
 ---
 
 ## Conclusion
 
-The **Wine Cave Inventory Management System** is an efficient solution for managing the inventory of a wine cellar. It tracks the availability of each wine, records sales, and helps manage suppliers, ensuring that the user is always aware of the stock levels and can avoid running out of any wine. The system's ability to generate inventory reports and low-stock notifications ensures that the cave is always well-supplied with its most popular wines.
+The **Wine Cave Inventory Management System** is an efficient solution for managing the inventory of a wine cellar. It tracks the availability of each wine, allows for adding and removing wines with a detailed reason, and helps manage suppliers. The system also allows users to view the history of inventory changes, ensuring full transparency and control over the wine cave's operations.
 
 ---
 
@@ -147,13 +157,13 @@ To install the Wine Cave Inventory Management System:
 Once installed, the system offers the following options:
 - **Add New Wines:** Navigate to the "Add Wine" section and fill out the wine's details.
 - **View Stock Levels:** Go to the "Inventory" section to see real-time data on wine quantities.
-- **Record Sales:** Enter the "Sales" section, select the wine sold, enter the quantity, and provide customer details.
-- **Generate Reports:** Access the "Reports" section to view detailed information about stock levels, low-stock alerts, and sales.
+- **Remove Wines:** Enter the "Remove Wine" section, select the wine to be removed, specify the quantity, and provide a reason for the removal (e.g., sold, gifted, damaged).
+- **View History:** Access the "History" section to view a detailed record of wines added and removed, including dates, reasons for removal, and supplier information for added wines.
 
 ---
 
 ## Future Improvements
 
-- **Enhanced Reporting:** Adding more detailed analytics on sales trends and popular wine categories.
+- **Enhanced Reporting:** Adding more detailed analytics on the history of wine removals and additions.
 - **Supplier Management:** Creating more robust supplier management features, such as contact history and automatic reorder options.
-- **Mobile Version:** Building a mobile-friendly version of the app for wine cave owners on the go, allowing for quick stock updates and sales entries via smartphones.
+- **Mobile Version:** Building a mobile-friendly version of the app for wine cave owners on the go, allowing for quick stock updates and wine removals via smartphones.
