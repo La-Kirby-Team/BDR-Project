@@ -65,44 +65,7 @@ The ER model for the Wine Cave Inventory System includes the following entities:
 
 Based on the ER model, the relational schema is as follows:
 
-```sql
-CREATE TABLE Wine (
-    WineID SERIAL PRIMARY KEY,
-    Name VARCHAR(255),
-    Varietal VARCHAR(100),
-    Vintage INT,
-    Price DECIMAL(10, 2)
-);
-
-CREATE TABLE Supplier (
-    SupplierID SERIAL PRIMARY KEY,
-    Name VARCHAR(255),
-    Contact VARCHAR(100)
-);
-
-CREATE TABLE Stock (
-    StockID SERIAL PRIMARY KEY,
-    WineID INT REFERENCES Wine(WineID),
-    Quantity INT,
-    ReorderLevel INT
-);
-
-CREATE TABLE Removal (
-    RemovalID SERIAL PRIMARY KEY,
-    Date DATE,
-    WineID INT REFERENCES Wine(WineID),
-    Quantity INT,
-    Reason VARCHAR(255)
-);
-
-CREATE TABLE Addition (
-    AdditionID SERIAL PRIMARY KEY,
-    Date DATE,
-    WineID INT REFERENCES Wine(WineID),
-    Quantity INT,
-    SupplierID INT REFERENCES Supplier(SupplierID)
-);
-```
+[Insert Schema Here]
 ---
 
 ## Features
