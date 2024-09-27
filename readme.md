@@ -119,20 +119,11 @@ Users can generate inventory reports that show the total number of bottles in st
 - **Frontend:** 
   - **Option 1:** Desktop application using **JavaFX** for a rich, responsive user interface.
   - **Option 2:** Web application using **HTML/CSS** and **Bootstrap** for a lightweight and mobile-friendly interface.
-- **Frameworks:** (Optional) Play for web-based implementation or any other lightweight framework if needed for the desktop version.
 
 ---
 
 ## Known Bugs
 
-### 1. **Sales Quantity Bug**
-In some instances, when recording a sale, the stock quantity doesn't decrease correctly. This issue arises from rare timing conflicts when multiple users are accessing the system simultaneously.
-
-### 2. **Missing Supplier Information**
-Certain supplier entries have incomplete contact details due to users not providing full information when registering a new supplier. A validation step should be added to ensure all necessary details are filled out.
-
-### 3. **Low Stock Notifications**
-Some users report that low stock notifications are not always triggered. This could be due to errors in setting the reorder level or minor miscalculations when the system checks stock levels.
 
 ---
 
