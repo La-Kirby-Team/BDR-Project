@@ -3,27 +3,28 @@
 ## Descriptif
 
 Réaliser, par groupe de 3, une application complète de base de données relationnelle
+
 Le projet comprendra les étapes suivantes :
 
-- **Etape 1** : Cahier des charges
+- **Etape 1 : Cahier des charges**<br/>
     Description détaillée de l’analyse des besoins. Cette analyse comprendra à la fois les
     besoins en données et les besoins fonctionnels.
     
-- **Etape 2** : Modélisation conceptuelle
+- **Etape 2 : Modélisation conceptuelle**<br/>
     Réalisation du schéma conceptuel (schéma EA au format UML) de la base de données.
     
-- **Etape 3** : Modélisation relationnelle
-    Transformer le schéma EA en schéma relationnel.
+- **Etape 3 : Modélisation relationnelle**<br/>
+    Transformer le schéma EA en schéma relationnel.<br/>
     Création de la base de données (script SQL) contenant les tables et les contraintes
     d’intégrités référentielles.
     
-- **Etape 4** : Requêtes, vues et triggers/procédures stockées
-    Ecriture des requêtes qui seront utilisées dans l’application.
+- **Etape 4 : Requêtes, vues et triggers/procédures stockées**<br/>
+    Ecriture des requêtes qui seront utilisées dans l’application.<br/>
     Création des vues, triggers/procédures stockées dans la base de données.
     
-- **Etape 5** : Application
-    Réalisation de l’application web ou desktop.
-    Utilisation d’une API de connexion de l’application à la base de données (par ex JDBC).
+- **Etape 5 : Application**<br/>
+    Réalisation de l’application web ou desktop.<br/>
+    Utilisation d’une API de connexion de l’application à la base de données (par ex JDBC).<br/>
     Cette étape peut être commencée avant que les précédentes ne soient finies, c’est même
     recommandé.
     
@@ -32,12 +33,12 @@ Le projet comprendra les étapes suivantes :
 
 - La base de données doit être en PostgreSQL
 - Une interface graphique claire et fonctionnelle suffit <br/>
-  o L’effort doit être mis sur la partie base de données
+  L’effort doit être mis sur la partie base de données
 - Langages recommandés : <br/>
        o Java <br/> 
        o C#  <br/>
-       o PHP <br/> <div/>
-- Technologies autorisées :
+       o PHP <br/> 
+- Technologies autorisées :<br/>
   o Librairies graphiques (Bootstrap, JavaFX, …)
   o Frameworks (Blazor, Play, …) 
 Il n’y a aucune obligation d’en utiliser, il est même souvent préférable de ne pas les
@@ -63,3 +64,6 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 
  ## Cahier des charges 
 [Cahier des charges](CdC.md)
+
+## Modélisation conceptuelle (UML)
+à venir
