@@ -1,91 +1,88 @@
-# Cahier des Charges
-## Projet : Wine Cave Inventory Management System (Wineventory)
+# Project Specifications
+## Project: Wine Cave Inventory Management System (Wineventory)
 
-### 1. **Contexte du projet**
-Le projet **Wineventory** vise à concevoir une application de gestion de cave à vin, permettant aux utilisateurs de suivre leurs stocks de vins, d'ajouter de nouvelles acquisitions, et de gérer les retraits de bouteilles. L'objectif est de proposer un outil efficace, ergonomique et adapté aux besoins des propriétaires de caves à vin privées ou professionnelles.
-
----
-
-### 2. **Objectifs du projet**
-Le but de ce projet est de :
-- Développer une base de données relationnelle pour stocker les informations sur les vins, les fournisseurs, et les transactions.
-- Permettre une gestion complète des stocks de vins : ajout, suppression et consultation des niveaux de stock.
-- Offrir un suivi détaillé de l’historique des ajouts et des retraits de bouteilles, en indiquant les raisons pour lesquelles une bouteille a été retirée (vendue, offerte, consommée, etc.).
-- Alerter l'utilisateur en cas de stock faible afin d'éviter les ruptures.
-- Fournir une interface utilisateur intuitive et responsive (desktop ou web) facilitant la gestion quotidienne de la cave.
+### 1. **Project Overview**
+The **Wineventory** project aims to develop a relational database system that manages a wine cave's inventory, allowing users to track wine stocks, handle new acquisitions, and manage wine removals. The goal is to create an efficient, user-friendly system tailored to the needs of private or professional wine cave owners.
 
 ---
 
-### 3. **Périmètre fonctionnel**
-Le système permettra aux utilisateurs de :
-- Ajouter de nouvelles bouteilles de vin avec des informations telles que le nom, la variété, l’année, le fournisseur, et le prix.
-- Supprimer des bouteilles de l’inventaire en indiquant la raison de la suppression (vendue, offerte, consommée, etc.).
-- Suivre les stocks et recevoir des alertes pour les vins dont les quantités passent sous un certain seuil.
-- Consulter l’historique complet des mouvements de stock (ajouts et retraits).
-- Gérer les informations des fournisseurs de vin.
+### 2. **Project Objectives**
+The objectives of this project are to:
+- Develop a relational database to store information about wines, suppliers, and inventory movements.
+- Enable efficient stock management: view current levels, handle wine removal, and receive low-stock alerts.
+- Track the history of inventory changes, including added and removed wines, with reasons (e.g., sold, gifted, consumed).
+- Provide a clear and responsive user interface for managing daily tasks.
 
 ---
 
-### 4. **Spécifications fonctionnelles**
-Les principales fonctionnalités de l'application incluent :
-- **Ajout de vins :** L'utilisateur peut enregistrer une nouvelle référence de vin dans le système, en spécifiant le nom, la variété, le millésime, le prix et le fournisseur.
-- **Suivi des stocks :** L'application présente une vue en temps réel de la quantité de chaque vin en stock. 
-- **Retrait de vins :** Lorsque des bouteilles sont retirées de la cave, l'utilisateur doit indiquer la raison du retrait (vente, consommation, cadeau, etc.).
-- **Alertes de stocks faibles :** Le système envoie une alerte lorsque la quantité d'une référence de vin tombe en dessous d’un seuil prédéfini.
-- **Historique des mouvements :** Un historique complet des vins ajoutés et retirés est conservé, avec les dates et les raisons des mouvements.
-- **Gestion des fournisseurs :** Les utilisateurs peuvent gérer les informations des fournisseurs, y compris leur nom et leurs coordonnées.
+### 3. **Scope of Work**
+The system will allow users to:
+- Add new wines with detailed information such as name, varietal, vintage, price, and supplier.
+- Remove wines from inventory with reasons (sold, gifted, consumed, etc.).
+- Monitor real-time stock levels and receive alerts for low stock.
+- View the full history of added and removed wines.
 
 ---
 
-### 5. **Spécifications non fonctionnelles**
-- **Base de données :** Utilisation de **PostgreSQL** pour stocker et gérer les données du système.
-- **Performance :** Le système doit être capable de gérer une base de données de plusieurs centaines de références de vins sans ralentissement.
-- **Sécurité :** L’accès aux données doit être sécurisé, avec des restrictions basées sur les rôles si nécessaire.
-- **Interface utilisateur :** Une interface simple et intuitive pour l'utilisateur final, soit en version desktop (JavaFX) soit en version web (HTML/CSS/Bootstrap).
-- **Portabilité :** Le système doit être déployable sur des serveurs locaux ou distants.
-  
----
-
-### 6. **Contraintes**
-- **Technologies imposées :** L'application doit utiliser PostgreSQL pour la base de données relationnelle.
-- **Langages recommandés :** Java pour le backend (JDBC pour les connexions à la base de données), avec des options frontend telles que JavaFX pour desktop ou HTML/CSS pour une version web.
-- **Évolutivité :** L'architecture de la base de données doit être conçue de manière à permettre une expansion future (ajout de nouvelles fonctionnalités).
+### 4. **Functional Specifications**
+Key features of the application:
+- **Wine Management:** Users can add new wines with specific details (name, varietal, vintage, price, supplier) and remove wines from inventory with reasons.
+- **Stock Monitoring:** The system provides real-time views of available stock, updating as wines are added or removed.
+- **Low Stock Alerts:** Alerts are generated when stock levels drop below a predefined threshold.
+- **History Tracking:** A complete record of added and removed wines, including dates and reasons for changes.
+- **Supplier Management:** Manage supplier details (name, contact info) for reference.
 
 ---
 
-### 7. **Livrables**
-- **Cahier des charges** au format PDF.
-- **Schéma conceptuel** de la base de données au format UML.
-- **Schéma relationnel** basé sur le modèle conceptuel.
-- **Scripts SQL** pour la création des tables et des contraintes d'intégrité.
-- **Application** (code source complet) incluant toutes les fonctionnalités spécifiées.
-- **Documentation utilisateur** décrivant comment utiliser l'application.
-- **Guide d'installation** pour la base de données et l'application.
+### 5. **Non-Functional Specifications**
+- **Database:** PostgreSQL will be used for relational data management.
+- **Performance:** The system must handle hundreds of wine entries without performance degradation.
+- **Security:** Access to data should be secure, with the potential for role-based access control.
+- **User Interface:** Simple and intuitive UI, either desktop-based (JavaFX) or web-based (HTML/CSS/Bootstrap).
+- **Portability:** The system should be deployable on both local and remote servers.
 
 ---
 
-### 8. **Planning**
-- **Livraison du cahier des charges :** 13 octobre 2024
-- **Modélisation conceptuelle et relationnelle :** À déterminer
-- **Développement de l'application :** En parallèle avec les phases de modélisation
-- **Rendu final et présentation du projet :** 24 janvier 2025
+### 6. **Constraints**
+- **Required Technologies:** PostgreSQL for database management.
+- **Recommended Languages:** Java for backend (using JDBC for database connections). JavaFX for desktop UI or HTML/CSS for web-based UI.
+- **Scalability:** The system must be designed to allow future expansions, such as new features or an increase in data volume.
 
 ---
 
-### 9. **Responsabilités**
-- Chaque membre du groupe est responsable de la réalisation de certaines parties du projet (par ex. conception de la base de données, développement de l'interface utilisateur, etc.).
-- Une collaboration étroite entre les membres est requise pour assurer l'intégration réussie des différentes composantes du projet.
+### 7. **Deliverables**
+- **Project Specifications** (this document) in PDF format.
+- **Conceptual Database Model** (UML schema).
+- **Relational Database Model** based on the conceptual model.
+- **SQL Scripts** for creating tables and integrity constraints.
+- **Application Code** for the inventory management system.
+- **User Documentation** for end users.
+- **Installation Guide** for setting up the database and application.
 
 ---
 
-### 10. **Évolutions possibles**
-- Intégration d'une version mobile pour permettre une gestion des stocks en déplacement.
-- Fonctionnalités avancées de gestion des fournisseurs (historique des commandes, suivi des livraisons).
-- Analyse des ventes avec des statistiques et graphiques pour les références les plus populaires.
+### 8. **Timeline**
+- **Project Specifications Submission:** October 13, 2024
+- **Database Modeling:** TBD
+- **Application Development:** To be carried out in parallel with database modeling.
+- **Final Submission and Presentation:** January 24, 2025
 
 ---
 
-### 11. **Annexes**
-- **Diagramme UML** du schéma conceptuel.
-- **Script SQL** pour la création des tables et des contraintes d'intégrité.
-- **Documentation technique** expliquant les choix de conception.
+### 9. **Responsibilities**
+- Team members are each responsible for different aspects of the project (e.g., database design, UI development).
+- Collaboration between team members is critical to ensure smooth integration of all components.
+
+---
+
+### 10. **Possible Extensions**
+- Mobile app integration for on-the-go stock management.
+- Advanced supplier management features (order history, delivery tracking).
+- Sales analysis and graphical reports for popular wine categories.
+
+---
+
+### 11. **Appendices**
+- **UML Diagram** of the conceptual schema.
+- **SQL Scripts** for creating tables and setting integrity constraints.
+- **Technical Documentation** explaining design decisions.
