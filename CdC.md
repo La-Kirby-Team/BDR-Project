@@ -1,3 +1,21 @@
+### **Table des matières**
+
+1. [**Project Overview**](#1-project-overview)  
+2. [**Project Objectives**](#2-project-objectives)  
+3. [**Scope of Work & Database Structure**](#3-scope-of-work--4-database-structure)  
+    - [3.1 Product Management](#31-product-management)  
+    - [3.2 Stock Movements](#32-stock-movements)  
+    - [3.3 Multi-Store Management](#33-multi-store-management)  
+    - [3.4 Customer Management](#34-customer-management)  
+    - [3.5 Reports & Analytics](#35-reports--analytics)  
+4. [**Constraints**](#5-constraints)  
+5. [**Deliverables**](#6-deliverables)  
+6. [**Timeline**](#7-timeline)  
+7. [**Responsibilities**](#8-responsibilities)  
+8. [**Appendices**](#9-appendices)  
+
+---
+
 ### **1. Project Overview**
 - The **Wineventory** project aims to develop a robust relational database system to manage the inventory of wine, beer, spirits, non-alcoholic beverages, aperitifs, and equipment.
 - The system will provide a centralized solution for stock management, acquisition tracking, and product removals.
