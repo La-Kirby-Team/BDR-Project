@@ -20,7 +20,7 @@
 - **Product Management**: Add new products with detailed, category-specific attributes:
   - **Wine**: varietal, vintage, region, supplier, price, bottle size, alcohol percentage.
   - **Beer**: type (lager, ale), brewery, alcohol percentage, packaging (bottle, can, keg), volume.
-  - **Spirits**: type (whiskey, vodka), distillery, aging period, alcohol content, bottle size.
+  - **Spirits**: type (whiskey, vodka), distillery, aging period, alcohol content (description of flavour, etc...), bottle size.
   - **Non-Alcoholic Beverages**: type (soda, juice), volume, ingredients.
   - **Aperitifs**: food products such as terrines, flutes, chips, brand, packaging type, serving size.
   - **Equipment**: items like wine openers, pourers, glasses, decanters, branded items (T-shirts, aluminum signs, coasters), with attributes such as material, brand, quantity, and supplier.
