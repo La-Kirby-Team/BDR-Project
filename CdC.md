@@ -70,12 +70,6 @@
   - **Database**: PostgreSQL for the relational database.
   - **Backend**: Java with JDBC for database connectivity, ensuring manual SQL query writing and execution.
   - **Frontend**: HTML/CSS with possible use of Bootstrap for a responsive web-based interface.
-- **Recommended Technologies**:
-  - Optional use of JavaScript frameworks (e.g., React or Vue.js) to enhance the user experience with dynamic content.
-  - Possibility of using frameworks like Spring for the backend, though not required.
-- **Restrictions**:
-  - All SQL queries must be written manually (no ORM or frameworks like LINQ).
-  - The focus should remain on the database structure and functionality over advanced UI features.
 
 ---
 
