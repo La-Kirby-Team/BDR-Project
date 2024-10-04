@@ -21,6 +21,8 @@ The system will allow users to:
 - Remove wines from inventory with reasons (sold, gifted, consumed, etc.).
 - Monitor real-time stock levels and receive alerts for low stock.
 - View the full history of added and removed wines.
+- To be able to view the stock levels and movements of all products across other stores within the chain.
+- To be able to see all customer purchases in order to send them offers or predict their visit frequency, allowing for advanced stock preparation.
 
 ---
 
