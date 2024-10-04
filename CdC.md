@@ -11,7 +11,10 @@
 
 ---
 
+### **![Wineventory](/home/athena/Insync/BDR/BDR-Project/assets/Wineventory.jpeg)**
+
 ### **1. Project Overview**
+
 - The **Wineventory** project aims to develop a robust relational database system to manage the inventory of wine, beer, spirits, non-alcoholic beverages, aperitifs, and equipment.
 - The system will provide a centralized solution for stock management, acquisition tracking, and product removals.
 - **PostgreSQL** will be used for the database, focusing on supporting complex queries and providing detailed reports through an intuitive user interface.
