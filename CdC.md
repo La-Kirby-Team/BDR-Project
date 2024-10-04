@@ -66,10 +66,9 @@
 ---
 
 ### **5. Constraints**
-- **Required Technologies**:
-  - **Database**: PostgreSQL for the relational database.
-  - **Backend**: Java with JDBC for database connectivity, ensuring manual SQL query writing and execution.
-  - **Frontend**: HTML/CSS with possible use of Bootstrap for a responsive web-based interface.
+- **Database**: PostgreSQL for the relational database.
+- **Backend**: Java with JDBC for database connectivity, ensuring manual SQL query writing and execution.
+- **Frontend**: HTML/CSS with possible use of Bootstrap for a responsive web-based interface.
 
 ---
 
