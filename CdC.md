@@ -93,14 +93,7 @@
 
 ---
 
-### **8. Responsibilities**
-- **Database Design**: Responsible for defining the relational structure for handling various product categories and managing stock across multiple locations.
-- **Application Development**: Backend (Java) and frontend (HTML/CSS) to ensure that inventory management is handled efficiently.
-- **Testing & QA**: Ensure data integrity and application stability, focusing on stock movement tracking, low-stock alerts, and reporting.
-
----
-
-### **9. Appendices**
+### **8. Appendices**
 - **UML Diagram**: The conceptual schema of the database, including entity relationships for products, customers, and transactions.
 - **SQL Scripts**: Scripts for creating tables, establishing relationships, and defining constraints.
 - **Technical Documentation**: A detailed explanation of the design choices, the handling of different product types, and how PostgreSQL is leveraged for complex queries.
