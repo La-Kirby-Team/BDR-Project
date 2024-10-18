@@ -10,8 +10,7 @@
 8. [**Appendices**](#9-appendices)  
 
 ---
-
-### **![Wineventory](/home/athena/Insync/BDR/BDR-Project/assets/Wineventory.jpeg)**
+![Wineventory](images/Logo_fond_blanc.png)
 
 ### **1. Project Overview**
 
