@@ -67,3 +67,13 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 
 ## Modélisation conceptuelle (UML)
 à venir
+
+## Deadlines
+
+|Livrables|Date de remise|
+|---------|:------------:|
+|**Etape 1:** <br/>Cahier des charges|**13.10.2024** <br/>23h59|
+|**Etape 2:** <br/>Schéma UML|A déterminer|
+|**Etape 3:** <br/>- Schéma relationnel<br/>- Fichier de script SQL de création de la base des données(tables et contrainte d'intégrité référentielle) et insertion des tuples initiaux|A déterminer|
+|**Présentation:** <br/>- Durée: 10-15 minutes par groupe (7-10 slides)<br/>- Description du projet, shéma EA, choix d'implémentation, démo...<br/>**A remettre:** slides de présentation|**24.01.2025** <br/>10h25|
+|**Rendu final:** <br/>- Rapport au format PDF<br/>- Le script SQL complet de la création de l abse de données<br/>- Le code source de l'application|A déterminer|
