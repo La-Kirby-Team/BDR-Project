@@ -1,3 +1,6 @@
+![Wineventory](images/Logo_fond_blanc.png)
+
+
 ### **Table des matières**
 
 1. [**Project Overview**](#1-project-overview)  
@@ -10,8 +13,6 @@
 8. [**Appendices**](#9-appendices)  
 
 ---
-
-### **![Wineventory](/home/athena/Insync/BDR/BDR-Project/assets/Wineventory.jpeg)**
 
 ### **1. Project Overview**
 
