@@ -1,6 +1,6 @@
 Le rapport final doit être écrit en français
 
-"En temps réel -> Simplément update lorsqu'une transaction est effectuée, non pas "réel", sinon trop de boulot
+"En temps réel -> Simplement update lorsqu'une transaction est effectuée, non pas "réel", sinon trop de boulot
 
 Très bonnes idées -> Personnalisation d'offres selon cleints / Prédiction de visites
 
