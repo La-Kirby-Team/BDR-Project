@@ -76,4 +76,4 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 [Cahier des charges](CdC.md)
 
 ## Modélisation conceptuelle (UML)
-à venir
+![Schema](Schema_UML.png)
