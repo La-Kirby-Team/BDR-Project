@@ -82,9 +82,9 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 ## Modèle Relationnel
 
 ```
-Provenance(<u>id</u>, paysm région, producteur)
+Provenance(<u>id</u>, pays, région, producteur)
 
-Produit(<u>id</u>, idProvenance, recipient, nom, tauxAalcool)
+Produit(<u>id</u>, idProvenance, recipient, nom, tauxAlcool)
     Produit.idProvenance référence Provenance.id
     Produit.idProvenance NOT NULL et UNIQUE
 
@@ -123,4 +123,40 @@ Article_MouvementStock(<u>idArticle, idMouvementStock</u>)
     Article_MouvementStock.idArticle référence Article.id
     Article_MouvementStock.idMouvementStock référence MouvementStock.id
   
+```
+
+
+## Création des tables SQL
+
+```
+CREATE TABLE IF NOT EXIST Provenance(
+    id serial,
+    pays varchar(80),
+    region varchar(80),
+    CONSTRAINT PK_Provenance PRIMARY KEY (id)
+);
+
+CREATE TYPE typeRecipient AS ENUM ('bouteille','canette');
+
+CREATE TABLE IF NOT EXIST Produit(
+    id serial,
+    idProduit integer NOT NULL UNIQUE,
+    recipient typeRecipient,
+    nom varchar(80),
+    tauxAlcool double PRECISION,
+    CONSTRAINT PK_Produit PRIMARY KEY (id),
+    CONSTRAINT FK_Produit_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXIST Article(
+    id serial,
+    idProduit integer,
+    volume integer,
+    datePeremption Date,
+    prix double PRECISION,
+    CONSTRAINT PK_Article PRIMARY KEY (id, idProduit, volume),
+    CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
 ```
