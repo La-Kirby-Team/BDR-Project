@@ -72,8 +72,55 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 |**Présentation:** <br/>- Durée: 10-15 minutes par groupe (7-10 slides)<br/>- Description du projet, shéma EA, choix d'implémentation, démo...<br/>**A remettre:** slides de présentation|**24.01.2025** <br/>10h25|
 |**Rendu final:** <br/>- Rapport au format PDF<br/>- Le script SQL complet de la création de l abse de données<br/>- Le code source de l'application|A déterminer|
 
+# Notre projet - Winventory
  ## Cahier des charges 
 [Cahier des charges](CdC.md)
 
 ## Modélisation conceptuelle (UML)
 ![Schema](Schema_UML.png)
+
+## Modèle Relationnel
+
+```
+Provenance(<u>id</u>, paysm région, producteur)
+
+Produit(<u>id</u>, idProvenance, recipient, nom, tauxAalcool)
+    Produit.idProvenance référence Provenance.id
+    Produit.idProvenance NOT NULL et UNIQUE
+
+Article(<u>id, idProduit, volume </u>, datePeremption, prix)
+    Article.idProduit référence Produit.id
+
+MouvementStock(<u>id</u>, idMagasin, date, quantite)
+    MouvementStock.idMagasin référence Magasin.id
+    MouvementStock.idMagasin NOT NULL et UNIQUE
+
+Magasin(<u>id</u>, nom, adresse)
+
+Vendeur(<u>id</u>, idMagasin, nom, salaire)
+    Vendeur.idMagasin référence Magasin.id
+    Vendeur.idMagasin NOT NULL et UNIQUE
+
+Vente(<u>idMouvementStockt</u>, idVendeur, idClient)
+    Vente.idMouvementStock référence MouvementStock.id
+    Vente.idVendeur référence Vendeur.id
+    Vente.idVendeur NOT NULL et UNIQUE
+    Vente.idClient référence Client.id
+    Vente.idClient NOT NULL et UNIQUE
+
+Approvisionnement(<u>idMouvementStock</u>, dateCommande)
+    Approvisionnement.idMouvementStock référence MouvementStock.id
+
+Client(<u>id</u>, nom, adresse, email, pointDeFidelite, annéeNaissance)
+
+Fournisseur(<u>id</u>, nom, adresse, numeroTelephone)
+
+Approvisionnement_Fournisseur(<u>idMouvementStock, idFournisseur</u>)
+    Approvisionnement_Fournisseur.idMouvementStock référence MouvementStock.id
+    Approvisionnement_Fournisseur.idFournisseur référence Fournisseur.id
+
+Article_MouvementStock(<u>idArticle, idMouvementStock</u>)
+    Article_MouvementStock.idArticle référence Article.id
+    Article_MouvementStock.idMouvementStock référence MouvementStock.id
+  
+```
