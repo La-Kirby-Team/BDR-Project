@@ -158,5 +158,38 @@ CREATE TABLE IF NOT EXIST Article(
     CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXIST MouvementStock(
+    id serial,
+    idMagasin integer NOT NULL UNIQUE,
+    date Date,
+    quantite integer,
+    CONSTRAINT PK_MouvementStock PRIMARY KEY (id),
+    CONSTRAINT FK_MouvementStock_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXIST Magasin(
+    id serial,
+    nom varchar(80),
+    adresse varchar(350),
+    CONSTRAINT PK_Magasin PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXIST Vendeur(
+    id serial,
+    idMagasin integer NOT NULL UNIQUE,
+    nom varchar(80),
+    salaire double PRECISION,
+    CONSTRAINT PK_Vendeur PRIMARY KEY (id),
+    CONSTRAINT FK_Vendeur_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXIST Vente(
+    idMouvementStock integer,
+    idVendeur integer NOT NULL UNIQUE,
+    idClient integer NOT NULL UNIQUE,
+    CONSTRAINT FK_Vente_Vendeur FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT FK_Vente_Client FOREIGN KEY (idClient) REFERENCES Client(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 
 ```
