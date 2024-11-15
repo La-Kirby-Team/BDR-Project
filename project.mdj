@@ -1010,7 +1010,7 @@
 											"font": "Arial;13;1",
 											"left": 117,
 											"top": 871,
-											"width": 94.30712890625,
+											"width": 96.84619140625,
 											"height": 13,
 											"text": "Client"
 										},
@@ -1045,7 +1045,7 @@
 									"font": "Arial;13;0",
 									"left": 112,
 									"top": 864,
-									"width": 104.30712890625,
+									"width": 106.84619140625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGSM14RUgqHfeg="
@@ -1082,7 +1082,7 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 894,
-											"width": 94.30712890625,
+											"width": 96.84619140625,
 											"height": 13,
 											"underline": true,
 											"text": "id",
@@ -1100,7 +1100,7 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 909,
-											"width": 94.30712890625,
+											"width": 96.84619140625,
 											"height": 13,
 											"text": "nom",
 											"horizontalAlignment": 0
@@ -1117,7 +1117,7 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 924,
-											"width": 94.30712890625,
+											"width": 96.84619140625,
 											"height": 13,
 											"text": "adresse",
 											"horizontalAlignment": 0
@@ -1134,7 +1134,7 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 939,
-											"width": 94.30712890625,
+											"width": 96.84619140625,
 											"height": 13,
 											"text": "email",
 											"horizontalAlignment": 0
@@ -1151,7 +1151,7 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 954,
-											"width": 94.30712890625,
+											"width": 96.84619140625,
 											"height": 13,
 											"text": "pointDeFidélité",
 											"horizontalAlignment": 0
@@ -1168,16 +1168,16 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 969,
-											"width": 94.30712890625,
+											"width": 96.84619140625,
 											"height": 13,
-											"text": "age",
+											"text": "anneeNaissance",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 112,
 									"top": 889,
-									"width": 104.30712890625,
+									"width": 106.84619140625,
 									"height": 98
 								},
 								{
@@ -1233,7 +1233,7 @@
 							"containerChangeable": true,
 							"left": 112,
 							"top": 864,
-							"width": 104.30712890625,
+							"width": 106.84619140625,
 							"height": 123,
 							"showVisibility": false,
 							"nameCompartment": {
@@ -3414,7 +3414,7 @@
 										"$ref": "AAAAAAGTDOGtEUe+eag="
 									},
 									"font": "Arial;13;0",
-									"left": 237,
+									"left": 239,
 									"top": 912,
 									"width": 104.431640625,
 									"height": 13,
@@ -3437,7 +3437,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 291,
+									"left": 293,
 									"top": 900,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -3458,7 +3458,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 291,
+									"left": 293,
 									"top": 945,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -3479,7 +3479,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 240,
+									"left": 243,
 									"top": 915,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -3500,7 +3500,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 243,
+									"left": 246,
 									"top": 901,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -3520,7 +3520,7 @@
 										"$ref": "AAAAAAGTDOGtEUe/iwI="
 									},
 									"font": "Arial;13;0",
-									"left": 233,
+									"left": 236,
 									"top": 942,
 									"width": 7.22998046875,
 									"height": 13,
@@ -3633,7 +3633,7 @@
 							"tail": {
 								"$ref": "AAAAAAGSM14RUgqFUlw="
 							},
-							"points": "215:936;368:936",
+							"points": "218:936;368:936",
 							"nameLabel": {
 								"$ref": "AAAAAAGTDOGtEkfDAVo="
 							},
@@ -4885,7 +4885,8 @@
 										"_parent": {
 											"$ref": "AAAAAAGTDPcCh6CGukU="
 										},
-										"name": "volume"
+										"name": "volume",
+										"type": ""
 									}
 								]
 							}
@@ -5201,8 +5202,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGSM14RUgqD1qs="
 							},
-							"name": "age",
-							"type": ""
+							"name": "anneeNaissance"
 						}
 					]
 				},
@@ -5437,7 +5437,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGTDN5eBNA+o8A="
 							},
-							"name": "DateCommande"
+							"name": "DateCommande",
+							"type": ""
 						}
 					]
 				},
@@ -5465,7 +5466,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGTDPbSPJ2cox0="
 							},
-							"name": "recipient"
+							"name": "recipient",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5473,7 +5475,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGTDPbSPJ2cox0="
 							},
-							"name": "nom"
+							"name": "nom",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -5481,7 +5484,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGTDPbSPJ2cox0="
 							},
-							"name": "tauxAlcool"
+							"name": "tauxAlcool",
+							"type": ""
 						}
 					]
 				}
