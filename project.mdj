@@ -1980,7 +1980,7 @@
 											"top": 895,
 											"width": 129.72705078125,
 											"height": 13,
-											"text": "Fournisseurs"
+											"text": "Fournisseur"
 										},
 										{
 											"_type": "LabelView",
@@ -2780,7 +2780,7 @@
 											"top": 911,
 											"width": 146.3388671875,
 											"height": 13,
-											"text": "Approvisionnemnt"
+											"text": "Approvisionnement"
 										},
 										{
 											"_type": "LabelView",
@@ -3149,7 +3149,7 @@
 										"$ref": "AAAAAAGTDOElQitnvrs="
 									},
 									"edgePosition": 1,
-									"text": "sont à l'origine de"
+									"text": "est à l'origine de"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -3424,7 +3424,7 @@
 										"$ref": "AAAAAAGTDOGtEkfCeIw="
 									},
 									"edgePosition": 1,
-									"text": "Sont bénéficiaire"
+									"text": "est bénéficiaire"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -5107,7 +5107,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGSM14RUgqD1qs="
 							},
-							"name": "Sont bénéficiaire",
+							"name": "est bénéficiaire",
 							"end1": {
 								"_type": "UMLAssociationEnd",
 								"_id": "AAAAAAGTDOGtEUe/iwI=",
@@ -5319,7 +5319,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Fournisseurs",
+					"name": "Fournisseur",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -5327,7 +5327,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGSn39dxPcB2NE="
 							},
-							"name": "sont à l'origine de",
+							"name": "est à l'origine de",
 							"end1": {
 								"_type": "UMLAssociationEnd",
 								"_id": "AAAAAAGTDOElQStkLr0=",
@@ -5398,7 +5398,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Approvisionnemnt",
+					"name": "Approvisionnement",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",

@@ -84,16 +84,17 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 ```
 Provenance(<u>id</u>, pays, région, producteur)
 
-Produit(<u>id</u>, idProvenance, recipient, nom, tauxAlcool)
+Produit(<u>id</u>, idProvenance, nom, tauxAlcool)
     Produit.idProvenance référence Provenance.id
     Produit.idProvenance NOT NULL et UNIQUE
 
-Article(<u>id, idProduit, volume </u>, datePeremption, prix)
+Article(<u>id, idProduit, volume, recipient</u>, datePeremption, prix)
     Article.idProduit référence Produit.id
 
-MouvementStock(<u>id</u>, idMagasin, date, quantite)
+MouvementStock(<u>id</u>, idMagasin, idArticle, date, quantite)
     MouvementStock.idMagasin référence Magasin.id
     MouvementStock.idMagasin NOT NULL et UNIQUE
+    MouvementStock.idArticle référence Article.id NOT NULL et UNIQUE
 
 Magasin(<u>id</u>, nom, adresse)
 
@@ -161,10 +162,12 @@ CREATE TABLE IF NOT EXIST Article(
 CREATE TABLE IF NOT EXIST MouvementStock(
     id serial,
     idMagasin integer NOT NULL UNIQUE,
+    idArticle integer NOT NULL UNIQUE,
     date Date,
     quantite integer,
     CONSTRAINT PK_MouvementStock PRIMARY KEY (id),
     CONSTRAINT FK_MouvementStock_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT FK_MouvementStock_Article FOREIGN KEY (idArticle) REFERENCES Article(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXIST Magasin(
@@ -197,6 +200,7 @@ CREATE TABLE IF NOT EXIST Approvisionnement(
     dateCommande DATE,
     CONSTRAINT PK_Approvisionnement PRIMARY KEY (idMouvementStock),
     CONSTRAINT FK_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT checkDate check (dateCommande < CURRENT_DATE)
 );
 
 CREATE TABLE IF NOT EXIST Client(
@@ -212,25 +216,15 @@ CREATE TABLE IF NOT EXIST Fournisseur(
     id serial,
     nom varchar(80),
     adresse varchar(150),
-    numeroTelephone ?????
+    numeroTelephone varchar(30)
 );
 
 CREATE TABLE IF NOT EXIST Approvisionnement_Fournisseur(
     idMouvementStock integer,
     idFournisseur integer,
     CONSTRAINT PK_Approvisionnement_Fournisseur PRIMARY KEY (idMouvementStock, idFournissseur),
-    CONSTRAINT FK_Approvisonnement_Fournisseur_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES Approvisionnement(idMouvementStock),
-    CONSTRAINT FK_Approvisonnement_Fournisseur_idFournisseur FOREIGN KEY (idFournisseur) REFERENCES Fournisseur(idFournisseur)
+    CONSTRAINT FK_Approvisionnement_Fournisseur_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES Approvisionnement(idMouvementStock),
+    CONSTRAINT FK_Approvisionnement_Fournisseur_idFournisseur FOREIGN KEY (idFournisseur) REFERENCES Fournisseur(idFournisseur)
 );
-
-CREATE TABLE IF NOT EXIST Article_MouvementStock(
-    idArticle integer,
-    idMouvementStock integer,
-    CONSTRAINT PK_Article_MouvementStock PRIMARY KEY (idArticle, idMouvementStock),
-    CONSTRAINT FK_Article_MouvementStock_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(idMouvementStock),
-    CONSTRAINT FK_Article_MouvementStock_idArticle FOREIGN KEY (idArticle) REFERENCES Article(idArticle)
-);
-
-
 
 ```
