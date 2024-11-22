@@ -187,9 +187,41 @@ CREATE TABLE IF NOT EXIST Vente(
     idMouvementStock integer,
     idVendeur integer NOT NULL UNIQUE,
     idClient integer NOT NULL UNIQUE,
+    CONSTRAINT PK_Vente PRIMARY KEY (idMouvementStock),
     CONSTRAINT FK_Vente_Vendeur FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
     CONSTRAINT FK_Vente_Client FOREIGN KEY (idClient) REFERENCES Client(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXIST Approvisionnement(
+    idMouvementStock integer,
+    dateCommande DATE,
+    CONSTRAINT PK_Approvisionnement PRIMARY KEY (idMouvementStock),
+    CONSTRAINT FK_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXIST Fournisseur(
+    id serial,
+    nom varchar(80),
+    adresse varchar(150),
+    numeroTelephone ?????
+);
+
+CREATE TABLE IF NOT EXIST Approvisionnement_Fournisseur(
+    idMouvementStock integer,
+    idFournisseur integer,
+    CONSTRAINT PK_Approvisionnement_Fournisseur PRIMARY KEY (idMouvementStock, idFournissseur),
+    CONSTRAINT FK_Approvisonnement_Fournisseur_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES Approvisionnement(idMouvementStock),
+    CONSTRAINT FK_Approvisonnement_Fournisseur_idFournisseur FOREIGN KEY (idFournisseur) REFERENCES Fournisseur(idFournisseur)
+);
+
+CREATE TABLE IF NOT EXIST Article_MouvementStock(
+    idArticle integer,
+    idMouvementStock integer,
+    CONSTRAINT PK_Article_MouvementStock PRIMARY KEY (idArticle, idMouvementStock),
+    CONSTRAINT FK_Article_MouvementStock_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(idMouvementStock),
+    CONSTRAINT FK_Article_MouvementStock_idArticle FOREIGN KEY (idArticle) REFERENCES Article(idArticle)
+);
+
 
 
 ```
