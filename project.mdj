@@ -2323,7 +2323,7 @@
 										"$ref": "AAAAAAGSn4mGQJ34r0Y="
 									},
 									"edgePosition": 2,
-									"text": "*"
+									"text": "1"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -3790,23 +3790,6 @@
 										},
 										{
 											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGTDPfr0qrTAmo=",
-											"_parent": {
-												"$ref": "AAAAAAGTDPbSPZ2kxOE="
-											},
-											"model": {
-												"$ref": "AAAAAAGTDPfrxqq+0VY="
-											},
-											"font": "Arial;13;0",
-											"left": 773,
-											"top": 389,
-											"width": 150.6689453125,
-											"height": 13,
-											"text": "recipient",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGTL92VvpPtb48=",
 											"_parent": {
 												"$ref": "AAAAAAGTDPbSPZ2kxOE="
@@ -3816,7 +3799,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 773,
-											"top": 404,
+											"top": 389,
 											"width": 150.6689453125,
 											"height": 13,
 											"text": "nom",
@@ -3833,7 +3816,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 773,
-											"top": 419,
+											"top": 404,
 											"width": 150.6689453125,
 											"height": 13,
 											"text": "tauxAlcool",
@@ -3844,7 +3827,7 @@
 									"left": 768,
 									"top": 369,
 									"width": 160.6689453125,
-									"height": 68
+									"height": 53
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -3900,7 +3883,7 @@
 							"left": 768,
 							"top": 344,
 							"width": 160.6689453125,
-							"height": 93,
+							"height": 78,
 							"showVisibility": false,
 							"nameCompartment": {
 								"$ref": "AAAAAAGTDPbSPZ2fIGY="
@@ -3940,7 +3923,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 639,
-									"top": 362,
+									"top": 354,
 									"width": 73.34716796875,
 									"height": 13,
 									"alpha": 1.2120252912275709,
@@ -3963,7 +3946,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 666,
-									"top": 356,
+									"top": 348,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -3984,7 +3967,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 666,
-									"top": 401,
+									"top": 393,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -4005,7 +3988,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 589,
-									"top": 371,
+									"top": 363,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -4026,7 +4009,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 592,
-									"top": 357,
+									"top": 349,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -4046,7 +4029,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 576,
-									"top": 399,
+									"top": 391,
 									"width": 19.5126953125,
 									"height": 13,
 									"alpha": -0.5880023837674202,
@@ -4069,7 +4052,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 742,
-									"top": 371,
+									"top": 363,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -4089,7 +4072,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 739,
-									"top": 357,
+									"top": 349,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -4109,7 +4092,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 805,
-									"top": 409,
+									"top": 401,
 									"width": 7.22998046875,
 									"height": 13,
 									"alpha": 2.6011732636133065,
@@ -4155,18 +4138,18 @@
 												"$ref": "AAAAAAGTL9NFVzpAfKc="
 											},
 											"font": "Arial;13;0",
-											"left": 722.0927734375,
-											"top": 384.0583038869258,
-											"width": 41.9072265625,
+											"left": 665.73193359375,
+											"top": 376.0583038869258,
+											"width": 98.26806640625,
 											"height": 13,
-											"text": "volume",
+											"text": "volume, recipient",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 717.0927734375,
-									"top": 379.0583038869258,
-									"width": 51.9072265625,
+									"left": 660.73193359375,
+									"top": 371.0583038869258,
+									"width": 108.26806640625,
 									"height": 23
 								}
 							],
@@ -4177,7 +4160,7 @@
 							"tail": {
 								"$ref": "AAAAAAGSM1RzMgjjero="
 							},
-							"points": "564:392;717:392",
+							"points": "564:384;661:384",
 							"nameLabel": {
 								"$ref": "AAAAAAGTDPcCh6CJYpo="
 							},
@@ -4805,11 +4788,11 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;20;0",
-							"left": 432,
+							"left": 448,
 							"top": 1144,
-							"width": 529,
-							"height": 81,
-							"text": "C.I.:\n- Un vendeur ne peux effectuer une vente que pour le magasin dans lequel il travaille."
+							"width": 553,
+							"height": 136,
+							"text": "C.I.:\n- Un vendeur ne peut effectuer une vente que pour le magasin dans lequel il travaille.\n\n- La date d'un approvisionnement doit être antérieur à la date du mouvement de stock (MouvementStock)."
 						}
 					]
 				},
@@ -4837,7 +4820,7 @@
 								"reference": {
 									"$ref": "AAAAAAGSM1RzMQjhzH8="
 								},
-								"multiplicity": "*"
+								"multiplicity": "1"
 							},
 							"end2": {
 								"_type": "UMLAssociationEnd",
@@ -4885,7 +4868,7 @@
 										"_parent": {
 											"$ref": "AAAAAAGTDPcCh6CGukU="
 										},
-										"name": "volume",
+										"name": "volume, recipient",
 										"type": ""
 									}
 								]
@@ -5202,7 +5185,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGSM14RUgqD1qs="
 							},
-							"name": "anneeNaissance"
+							"name": "anneeNaissance",
+							"type": ""
 						}
 					]
 				},
@@ -5458,15 +5442,6 @@
 							},
 							"name": "id",
 							"isStatic": true,
-							"type": ""
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAGTDPfrxqq+0VY=",
-							"_parent": {
-								"$ref": "AAAAAAGTDPbSPJ2cox0="
-							},
-							"name": "recipient",
 							"type": ""
 						},
 						{
