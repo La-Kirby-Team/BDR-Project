@@ -199,6 +199,15 @@ CREATE TABLE IF NOT EXIST Approvisionnement(
     CONSTRAINT FK_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXIST Client(
+    id serial,
+    nom varchar(80),
+    adresse varchar(150),
+    pointDeFidelite integer,
+    anneeNaissance integer
+    CONSTRAINT PK_Client PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXIST Fournisseur(
     id serial,
     nom varchar(80),
