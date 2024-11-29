@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXIST Provenance(
     id serial,
     pays varchar(80),
     region varchar(80),
+    producteur varchar(80)
     CONSTRAINT PK_Provenance PRIMARY KEY (id)
 );
 
@@ -141,18 +142,18 @@ CREATE TYPE typeRecipient AS ENUM ('bouteille','canette');
 
 CREATE TABLE IF NOT EXIST Produit(
     id serial,
-    idProduit integer NOT NULL UNIQUE,
-    recipient typeRecipient,
+    idProduit integer NOT NULL,
     nom varchar(80),
     tauxAlcool double PRECISION,
     CONSTRAINT PK_Produit PRIMARY KEY (id),
-    CONSTRAINT FK_Produit_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT FK_Produit_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXIST Article(
     id serial,
-    idProduit integer,
+    idProduit integer NOT NULL,
     volume integer,
+    recipient typeRecipient,
     datePeremption Date,
     prix double PRECISION,
     CONSTRAINT PK_Article PRIMARY KEY (id, idProduit, volume),
@@ -161,12 +162,12 @@ CREATE TABLE IF NOT EXIST Article(
 
 CREATE TABLE IF NOT EXIST MouvementStock(
     id serial,
-    idMagasin integer NOT NULL UNIQUE,
-    idArticle integer NOT NULL UNIQUE,
+    idMagasin integer NOT NULL,
+    idArticle integer NOT NULL,
     date Date,
     quantite integer,
     CONSTRAINT PK_MouvementStock PRIMARY KEY (id),
-    CONSTRAINT FK_MouvementStock_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT FK_MouvementStock_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT FK_MouvementStock_Article FOREIGN KEY (idArticle) REFERENCES Article(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -179,7 +180,7 @@ CREATE TABLE IF NOT EXIST Magasin(
 
 CREATE TABLE IF NOT EXIST Vendeur(
     id serial,
-    idMagasin integer NOT NULL UNIQUE,
+    idMagasin integer NOT NULL,
     nom varchar(80),
     salaire double PRECISION,
     CONSTRAINT PK_Vendeur PRIMARY KEY (id),
@@ -188,27 +189,29 @@ CREATE TABLE IF NOT EXIST Vendeur(
 
 CREATE TABLE IF NOT EXIST Vente(
     idMouvementStock integer,
-    idVendeur integer NOT NULL UNIQUE,
-    idClient integer NOT NULL UNIQUE,
+    idVendeur integer NOT NULL,
+    idClient integer NOT NULL,
     CONSTRAINT PK_Vente PRIMARY KEY (idMouvementStock),
-    CONSTRAINT FK_Vente_Vendeur FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT FK_Vente_MouvementStock FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT FK_Vente_Vendeur FOREIGN KEY (idVendeur) REFERENCES Vendeur(id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT FK_Vente_Client FOREIGN KEY (idClient) REFERENCES Client(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXIST Approvisionnement(
     idMouvementStock integer,
-    dateCommande DATE,
+    dateCommande DATE NOT NULL,
     CONSTRAINT PK_Approvisionnement PRIMARY KEY (idMouvementStock),
-    CONSTRAINT FK_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
-    CONSTRAINT checkDate check (dateCommande < CURRENT_DATE)
+    CONSTRAINT FK_Approvisionnement_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT check_DateCommande CHECK (dateCommande < CURRENT_DATE)
 );
 
 CREATE TABLE IF NOT EXIST Client(
     id serial,
     nom varchar(80),
     adresse varchar(150),
+    email varchar(100),
     pointDeFidelite integer,
-    anneeNaissance integer
+    anneeNaissance integer,
     CONSTRAINT PK_Client PRIMARY KEY (id)
 );
 
@@ -216,15 +219,27 @@ CREATE TABLE IF NOT EXIST Fournisseur(
     id serial,
     nom varchar(80),
     adresse varchar(150),
-    numeroTelephone varchar(30)
+    numeroTelephone varchar(30),
+    CONSTRAINT PK_Fournisseur PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXIST Approvisionnement_Fournisseur(
     idMouvementStock integer,
     idFournisseur integer,
     CONSTRAINT PK_Approvisionnement_Fournisseur PRIMARY KEY (idMouvementStock, idFournissseur),
-    CONSTRAINT FK_Approvisionnement_Fournisseur_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES Approvisionnement(idMouvementStock),
-    CONSTRAINT FK_Approvisionnement_Fournisseur_idFournisseur FOREIGN KEY (idFournisseur) REFERENCES Fournisseur(idFournisseur)
+    CONSTRAINT FK_Approvisionnement_Fournisseur_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES Approvisionnement(idMouvementStock) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT FK_Approvisionnement_Fournisseur_idFournisseur FOREIGN KEY (idFournisseur) REFERENCES Fournisseur(id) ON UPDATE CASDCADE ON DELETE CASCADE
 );
+
+CREATE IF NOT EXIST Article_MouvementStock(
+    idArticle integer,
+    idMouvementStock integer,
+    CONSTRAINT PK_Article_MouvemetnStock PRIMARY KEY (idArticle, idMouvementStock),
+    CONSTRAINT FK_Article_MouvementStock_idArticle FOREIGN KEY (idArticle) REFERENCES Article(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT FK_Article_MouvementStock_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+
 
 ```
