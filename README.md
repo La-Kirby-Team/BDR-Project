@@ -130,11 +130,11 @@ CREATE TABLE IF NOT EXISTS Provenance(
     id serial,
     pays varchar(80),
     region varchar(80),
-    producteur varchar(80)
+    producteur varchar(80),
     CONSTRAINT PK_Provenance PRIMARY KEY (id)
 );
 
-CREATE TYPE typeRecipient AS ENUM ('bouteille','canette');
+CREATE TYPE IF NOT EXISTS typeRecipient AS ENUM ('bouteille','canette');
 
 CREATE TABLE IF NOT EXISTS Produit(
     id serial,
