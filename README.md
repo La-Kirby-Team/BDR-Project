@@ -126,7 +126,7 @@ Approvisionnement_Fournisseur(<u>idMouvementStock, idFournisseur</u>)
 ## Création des tables SQL
 
 ```
-CREATE TABLE IF NOT EXIST Provenance(
+CREATE TABLE IF NOT EXISTS Provenance(
     id serial,
     pays varchar(80),
     region varchar(80),
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXIST Provenance(
 
 CREATE TYPE typeRecipient AS ENUM ('bouteille','canette');
 
-CREATE TABLE IF NOT EXIST Produit(
+CREATE TABLE IF NOT EXISTS Produit(
     id serial,
     idProduit integer NOT NULL,
     nom varchar(80),
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXIST Produit(
     CONSTRAINT FK_Produit_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXIST Article(
+CREATE TABLE IF NOT EXISTS Article(
     id serial,
     idProduit integer NOT NULL,
     volume integer,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXIST Article(
     CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXIST MouvementStock(
+CREATE TABLE IF NOT EXISTS MouvementStock(
     id serial,
     idMagasin integer NOT NULL,
     idArticle integer NOT NULL,
@@ -167,14 +167,14 @@ CREATE TABLE IF NOT EXIST MouvementStock(
     CONSTRAINT FK_MouvementStock_Article FOREIGN KEY (idArticle) REFERENCES Article(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXIST Magasin(
+CREATE TABLE IF NOT EXISTS Magasin(
     id serial,
     nom varchar(80),
     adresse varchar(350),
     CONSTRAINT PK_Magasin PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXIST Vendeur(
+CREATE TABLE IF NOT EXISTS Vendeur(
     id serial,
     idMagasin integer NOT NULL,
     nom varchar(80),
@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXIST Vendeur(
     CONSTRAINT FK_Vendeur_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXIST Vente(
+CREATE TABLE IF NOT EXISTS Vente(
     idMouvementStock integer,
     idVendeur integer NOT NULL,
     idClient integer NOT NULL,
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXIST Vente(
     CONSTRAINT FK_Vente_Client FOREIGN KEY (idClient) REFERENCES Client(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXIST Approvisionnement(
+CREATE TABLE IF NOT EXISTS Approvisionnement(
     idMouvementStock integer,
     dateCommande DATE NOT NULL,
     CONSTRAINT PK_Approvisionnement PRIMARY KEY (idMouvementStock),
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXIST Approvisionnement(
     CONSTRAINT check_DateCommande CHECK (dateCommande < CURRENT_DATE)
 );
 
-CREATE TABLE IF NOT EXIST Client(
+CREATE TABLE IF NOT EXISTS Client(
     id serial,
     nom varchar(80),
     adresse varchar(150),
@@ -211,7 +211,7 @@ CREATE TABLE IF NOT EXIST Client(
     CONSTRAINT PK_Client PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXIST Fournisseur(
+CREATE TABLE IF NOT EXISTS Fournisseur(
     id serial,
     nom varchar(80),
     adresse varchar(150),
@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXIST Fournisseur(
     CONSTRAINT PK_Fournisseur PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXIST Approvisionnement_Fournisseur(
+CREATE TABLE IF NOT EXISTS Approvisionnement_Fournisseur(
     idMouvementStock integer,
     idFournisseur integer,
     CONSTRAINT PK_Approvisionnement_Fournisseur PRIMARY KEY (idMouvementStock, idFournissseur),
