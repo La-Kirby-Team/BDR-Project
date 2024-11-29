@@ -123,6 +123,11 @@ Approvisionnement_Fournisseur(<u>idMouvementStock, idFournisseur</u>)
 Article_MouvementStock(<u>idArticle, idMouvementStock</u>)
     Article_MouvementStock.idArticle référence Article.id
     Article_MouvementStock.idMouvementStock référence MouvementStock.id
+
+Article_MouvementStock(<u>idArticle, idMouvementStock</u>)
+    Article_MouvementStock.idArticle référence Article.id
+    Article_MouvementStock.idMouvementStock référence MouvementStock.id
+);
   
 ```
 
@@ -234,7 +239,7 @@ CREATE TABLE IF NOT EXIST Approvisionnement_Fournisseur(
 CREATE IF NOT EXIST Article_MouvementStock(
     idArticle integer,
     idMouvementStock integer,
-    CONSTRAINT PK_Article_MouvemetnStock PRIMARY KEY (idArticle, idMouvementStock),
+    CONSTRAINT PK_Article_MouvementStock PRIMARY KEY (idArticle, idMouvementStock),
     CONSTRAINT FK_Article_MouvementStock_idArticle FOREIGN KEY (idArticle) REFERENCES Article(id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT FK_Article_MouvementStock_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
