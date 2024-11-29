@@ -86,7 +86,7 @@ Provenance(<u>id</u>, pays, région, producteur)
 
 Produit(<u>id</u>, idProvenance, nom, tauxAlcool)
     Produit.idProvenance référence Provenance.id
-    Produit.idProvenance NOT NULL et UNIQUE
+    Produit.idProvenance NOT NULL
 
 Article(<u>id, idProduit, volume, recipient</u>, datePeremption, prix)
     Article.idProduit référence Produit.id
@@ -94,20 +94,20 @@ Article(<u>id, idProduit, volume, recipient</u>, datePeremption, prix)
 MouvementStock(<u>id</u>, idMagasin, idArticle, date, quantite)
     MouvementStock.idMagasin référence Magasin.id
     MouvementStock.idMagasin NOT NULL et UNIQUE
-    MouvementStock.idArticle référence Article.id NOT NULL et UNIQUE
+    MouvementStock.idArticle référence Article.id NOT NULL
 
 Magasin(<u>id</u>, nom, adresse)
 
 Vendeur(<u>id</u>, idMagasin, nom, salaire)
     Vendeur.idMagasin référence Magasin.id
-    Vendeur.idMagasin NOT NULL et UNIQUE
+    Vendeur.idMagasin NOT NULL
 
 Vente(<u>idMouvementStockt</u>, idVendeur, idClient)
     Vente.idMouvementStock référence MouvementStock.id
     Vente.idVendeur référence Vendeur.id
     Vente.idVendeur NOT NULL et UNIQUE
     Vente.idClient référence Client.id
-    Vente.idClient NOT NULL et UNIQUE
+    Vente.idClient NOT NULL
 
 Approvisionnement(<u>idMouvementStock</u>, dateCommande)
     Approvisionnement.idMouvementStock référence MouvementStock.id
