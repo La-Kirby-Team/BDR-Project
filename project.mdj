@@ -3767,7 +3767,7 @@
 											"width": 150.6689453125,
 											"height": 13,
 											"underline": true,
-											"text": "id",
+											"text": "idProduit",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4458,26 +4458,11 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;13;0",
-							"left": 736,
-							"top": 280,
+							"left": 184,
+							"top": 368,
 							"width": 224,
 							"height": 33,
 							"text": "recipient: enum {bouteille, canette}"
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAGTDQXqp0guR6g=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGTDQVbbEIAiKE="
-							},
-							"tail": {
-								"$ref": "AAAAAAGTDPbSPJ2eszI="
-							},
-							"points": "848:344;848:312"
 						},
 						{
 							"_type": "UMLAssociationView",
@@ -4775,6 +4760,22 @@
 							"width": 553,
 							"height": 136,
 							"text": "C.I.:\n- Un vendeur ne peut effectuer une vente que pour le magasin dans lequel il travaille.\n\n- La date d'un approvisionnement doit être antérieur à la date du mouvement de stock (MouvementStock)."
+						},
+						{
+							"_type": "UMLNoteLinkView",
+							"_id": "AAAAAAGTg9vNw58sZ8A=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAGTDQVbbEIAiKE="
+							},
+							"tail": {
+								"$ref": "AAAAAAGSM1RzMgjjero="
+							},
+							"lineStyle": 1,
+							"points": "455:384;408:384"
 						}
 					]
 				},
@@ -5412,9 +5413,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGTDPbSPJ2cox0="
 							},
-							"name": "id",
-							"isStatic": true,
-							"type": ""
+							"name": "idProduit",
+							"isStatic": true
 						},
 						{
 							"_type": "UMLAttribute",
