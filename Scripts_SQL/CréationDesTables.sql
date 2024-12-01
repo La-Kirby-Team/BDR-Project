@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Provenance(
     CONSTRAINT PK_Provenance PRIMARY KEY (id)
 );
 
---CREATE TYPE typeRecipient AS ENUM ('bouteille', 'canette');
+CREATE TYPE typeRecipient AS ENUM ('bouteille', 'canette');   --(Used only once)
 
 CREATE TABLE IF NOT EXISTS Produit(
     id SERIAL,
