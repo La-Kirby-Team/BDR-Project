@@ -1,0 +1,37 @@
+Provenance(<u>id</u>, pays, région, producteur)
+
+Produit(<u>idProduit</u>, idProvenance, nom, tauxAlcool)
+    Produit.idProvenance référence Provenance.id
+    Produit.idProvenance NOT NULL
+
+Article(<u>idProduit, volume, recipient</u>, datePeremption, prix)
+    Article.idProduit référence Produit.id
+
+MouvementStock(<u>id</u>, idMagasin, idProduit, volume, recipient, date, quantite)
+    MouvementStock.idMagasin référence Magasin.id
+    MouvementStock.idProduit, volume, recipient référence Article.idProduit, volume, recipient
+    MouvementStock.idProduit, volume, recipient NOT NULL
+
+Magasin(<u>id</u>, nom, adresse)
+
+Vendeur(<u>id</u>, idMagasin, nom, salaire)
+    Vendeur.idMagasin référence Magasin.id
+    Vendeur.idMagasin NOT NULL
+
+Vente(<u>idMouvementStockt</u>, idVendeur, idClient)
+    Vente.idMouvementStock référence MouvementStock.id
+    Vente.idVendeur référence Vendeur.id
+    Vente.idVendeur NOT NULL et UNIQUE
+    Vente.idClient référence Client.id
+    Vente.idClient NOT NULL
+
+Approvisionnement(<u>idMouvementStock</u>, dateCommande)
+    Approvisionnement.idMouvementStock référence MouvementStock.id
+
+Client(<u>id</u>, nom, adresse, email, pointDeFidelite, annéeNaissance)
+
+Fournisseur(<u>id</u>, nom, adresse, numeroTelephone)
+
+Approvisionnement_Fournisseur(<u>idMouvementStock, idFournisseur</u>)
+    Approvisionnement_Fournisseur.idMouvementStock référence MouvementStock.id
+    Approvisionnement_Fournisseur.idFournisseur référence Fournisseur.id
