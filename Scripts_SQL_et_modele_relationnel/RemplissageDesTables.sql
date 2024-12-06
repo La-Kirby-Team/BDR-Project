@@ -1,33 +1,33 @@
 -- Remplissage de la table Provenance
 INSERT INTO Provenance (pays, region, producteur) VALUES
 ('France', 'Bordeaux', 'Château Margaux'),
-('Espagne', 'Ribera del Duero', 'Bodega Vega Sicilia'),
 ('Italie', 'Toscane', 'Antinori'),
-('France', 'Champagne', 'Moët & Chandon'),
-('USA', 'Napa Valley', 'Robert Mondavi');
+('Espagne', 'Ribera del Duero', 'Bodega Vega Sicilia'),
+('USA', 'Napa Valley', 'Robert Mondavi'),
+('France', 'Champagne', 'Moët & Chandon');
 
 -- Remplissage de la table Produit
 INSERT INTO Produit (idProduit, nom, tauxAlcool) VALUES
 (1, 'Vin Rouge Bordeaux', 13.5),
 (2, 'Vin Blanc Chardonnay', 12.0),
 (3, 'Champagne Brut', 12.5),
-(4, 'Whiskey Single Malt', 40.0),
+(4, 'Whisky Single Malt', 40.0),
 (5, 'Bière Blonde', 5.0);
 
 -- Remplissage de la table Article
-INSERT INTO Article (idProduit, volume, recipient, datePeremption, prix) VALUES
-(1, 750, 'bouteille', '2025-12-31', 45.99),
-(1, 1500, 'bouteille', '2025-12-31', 89.99),
-(2, 750, 'bouteille', '2024-11-30', 35.99),
-(3, 750, 'bouteille', '2026-06-30', 55.00),
-(4, 700, 'bouteille', '2030-01-01', 120.00),
-(5, 330, 'canette', '2023-12-31', 2.50);
+INSERT INTO Article (idProduit, volume, recipient, prix, datePeremption, dateFinDeVente) VALUES
+(1, 750, 'bouteille', 45.99, '2025-12-31', NULL),
+(1, 1500, 'bouteille', 89.99, '2025-12-31', NULL),
+(2, 750, 'bouteille', 35.99, '2024-11-30', '2024-10-01'),
+(3, 750, 'bouteille', 55.00, '2026-06-30', NULL),
+(4, 700, 'bouteille', 120.00, '2030-01-01', NULL),
+(5, 330, 'canette', 2.50, '2023-12-31', '2023-11-01');
 
 -- Remplissage de la table Magasin
-INSERT INTO Magasin (nom, adresse) VALUES
-('Cave de Paris', '12 rue de la Paix, Paris, France'),
-('Wine World', '45 High Street, London, UK'),
-('Enoteca Roma', 'Via Condotti, 25, Rome, Italy');
+INSERT INTO Magasin (nom, adresse, dateFermeture) VALUES
+('Cave de Paris', '12 rue de la Paix, Paris, France', NULL),
+('Wine World', '45 High Street, London, UK', NULL),
+('Enoteca Roma', 'Via Condotti, 25, Rome, Italy', '2025-01-01');
 
 -- Remplissage de la table MouvementStock
 INSERT INTO MouvementStock (idMagasin, idProduit, volume, recipient, date, quantite) VALUES
@@ -38,10 +38,10 @@ INSERT INTO MouvementStock (idMagasin, idProduit, volume, recipient, date, quant
 (3, 4, 700, 'bouteille', '2023-11-25', 20);
 
 -- Remplissage de la table Vendeur
-INSERT INTO Vendeur (idMagasin, nom, salaire) VALUES
-(1, 'Alice Dupont', 2500.00),
-(2, 'John Smith', 2200.00),
-(3, 'Giulia Rossi', 2400.00);
+INSERT INTO Vendeur (idMagasin, nom, salaire, estActif) VALUES
+(1, 'Alice Dupont', 2500.00, TRUE),
+(2, 'John Smith', 2200.00, TRUE),
+(3, 'Giulia Rossi', 2400.00, FALSE);
 
 -- Remplissage de la table Client
 INSERT INTO Client (nom, adresse, email, pointDeFidelite, anneeNaissance) VALUES
