@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winventory - Gestion de Stock de Vin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .jumbotron {
+            background-color: #343a40;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Bienvenue sur Winventory</h1>
+        <p class="lead">Votre solution ultime de gestion de stock de vin.</p>
+        <hr class="my-4">
+        <p>Gérez votre inventaire de vin avec facilité et efficacité.</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">En savoir plus</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Suivre l'inventaire</h5>
+                    <p class="card-text">Gardez une trace de vos niveaux de stock de vin et soyez averti en cas de pénurie.</p>
+                    <a id="trackInventoryBtn" href="#" class="btn btn-primary">Commencer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <div class="card-body">
+                    <h5 class="card-title">Gérer les fournisseurs</h5>
+                    <p class="card-text">Gérez facilement vos fournisseurs de vin et leurs informations de contact.</p>
+                    <a id="manageSuppliersBtn" href="#" class="btn btn-primary">Commencer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Générer des rapports</h5>
+                    <p class="card-text">Générez des rapports détaillés sur votre inventaire de vin et vos ventes.</p>
+                    <a id="generateReportsBtn" href="#" class="btn btn-primary">Commencer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center mt-4">
+    <p>&copy; 2024 Winventory. Tous droits réservés.</p>
+</footer>
+
+<script>
+    document.getElementById('trackInventoryBtn').addEventListener('click', function() {
+        window.location.href = '/track-inventory';
+    });
+
+    document.getElementById('manageSuppliersBtn').addEventListener('click', function() {
+        window.location.href = '/manage-suppliers';
+    });
+
+    document.getElementById('generateReportsBtn').addEventListener('click', function() {
+        window.location.href = '/generate-reports';
+    });
+
+    // Load the navbar
+    fetch('/navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar-placeholder').innerHTML = data;
+        });
+</script>
+</body>
+</html>
