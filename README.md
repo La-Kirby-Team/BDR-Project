@@ -93,7 +93,7 @@ Produit(<u>idProduit</u>, idProvenance, nom, tauxAlcool)
     Produit.idProvenance référence Provenance.id
     Produit.idProvenance NOT NULL
 
-Article(<u>idProduit, volume, recipient</u>, datePeremption, prix)
+Article(<u>idProduit, volume, recipient</u>, prix, datePeremption, dateFinDeVente)
     Article.idProduit référence Produit.id
 
 MouvementStock(<u>id</u>, idMagasin, idProduit, volume, recipient, date, quantite)
@@ -101,16 +101,16 @@ MouvementStock(<u>id</u>, idMagasin, idProduit, volume, recipient, date, quantit
     MouvementStock.idProduit, volume, recipient référence Article.idProduit, volume, recipient
     MouvementStock.idProduit, volume, recipient NOT NULL
 
-Magasin(<u>id</u>, nom, adresse)
+Magasin(<u>id</u>, nom, adresse, dateFermeture)
 
-Vendeur(<u>id</u>, idMagasin, nom, salaire)
+Vendeur(<u>id</u>, idMagasin, nom, salaire, estActif)
     Vendeur.idMagasin référence Magasin.id
     Vendeur.idMagasin NOT NULL
 
 Vente(<u>idMouvementStockt</u>, idVendeur, idClient)
     Vente.idMouvementStock référence MouvementStock.id
     Vente.idVendeur référence Vendeur.id
-    Vente.idVendeur NOT NULL et UNIQUE
+    Vente.idVendeur NOT NULL
     Vente.idClient référence Client.id
     Vente.idClient NOT NULL
 
@@ -154,16 +154,18 @@ CREATE TABLE IF NOT EXISTS Article(
     idProduit INTEGER,
     volume INTEGER,
     recipient typeRecipient,
-    datePeremption DATE NOT NULL,
     prix DOUBLE PRECISION NOT NULL,
+    datePeremption DATE NOT NULL,
+    dateFinDeVente DATE,
     CONSTRAINT PK_Article PRIMARY KEY (idProduit, volume, recipient),
-    CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE SET NULL
+    CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Magasin(
     id SERIAL,
-    nom VARCHAR(80) not NULL,
-    adresse VARCHAR(350) not null,
+    nom VARCHAR(80) NOT NULL,
+    adresse VARCHAR(350) NOT NULL,
+    dateFermeture DATE,
     CONSTRAINT PK_Magasin PRIMARY KEY (id)
 );
 
@@ -176,7 +178,7 @@ CREATE TABLE IF NOT EXISTS MouvementStock(
     date DATE,
     quantite INTEGER,
     CONSTRAINT PK_MouvementStock PRIMARY KEY (id),
-    CONSTRAINT FK_MouvementStock_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE cascade,
+    CONSTRAINT FK_MouvementStock_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT FK_MouvementStock_Article FOREIGN KEY (idProduit, volume, recipient) REFERENCES Article(idProduit, volume, recipient) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -185,6 +187,7 @@ CREATE TABLE IF NOT EXISTS Vendeur(
     idMagasin INTEGER NOT NULL,
     nom VARCHAR(80),
     salaire DOUBLE PRECISION,
+    estActif BOOL NOT NULL,
     CONSTRAINT PK_Vendeur PRIMARY KEY (id),
     CONSTRAINT FK_Vendeur_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -205,8 +208,8 @@ CREATE TABLE IF NOT EXISTS Vente(
     idClient INTEGER NOT NULL,
     CONSTRAINT PK_Vente PRIMARY KEY (idMouvementStock),
     CONSTRAINT FK_Vente_MouvementStock FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT FK_Vente_Vendeur FOREIGN KEY (idVendeur) REFERENCES Vendeur(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT FK_Vente_Client FOREIGN KEY (idClient) REFERENCES Client(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT FK_Vente_Vendeur FOREIGN KEY (idVendeur) REFERENCES Vendeur(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FK_Vente_Client FOREIGN KEY (idClient) REFERENCES Client(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Approvisionnement(
