@@ -70,7 +70,7 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 | **Etape 2:** <br/>Schéma UML                                                                                                                                                             | **06.11.2024** <br/>23h59 |
 | **Etape 3:** <br/>- Schéma relationnel<br/>- Fichier de script SQL de création de la base des données(tables et contrainte d'intégrité référentielle) et insertion des tuples initiaux   | **01.12.2024**</br>23h59  |
 | **Présentation:** <br/>- Durée: 10-15 minutes par groupe (7-10 slides)<br/>- Description du projet, shéma EA, choix d'implémentation, démo...<br/>**A remettre:** slides de présentation | **24.01.2025** <br/>10h25 |
-| **Rendu final:** <br/>- Rapport au format PDF<br/>- Le script SQL complet de la création de la base de données<br/>- Le code source de l'application                                     |       A déterminer        |
+| **Rendu final:** <br/>- Rapport au format PDF<br/>- Le script SQL complet de la création de la base de données<br/>- Le code source de l'application                                     |       **26.01.2025**<br/>23h59        |
 
 # Notre projet - Winventory
 
