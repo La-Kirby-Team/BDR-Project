@@ -29,6 +29,7 @@ Approvisionnement(<u>idMouvementStock</u>, dateCommande)
     Approvisionnement.idMouvementStock référence MouvementStock.id
 
 Client(<u>id</u>, nom, adresse, email, pointDeFidelite, annéeNaissance)
+    Client.email UNIQUE
 
 Fournisseur(<u>id</u>, nom, adresse, numeroTelephone)
 

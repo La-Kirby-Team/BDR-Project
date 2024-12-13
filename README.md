@@ -118,6 +118,7 @@ Approvisionnement(<u>idMouvementStock</u>, dateCommande)
     Approvisionnement.idMouvementStock référence MouvementStock.id
 
 Client(<u>id</u>, nom, adresse, email, pointDeFidelite, annéeNaissance)
+    Client.email UNIQUE
 
 Fournisseur(<u>id</u>, nom, adresse, numeroTelephone)
 
@@ -196,7 +197,7 @@ CREATE TABLE IF NOT EXISTS Client(
     id SERIAL,
     nom VARCHAR(80),
     adresse VARCHAR(150),
-    email VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
     pointDeFidelite INTEGER,
     anneeNaissance INTEGER,
     CONSTRAINT PK_Client PRIMARY KEY (id)

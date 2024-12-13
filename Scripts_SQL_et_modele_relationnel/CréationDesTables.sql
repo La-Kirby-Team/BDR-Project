@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS Client(
     id SERIAL,
     nom VARCHAR(80),
     adresse VARCHAR(150),
-    email VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
     pointDeFidelite INTEGER,
     anneeNaissance INTEGER,
     CONSTRAINT PK_Client PRIMARY KEY (id)
