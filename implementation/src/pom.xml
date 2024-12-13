@@ -29,6 +29,20 @@
       <artifactId>javalin</artifactId>
       <version>6.3.0</version>
     </dependency>
+    <!-- mysql -->
+    <dependency>
+      <groupId>com.github.jasync-sql</groupId>
+      <artifactId>jasync-mysql</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+
+    <!-- postgresql -->
+    <dependency>
+      <groupId>com.github.jasync-sql</groupId>
+      <artifactId>jasync-postgresql</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>

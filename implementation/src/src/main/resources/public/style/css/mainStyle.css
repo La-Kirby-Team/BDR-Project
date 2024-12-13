@@ -1,0 +1,79 @@
+body {
+    background-color: #f8f9fa;
+}
+
+/* Top navbar */
+.top-navbar {
+    background-color: #343a40;
+    color: #fff;
+    padding: 0.5rem 1rem;
+}
+.top-navbar .navbar-brand {
+    display: flex;
+    align-items: center;
+}
+.top-navbar .navbar-brand img {
+    height: 30px;
+    margin-right: 10px;
+}
+.top-navbar .navbar-nav .nav-link {
+    color: #fff !important;
+}
+.top-navbar .search-container {
+    display: flex;
+    align-items: center;
+}
+.top-navbar .search-container input {
+    margin-right: 10px;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #343a40;
+    min-height: 100vh;
+    color: #fff;
+    padding: 1rem;
+}
+.sidebar h5 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.sidebar .nav-link {
+    color: #fff !important;
+    margin: 0.5rem 0;
+}
+.sidebar .nav-link.active {
+    font-weight: bold;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 4px;
+}
+
+/* Main content area */
+.main-content {
+    padding: 1rem;
+}
+
+/* Boxes */
+.info-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 5px;
+    min-height: 200px;
+}
+.info-box h5 {
+    margin-bottom: 1rem;
+}
+
+.action-buttons .btn {
+    margin: 0.5rem;
+}
+
+/* Footer */
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 1rem;
+    margin-top: 2rem;
+    text-align: center;
+}

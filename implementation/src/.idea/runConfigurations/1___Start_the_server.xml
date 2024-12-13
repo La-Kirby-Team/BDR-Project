@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="1 - Start the server" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="21" />
+    <option name="MAIN_CLASS_NAME" value="ch.heigvd.dai.Main" />
+    <module name="java-tcp-programming" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

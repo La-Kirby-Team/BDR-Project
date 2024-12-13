@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  db:
+    container_name: bdr_postgresql_16
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=trustno1
+      - POSTGRES_DB=bdr
+    ports:
+      - '5666:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+ 
+volumes:
+  pgdata:
