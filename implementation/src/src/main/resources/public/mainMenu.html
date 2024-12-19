@@ -7,82 +7,206 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/style/css/mainStyle.css">
-    <!-- Font Awesome for icons (optional) -->
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
 <body>
-<!-- Top Navbar -->
-<nav class="top-navbar navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="#">
-        <i class="fas fa-bars mr-3"></i> <!-- Menu icon -->
-        <img src="/style/imgs/Logo.png" alt="Winventory Logo">
-        Winventory
-    </a>
-    <div class="ml-auto d-flex search-container">
-        <input type="text" class="form-control" placeholder="Search...">
-        <a href="#" class="nav-link"><i class="fas fa-user"></i></a>
-    </div>
-</nav>
+<!-- Placeholder for Navbar -->
+<div id="navbar-placeholder"></div>
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-2 sidebar">
-            <nav class="nav flex-column">
-                <h5>Menu</h5>
-                <a class="nav-link active" href="#">Manage</a>
-                <a class="nav-link" href="#">View</a>
-                <a class="nav-link" href="#">Commandes</a>
-                <a class="nav-link" href="#">Historique</a>
-                <a class="nav-link" href="#">Login</a>
-                <a class="nav-link" href="#">Contacts</a>
-            </nav>
-        </div>
+<!-- Placeholder for Sidebar -->
+<div id="sidebar-placeholder"></div>
 
-        <!-- Main Content -->
-        <div class="col-10 main-content">
-            <div class="row">
-                <div class="col-6">
-                    <div class="info-box">
-                        <h5>Commandes en attente</h5>
-                        <ul class="list-unstyled">
-                            <li>- Commande #1 ...</li>
-                            <li>- Commande #2 ...</li>
-                            <li>- Commande #3 ...</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="info-box">
-                        <h5>Warning: Low stock</h5>
-                        <ul class="list-unstyled">
-                            <li>- Produit X</li>
-                            <li>- Produit Y</li>
-                            <li>- Produit Z</li>
-                        </ul>
-                    </div>
-                </div>
+<!-- Overlay -->
+<div class="overlay"></div>
+
+<!-- Main Content -->
+<div class="container-fluid content-wrapper">
+    <div class="row w-75 mx-auto mt-4">
+        <div class="col-6">
+            <div class="info-box">
+                <h5>Commandes en attente</h5>
+                <ul class="list-unstyled">
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                    <li>- Commande #1 ...</li>
+                    <li>- Commande #2 ...</li>
+                    <li>- Commande #3 ...</li>
+                </ul>
             </div>
-
-            <div class="action-buttons text-center my-4" >
-                <button class="btn btn-secondary">Manage Stock</button>
-                <button class="btn btn-secondary">Stock View</button>
-                <button class="btn btn-secondary">Commandes</button>
-                <button class="btn btn-secondary">Toutes les transactions</button>
+        </div>
+        <div class="col-6">
+            <div class="info-box">
+                <h5>Attention niveau de stock bas pour les produits suivants :</h5>
+                <ul class="list-unstyled">
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <li>- Produit X</li>
+                    <li>- Produit Y</li>
+                    <li>- Produit Z</li>
+                    <!-- Add more items here -->
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
-<footer class="mt-4">
+<footer class="footer">
     <p>Blablé, rue des Canettes 25<br>Winventory SA</p>
 </footer>
 
-<!-- Scripts -->
+<!-- Include Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<!-- Custom Script to Load Components -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Load navbar
+        fetch('navBar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+
+                // Add dark mode toggle listener after loading the navbar
+                const themeToggle = document.getElementById('theme-toggle');
+                const body = document.body;
+
+                themeToggle.addEventListener('click', () => {
+                    body.classList.toggle('light-mode');
+                    themeToggle.textContent = body.classList.contains('light-mode') ? 'Mode Sombre' : 'Mode Clair';
+                });
+            });
+
+        // Load sidebar
+        fetch('sideBar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-placeholder').innerHTML = data;
+
+                // Add sidebar toggle listener after loading the sidebar
+                const sidebar = document.querySelector('.sidebar');
+                const overlay = document.querySelector('.overlay');
+                const menuToggle = document.getElementById('menu-toggle');
+
+                menuToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                    overlay.classList.toggle('show');
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('show');
+                });
+            });
+    });
+</script>
 
 </body>
+
 </html>

@@ -53,7 +53,7 @@ public class Main {
 
     app.get("/", ctx -> ctx.redirect("/index.html"));
     app.get("/mainMenu", ctx -> ctx.redirect("/mainMenu.html"));
-    app.get("/manage-suppliers", ctx -> ctx.result("Managing suppliers..."));
+    app.get("/manage-suppliers", ctx -> ctx.result("/supply.html"));
     app.get("/generate-reports", ctx -> ctx.result("Generating reports..."));
 
   }
