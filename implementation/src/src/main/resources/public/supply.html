@@ -17,7 +17,21 @@
 
 </header>
 
-<!-- Conteneur principal -->
+<!--Date Commande -->
+<div class="commandeDate row mb-3">
+    <div class="col-md-4">
+        <label for="custom-date-1" class="form-label text-left">Date de la Commande</label>
+        <div class="d-flex align-items-center">
+            <input type="date" id="custom-date-1" name="customDate[]" class="form-control" required>
+            <div class="checkbox form-check ml-3">
+                <input type="checkbox" id="auto-date-1" class="form-check-input" checked>
+                <label for="auto-date-1" class="form-check-label">Date du jour</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulaire/Produit -->
 <div class="container mt-5 ">
     <div class="row align-items-center">
         <div class="col-md-9 text-center">
@@ -193,6 +207,45 @@
                 alert("Il doit y avoir au moins un produit.");
             }
         });
+    });
+        // Fonction pour obtenir la date du jour au format YYYY-MM-DD
+        function getTodayDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mois avec 2 chiffres
+            const dd = String(today.getDate()).padStart(2, '0');      // Jour avec 2 chiffres
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateField = document.getElementById('custom-date-1');
+            const autoCheck = document.getElementById('auto-date-1');
+
+            // Initialisation : remplir le champ avec la date du jour et le rendre readonly
+            function initializeDateField() {
+                if (autoCheck.checked) {
+                    dateField.value = getTodayDate();
+                    dateField.setAttribute('readonly', true); // Lecture seule
+                    dateField.removeAttribute('required');   // Non obligatoire
+                }
+            }
+            initializeDateField(); // Appel initial
+
+            // Gérer les interactions avec la case à cocher
+            autoCheck.addEventListener('change', function() {
+                if (autoCheck.checked) {
+                    // Si la case est cochée, remplir automatiquement et verrouiller
+                    dateField.value = getTodayDate();
+                    dateField.setAttribute('readonly', true); // Lecture seule
+                    dateField.removeAttribute('required');   // Non obligatoire
+                } else {
+                    // Si la case est décochée, effacer, rendre modifiable et obligatoire
+                    dateField.value = ''; // Effacer le champ
+                    dateField.removeAttribute('readonly');   // Permettre l'édition
+                    dateField.setAttribute('required', true); // Champ obligatoire
+                }
+            });
+
     });
 </script>
 
