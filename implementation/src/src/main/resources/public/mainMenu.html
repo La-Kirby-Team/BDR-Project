@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Winventory - Gestion de Stock de Vin</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style/css/mainStyle.css">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
 <body>
 <!-- Placeholder for Navbar -->
@@ -16,9 +11,6 @@
 
 <!-- Placeholder for Sidebar -->
 <div id="sidebar-placeholder"></div>
-
-<!-- Overlay -->
-<div class="overlay"></div>
 
 <!-- Main Content -->
 <div class="container-fluid content-wrapper">
@@ -159,53 +151,8 @@
     <p>Blablé, rue des Canettes 25<br>Winventory SA</p>
 </footer>
 
-<!-- Include Scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <!-- Custom Script to Load Components -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Load navbar
-        fetch('navBar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navbar-placeholder').innerHTML = data;
-
-                // Add dark mode toggle listener after loading the navbar
-                const themeToggle = document.getElementById('theme-toggle');
-                const body = document.body;
-
-                themeToggle.addEventListener('click', () => {
-                    body.classList.toggle('light-mode');
-                    themeToggle.textContent = body.classList.contains('light-mode') ? 'Mode Sombre' : 'Mode Clair';
-                });
-            });
-
-        // Load sidebar
-        fetch('sideBar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('sidebar-placeholder').innerHTML = data;
-
-                // Add sidebar toggle listener after loading the sidebar
-                const sidebar = document.querySelector('.sidebar');
-                const overlay = document.querySelector('.overlay');
-                const menuToggle = document.getElementById('menu-toggle');
-
-                menuToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('open');
-                    overlay.classList.toggle('show');
-                });
-
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.classList.remove('show');
-                });
-            });
-    });
-</script>
+<script src="style/main.js"></script>
 
 </body>
 
