@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winventory - Gestion de Stock de Vin</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style/css/mainStyle.css">
+    <!-- Font Awesome for icons (optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+</head>
+<body>
+<!-- Top Navbar -->
+<nav class="top-navbar navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+        <i class="fas fa-bars mr-3"></i> <!-- Menu icon -->
+        <img src="/style/imgs/Logo.png" alt="Winventory Logo">
+        Winventory
+    </a>
+    <div class="ml-auto d-flex search-container">
+        <input type="text" class="form-control" placeholder="Search...">
+        <a href="#" class="nav-link"><i class="fas fa-user"></i></a>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-2 sidebar">
+            <nav class="nav flex-column">
+                <h5>Menu</h5>
+                <a class="nav-link active" href="#">Manage</a>
+                <a class="nav-link" href="#">View</a>
+                <a class="nav-link" href="#">Commandes</a>
+                <a class="nav-link" href="#">Historique</a>
+                <a class="nav-link" href="#">Login</a>
+                <a class="nav-link" href="#">Contacts</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-10 main-content">
+            <div class="profile-container mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Profil Utilisateur</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- User Avatar -->
+                            <div class="col-md-3 text-center">
+                                <div class="profile-avatar mb-3">
+                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/svgs/solid/user-circle.svg"
+                                         class="img-fluid rounded-circle" alt="Avatar Utilisateur"
+                                         style="width: 150px; height: 150px;">
+                                </div>
+                                <button class="btn btn-primary btn-sm">Changer l'avatar</button>
+                            </div>
+
+                            <!-- User Details -->
+                            <div class="col-md-9">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="username">Nom d'utilisateur :</label>
+                                        <input type="text" class="form-control" id="username" placeholder="John Doe"
+                                               value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email :</label>
+                                        <input type="email" class="form-control" id="email"
+                                               placeholder="johndoe@example.com" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Téléphone :</label>
+                                        <input type="tel" class="form-control" id="phone"
+                                               placeholder="+41 76 123 45 67" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Adresse :</label>
+                                        <textarea class="form-control" id="address" rows="2"
+                                                  placeholder="123 rue des Vins, 1063 Chapelle-sur-Moudon, Suisse"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Sauvegarder</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="mt-4">
+    <p>Blablé, rue des Canettes 25<br>Winventory SA</p>
+</footer>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
