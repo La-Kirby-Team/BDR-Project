@@ -14,7 +14,16 @@
     <a href="mainMenu.html" class="logo">
         <img src="style/imgs/Logo_court.png" alt="logo" width="100" />
     </a>
-    <nav>
+
+</header>
+
+<!-- Conteneur principal -->
+<div class="container mt-5 ">
+    <div class="row align-items-center">
+        <div class="col-md-9 text-center">
+             <h1 class="text-primary mb-4">Approvisionnement</h1>
+        </div>
+            <nav class="col-md-3 text-right">
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Magasins
@@ -26,71 +35,84 @@
             </div>
         </div>
     </nav>
-</header>
+    </div>
 
-<!-- Conteneur principal -->
-<div class="container mt-5">
-    <h1 class="text-center text-primary mb-4">Approvisionnement</h1>
-    <legend>Produit N°</legend>
     <fieldset>
+
         <form id="dynamic-form" action="/submit-form" method="post">
             <!-- Champs dynamiques -->
             <div id="dynamic-fields">
-                <!-- Première ligne de champs -->
+
+             <div class="bordure">
+                 <legend>Produit N°1</legend>
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label for="name-1" class="form-label text-left">Produit</label>
-                        <input type="text" id="name-1" name="product[]" class="form-control" required>
+                        <input type="text" id="name-1" name="product[]" class="form-control" placeholder="Produit" required>
                     </div>
                     <div class="col-md-3">
                         <label for="volume-1" class="form-label text-left">Volume</label>
-                        <input type="number" id="volume-1" name="volume[]" class="form-control" required>
+                        <input type="number" id="volume-1" name="volume[]" class="form-control" placeholder="1 litre" required>
                     </div>
                     <div class="col-md-3">
                         <label for="recipient-1" class="form-label text-left">Récipient</label>
                         <select id="recipient-1" name="recipient[]" class="form-control" required>
-                            <option value="Can">Cannette</option>
+                            <option value="Can">Canette</option>
                             <option value="Bottle">Bouteille</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label for="provider-1" class="form-label text-left">Fournisseur</label>
-                        <input type="text" id="provider-1" name="provider[]" class="form-control" required>
+                        <input type="text" id="provider-1" name="provider[]" class="form-control" placeholder="Fournisseur" required>
                     </div>
                 </div>
 
-                <!-- Deuxième ligne de champs -->
-                <div class="row mb-3">
+
+                <div class="row mb-3 justify-content">
                     <div class="col-md-4">
                         <label for="EndOfSales-1" class="form-label text-left">Date Fin de Vente</label>
-                        <input type="date" id="EndOfSales-1" name="EndOfSales[]" class="form-control" required>
+                        <input type="date" id="EndOfSales-1" name="EndOfSales[]" class="form-control" placeholder="Date de fin de série" required>
                     </div>
                     <div class="col-md-4">
                         <label for="Peremption-1" class="form-label text-left">Date Péremption</label>
-                        <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="CommandDate-1" class="form-label text-left">Date de la Commande</label>
-                        <input type="date" id="CommandDate-1" name="CommandDate[]" class="form-control" required>
+                        <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" placeholder="Date Péremption" required>
                     </div>
                 </div>
-            </div>
 
+                <div class="highlight row mb-3 justify-content-center">
+                     <div class="col-md-4 ">
+                         <label for="quantity-1" class="form-label text-left>">Quantité</label>
+                         <input type="number" id="quantity-1" name="quantity[]" class="form-control" placeholder="0" required>
+                     </div>
+                    <div class="col-md-4 ">
+                        <label for="prix-1" class="form-label text-left>">Prix</label>
+                        <input type="number" id="prix-1" name="prix[]" class="form-control" placeholder="0.0" required>
+                    </div>
+                 </div>
+            </div>
+            </div>
 
         </form>
     </fieldset>
-    <!-- Bouton Ajouter -->
-    <div class="text-center">
-        <button type="button" id="add-field" class="btn btn-success">+</button>
+    <div class="row justify-content-end">
+
+        <!-- Bouton Retirer -->
+        <div class="bouton text-right">
+            <button type="button" id="remove-field" class="btn btn-danger mt-4">Retirer un produit</button>
+        </div>
+        <!-- Bouton Ajouter -->
+        <div class="bouton text-right">
+            <button type="button" id="add-field" class="btn btn-primary mt-4">Ajouter un produit</button>
+        </div>
     </div>
 
     <!-- Bouton Soumettre -->
-    <div class="text-center">
-        <button type="submit" class="btn btn-primary mt-3">Soumettre</button>
+    <div class="text-right bouton">
+        <button type="submit" class="btn btn-success">Soumettre</button>
     </div>
 </div>
 
-<!-- Script pour champs dynamiques -->
+<!-- Script formulaire -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let fieldCount = 1; // Compteur pour les champs
@@ -103,15 +125,20 @@
             // Création de la nouvelle ligne de champs
             const newFieldRow = document.createElement('div');
             newFieldRow.innerHTML = `
+
+            <fieldset>
+
             <!-- Première ligne de champs -->
+            <div class="bordure">
+            <legend>Produit N°${fieldCount}</legend>
             <div class="row mb-3">
                 <div class="col-md-3">
                     <label for="name-${fieldCount}" class="form-label text-left">Produit</label>
-                    <input type="text" id="name-${fieldCount}" name="product[]" class="form-control" required>
+                    <input type="text" id="name-${fieldCount}" name="product[]" class="form-control" placeholder="Produit"required>
                 </div>
                 <div class="col-md-3">
                     <label for="volume-${fieldCount}" class="form-label text-left">Volume</label>
-                    <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" required>
+                    <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" placeholder="1 litre" required>
                 </div>
                 <div class="col-md-3">
                     <label for="recipient-${fieldCount}" class="form-label text-left">Récipient</label>
@@ -122,7 +149,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="provider-${fieldCount}" class="form-label text-left">Fournisseur</label>
-                    <input type="text" id="provider-${fieldCount}" name="provider[]" class="form-control" required>
+                    <input type="text" id="provider-${fieldCount}" name="provider[]" class="form-control" placeholder="Fournisseur" required>
                 </div>
             </div>
 
@@ -130,21 +157,41 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="EndOfSales-${fieldCount}" class="form-label text-left">Date Fin de Vente</label>
-                    <input type="date" id="EndOfSales-${fieldCount}" name="EndOfSales[]" class="form-control" required>
+                    <input type="date" id="EndOfSales-${fieldCount}" name="EndOfSales[]" class="form-control" placeholder="Date de fin de série" required>
                 </div>
                 <div class="col-md-4">
                     <label for="Peremption-${fieldCount}" class="form-label text-left">Date Péremption</label>
-                    <input type="date" id="Peremption-${fieldCount}" name="Peremption[]" class="form-control" required>
-                </div>
-                <div class="col-md-4">
-                    <label for="CommandDate-${fieldCount}" class="form-label text-left">Date de la Commande</label>
-                    <input type="date" id="CommandDate-${fieldCount}" name="CommandDate[]" class="form-control" required>
+                    <input type="date" id="Peremption-${fieldCount}" name="Peremption[]" class="form-control" placeholder="Date péremption" required>
                 </div>
             </div>
+
+                <div class="highlight row mb-3 justify-content-center">
+                     <div class="col-md-4">
+                         <label for="quantity-${fieldCount}" class="form-label text-left>">Quantité</label>
+                         <input type="number" id="quantity-${fieldCount}" name="quantity[]" class="form-control" placeholder="0" required>
+                     </div>
+                    <div class="col-md-4">
+                        <label for="prix-${fieldCount}" class="form-label text-left>">Prix</label>
+                        <input type="number" id="prix-${fieldCount}" name="prix[]" class="form-control" placeholder="0.0" required>
+                    </div>
+                </div>
+            </div>
+            </fieldset>
         `;
 
-            // Ajout de la nouvelle ligne de champs au formulaire
-            dynamicFields.appendChild(newFieldRow);
+        // Ajout de la nouvelle ligne de champs au formulaire
+        dynamicFields.appendChild(newFieldRow);
+        });
+
+        // Événement pour retirer le dernier champ dynamique
+        document.getElementById('remove-field').addEventListener('click', function() {
+            const dynamicFields = document.getElementById('dynamic-fields');
+            if (fieldCount > 0) { // Ne permet de supprimer que si le nombre de champs est supérieur à 1
+                dynamicFields.removeChild(dynamicFields.lastElementChild);
+                fieldCount--; // Décrémente le compteur
+            } else {
+                alert("Il doit y avoir au moins un produit.");
+            }
         });
     });
 </script>
