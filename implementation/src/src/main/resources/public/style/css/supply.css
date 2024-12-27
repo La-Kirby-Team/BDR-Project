@@ -35,13 +35,20 @@ fieldset{
 }
 
 .dateJour{
-    padding: 10px;
+    padding-top: 70px;
 }
 
 .dateJour1{
-    padding-left: 100px;
+    padding-left: 85px;
 }
+ .checkbox1 label{
+     padding-right: 10px;
+ }
+ .checkbox1 input{
+     width: 20px;
+     height: 20px;
+ }
 
-.checkbox{
-    padding-right: 10px;
-}
+ .checkbox1{
+     padding-right: 5px;
+ }
