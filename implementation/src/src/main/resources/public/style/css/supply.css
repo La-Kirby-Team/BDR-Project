@@ -33,3 +33,15 @@ fieldset{
 .checkbox label{
     padding-left: 5px;
 }
+
+.dateJour{
+    padding: 10px;
+}
+
+.dateJour1{
+    padding-left: 100px;
+}
+
+.checkbox{
+    padding-right: 10px;
+}

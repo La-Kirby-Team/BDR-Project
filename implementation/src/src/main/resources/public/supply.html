@@ -19,8 +19,8 @@
 
 <!--Date Commande -->
 <div class="commandeDate row mb-3">
-    <div class="col-md-4">
-        <label for="custom-date-1" class="form-label text-left">Date de la Commande</label>
+    <div class="col-md-3">
+        <label for="custom-date-1" class="form-label text-left mb-0">Date de la Commande</label>
         <div class="d-flex align-items-center">
             <input type="date" id="custom-date-1" name="customDate[]" class="form-control" required>
             <div class="checkbox form-check ml-3">
@@ -108,9 +108,10 @@
 
         </form>
     </fieldset>
-    <div class="row justify-content-end">
 
-        <!-- Bouton Retirer -->
+
+    <div class="row justify-content-end">
+                <!-- Bouton Retirer -->
         <div class="bouton text-right">
             <button type="button" id="remove-field" class="btn btn-danger mt-4">Retirer un produit</button>
         </div>
@@ -120,11 +121,27 @@
         </div>
     </div>
 
+    <!--Date du Jour -->
+    <div class="dateJour row justify-content-end mb-3">
+        <div class="col-md-3 d-flex flex-column">
+            <label for="dateJour" class="dateJour1 form-label text-left mb-0">Date</label>
+            <div class="d-flex align-items-center">
+                <div class="checkbox form-check mr-3">
+                    <label for="auto-dateJour" class="form-check-label">Date du jour</label>
+                    <input type="checkbox" id="auto-dateJour" class="form-check-input" checked>
+                </div>
+                <input type="date" id="dateJour" name="dateJour" class="form-control" required>
+            </div>
+        </div>
+    </div>
+
     <!-- Bouton Soumettre -->
     <div class="text-right bouton">
         <button type="submit" class="btn btn-success">Soumettre</button>
     </div>
 </div>
+
+
 
 <!-- Script formulaire -->
 <script>
@@ -216,20 +233,21 @@
             const dd = String(today.getDate()).padStart(2, '0');      // Jour avec 2 chiffres
             return `${yyyy}-${mm}-${dd}`;
         }
+    function initializeDateField(dateField, autoCheck) {
+        if (autoCheck.checked) {
+            dateField.value = getTodayDate();
+            dateField.setAttribute('readonly', true); // Lecture seule
+            dateField.removeAttribute('required');   // Non obligatoire
+        }
+    }
 
         document.addEventListener('DOMContentLoaded', function() {
             const dateField = document.getElementById('custom-date-1');
             const autoCheck = document.getElementById('auto-date-1');
 
             // Initialisation : remplir le champ avec la date du jour et le rendre readonly
-            function initializeDateField() {
-                if (autoCheck.checked) {
-                    dateField.value = getTodayDate();
-                    dateField.setAttribute('readonly', true); // Lecture seule
-                    dateField.removeAttribute('required');   // Non obligatoire
-                }
-            }
-            initializeDateField(); // Appel initial
+
+            initializeDateField(dateField, autoCheck); // Appel initial
 
             // Gérer les interactions avec la case à cocher
             autoCheck.addEventListener('change', function() {
@@ -245,6 +263,30 @@
                     dateField.setAttribute('required', true); // Champ obligatoire
                 }
             });
+
+        });
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateField = document.getElementById('dateJour');
+        const autoCheck = document.getElementById('auto-dateJour');
+
+        // Initialisation : remplir le champ avec la date du jour et le rendre readonly
+
+        initializeDateField(dateField, autoCheck); // Appel initial
+
+        // Gérer les interactions avec la case à cocher
+        autoCheck.addEventListener('change', function() {
+            if (autoCheck.checked) {
+                // Si la case est cochée, remplir automatiquement et verrouiller
+                dateField.value = getTodayDate();
+                dateField.setAttribute('readonly', true); // Lecture seule
+                dateField.removeAttribute('required');   // Non obligatoire
+            } else {
+                // Si la case est décochée, effacer, rendre modifiable et obligatoire
+                dateField.value = ''; // Effacer le champ
+                dateField.removeAttribute('readonly');   // Permettre l'édition
+                dateField.setAttribute('required', true); // Champ obligatoire
+            }
+        });
 
     });
 </script>
