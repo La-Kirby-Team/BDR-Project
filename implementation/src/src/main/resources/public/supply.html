@@ -6,32 +6,291 @@
     <title>Winventory - Gestion de Stock de Vin - Approvisionnement</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/css/supply.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
-    <header>
-            <a href = "mainMenu.html" class="logo" id="logo">
-                <img src="../../../../../../images/Logo_court.png" alt = "logo" width="100"/>
-            </a>
-            <nav>
-                <div class="menu-icon" id="menu-icon">
-                    Magasins<!-- Icône de menu -->
-                </div>
-                <ul id = "choixMagasin" class="choixMagasin">
-                    <li><a href="">Magasin 1</a></li>
-                    <li><a href="">Magasin 2</a></li>
-                    <li><a href="">Magasin 3</a></li>
-                </ul>
-            </nav>
-            <script src = "style/supply.js"></script>
-    </header>
+<!-- Header -->
+<header class="bg-light p-3 rounded mb-4 d-flex align-items-center justify-content-between shadow-sm">
+    <a href="mainMenu.html" class="logo">
+        <img src="style/imgs/Logo_court.png" alt="logo" width="100" />
+    </a>
 
-    <div id="container" class="container">
-        <h1>Approvisionnement</h1>
+</header>
+
+
+
+<div class="container mt-5 ">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-9 text-center ">
+             <h1 class="text-primary mb-4">Approvisionnement</h1>
+        </div>
+
     </div>
 
+    <!--Date Commande -->
+    <div class="commandeDate row align-items-center justify-content-between mb-3">
+        <div class="col-md-3">
+            <label for="custom-date-1" class="form-label text-left mb-0"><b>Date de la Commande</b></label>
+            <div class="d-flex align-items-center">
+                <input type="date" id="custom-date-1" name="customDate[]" class="form-control" required>
+                <div class="checkbox form-check ml-2">
+                    <input type="checkbox" id="auto-date-1" class="form-check-input" checked>
+                    <label for="auto-date-1" class="form-check-label">Date du jour</label>
+                </div>
+            </div>
+        </div>
+        <nav class="col-md-3 text-right">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Magasins
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Magasin 1</a>
+                    <a class="dropdown-item" href="#">Magasin 2</a>
+                    <a class="dropdown-item" href="#">Magasin 3</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Formulaire/Produit -->
+    <fieldset>
+        <form id="dynamic-form" action="/submit-form" method="post">
+            <!-- Champs dynamiques -->
+            <div id="dynamic-fields">
+
+             <div class="bordure">
+                 <legend>Produit N°1</legend>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="name-1" class="form-label text-left">Produit</label>
+                        <input type="text" id="name-1" name="product[]" class="form-control" placeholder="Produit" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="volume-1" class="form-label text-left">Volume</label>
+                        <input type="number" id="volume-1" name="volume[]" class="form-control" placeholder="1 litre" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="recipient-1" class="form-label text-left">Récipient</label>
+                        <select id="recipient-1" name="recipient[]" class="form-control" required>
+                            <option value="Can">Canette</option>
+                            <option value="Bottle">Bouteille</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="provider-1" class="form-label text-left">Fournisseur</label>
+                        <input type="text" id="provider-1" name="provider[]" class="form-control" placeholder="Fournisseur" required>
+                    </div>
+                </div>
+
+
+                <div class="row mb-3 justify-content">
+                    <div class="col-md-4">
+                        <label for="EndOfSales-1" class="form-label text-left">Date Fin de Vente</label>
+                        <input type="date" id="EndOfSales-1" name="EndOfSales[]" class="form-control" placeholder="Date de fin de série" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="Peremption-1" class="form-label text-left">Date Péremption</label>
+                        <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" placeholder="Date Péremption" required>
+                    </div>
+                </div>
+
+                <div class="highlight row mb-3 justify-content-center">
+                     <div class="col-md-4 ">
+                         <label for="quantity-1" class="form-label text-left>">Quantité</label>
+                         <input type="number" id="quantity-1" name="quantity[]" class="form-control" placeholder="0" required>
+                     </div>
+                    <div class="col-md-4 ">
+                        <label for="prix-1" class="form-label text-left>">Prix</label>
+                        <input type="number" id="prix-1" name="prix[]" class="form-control" placeholder="0.0" required>
+                    </div>
+                 </div>
+            </div>
+            </div>
+
+        </form>
+    </fieldset>
+
+
+    <div class="row justify-content-end">
+                <!-- Bouton Retirer -->
+        <div class="bouton text-right">
+            <button type="button" id="remove-field" class="btn btn-danger mt-4">Retirer un produit</button>
+        </div>
+        <!-- Bouton Ajouter -->
+        <div class="bouton text-right">
+            <button type="button" id="add-field" class="btn btn-primary mt-4">Ajouter un produit</button>
+        </div>
+    </div>
+
+    <!--Date du Jour -->
+    <div class="dateJour row justify-content-end mb-1">
+        <div class="col-md-3 d-flex flex-column">
+            <label for="dateJour" class="dateJour1 form-label text-left mb-0"><b>Date Approvisionnement</b></label>
+            <div class="d-flex align-items-center">
+                <div class="checkbox1 form-check">
+                    <label for="auto-dateJour" class="form-check-label">Date du jour</label>
+                    <input type="checkbox" id="auto-dateJour" class="form-check-input" checked>
+                </div>
+                <input type="date" id="dateJour" name="dateJour" class="form-control" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton Soumettre -->
+    <div class="text-right bouton">
+        <button type="submit" class="btn btn-success btn-lg">Soumettre</button>
+    </div>
+</div>
+
+
+
+<!-- Script formulaire -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let fieldCount = 1; // Compteur pour les champs
+
+        // Événement pour ajouter un champ dynamique
+        document.getElementById('add-field').addEventListener('click', function() {
+            fieldCount++; // Incrémenter le compteur pour identifier chaque champ
+            const dynamicFields = document.getElementById('dynamic-fields');
+
+            // Création de la nouvelle ligne de champs
+            const newFieldRow = document.createElement('div');
+            newFieldRow.innerHTML = `
+
+            <fieldset>
+
+            <!-- Première ligne de champs -->
+            <div class="bordure">
+            <legend>Produit N°${fieldCount}</legend>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="name-${fieldCount}" class="form-label text-left">Produit</label>
+                    <input type="text" id="name-${fieldCount}" name="product[]" class="form-control" placeholder="Produit"required>
+                </div>
+                <div class="col-md-3">
+                    <label for="volume-${fieldCount}" class="form-label text-left">Volume</label>
+                    <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" placeholder="1 litre" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="recipient-${fieldCount}" class="form-label text-left">Récipient</label>
+                    <select id="recipient-${fieldCount}" name="recipient[]" class="form-control" required>
+                        <option value="Can">Cannette</option>
+                        <option value="Bottle">Bouteille</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="provider-${fieldCount}" class="form-label text-left">Fournisseur</label>
+                    <input type="text" id="provider-${fieldCount}" name="provider[]" class="form-control" placeholder="Fournisseur" required>
+                </div>
+            </div>
+
+            <!-- Deuxième ligne de champs -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="EndOfSales-${fieldCount}" class="form-label text-left">Date Fin de Vente</label>
+                    <input type="date" id="EndOfSales-${fieldCount}" name="EndOfSales[]" class="form-control" placeholder="Date de fin de série" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="Peremption-${fieldCount}" class="form-label text-left">Date Péremption</label>
+                    <input type="date" id="Peremption-${fieldCount}" name="Peremption[]" class="form-control" placeholder="Date péremption" required>
+                </div>
+            </div>
+
+                <div class="highlight row mb-3 justify-content-center">
+                     <div class="col-md-4">
+                         <label for="quantity-${fieldCount}" class="form-label text-left>">Quantité</label>
+                         <input type="number" id="quantity-${fieldCount}" name="quantity[]" class="form-control" placeholder="0" required>
+                     </div>
+                    <div class="col-md-4">
+                        <label for="prix-${fieldCount}" class="form-label text-left>">Prix</label>
+                        <input type="number" id="prix-${fieldCount}" name="prix[]" class="form-control" placeholder="0.0" required>
+                    </div>
+                </div>
+            </div>
+            </fieldset>
+        `;
+
+        // Ajout de la nouvelle ligne de champs au formulaire
+        dynamicFields.appendChild(newFieldRow);
+        });
+
+        // Événement pour retirer le dernier champ dynamique
+        document.getElementById('remove-field').addEventListener('click', function() {
+            const dynamicFields = document.getElementById('dynamic-fields');
+            if (fieldCount > 0) { // Ne permet de supprimer que si le nombre de champs est supérieur à 1
+                dynamicFields.removeChild(dynamicFields.lastElementChild);
+                fieldCount--; // Décrémente le compteur
+            } else {
+                alert("Il doit y avoir au moins un produit.");
+            }
+        });
+    });
+        // Fonction pour obtenir la date du jour au format YYYY-MM-DD
+        function getTodayDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mois avec 2 chiffres
+            const dd = String(today.getDate()).padStart(2, '0');      // Jour avec 2 chiffres
+            return `${yyyy}-${mm}-${dd}`;
+        }
+    function initializeDateField(dateField, autoCheck) {
+        if (autoCheck.checked) {
+            dateField.value = getTodayDate();
+            dateField.setAttribute('readonly', true); // Lecture seule
+            dateField.removeAttribute('required');   // Non obligatoire
+        }
+    }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateField = document.getElementById('custom-date-1');
+            const autoCheck = document.getElementById('auto-date-1');
+
+            // Initialisation : remplir le champ avec la date du jour et le rendre readonly
+
+            initializeDateField(dateField, autoCheck); // Appel initial
+
+            // Gérer les interactions avec la case à cocher
+            autoCheck.addEventListener('change', function() {
+                if (autoCheck.checked) {
+                    // Si la case est cochée, remplir automatiquement et verrouiller
+                    dateField.value = getTodayDate();
+                    dateField.setAttribute('readonly', true); // Lecture seule
+                    dateField.removeAttribute('required');   // Non obligatoire
+                } else {
+                    // Si la case est décochée, effacer, rendre modifiable et obligatoire
+                    dateField.value = ''; // Effacer le champ
+                    dateField.removeAttribute('readonly');   // Permettre l'édition
+                    dateField.setAttribute('required', true); // Champ obligatoire
+                }
+            });
+
+        });
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateField = document.getElementById('dateJour');
+        const autoCheck = document.getElementById('auto-dateJour');
+
+        // Initialisation : remplir le champ avec la date du jour et le rendre readonly
+
+        initializeDateField(dateField, autoCheck); // Appel initial
+
+        // Gérer les interactions avec la case à cocher
+        autoCheck.addEventListener('change', function() {
+            if (autoCheck.checked) {
+                // Si la case est cochée, remplir automatiquement et verrouiller
+                dateField.value = getTodayDate();
+                dateField.setAttribute('readonly', true); // Lecture seule
+                dateField.removeAttribute('required');   // Non obligatoire
+            } else {
+                // Si la case est décochée, effacer, rendre modifiable et obligatoire
+                dateField.value = ''; // Effacer le champ
+                dateField.removeAttribute('readonly');   // Permettre l'édition
+                dateField.setAttribute('required', true); // Champ obligatoire
+            }
+        });
+
+    });
+</script>
 
 </body>
 </html>
