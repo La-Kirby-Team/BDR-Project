@@ -50,12 +50,13 @@
                         <div class="row">
                             <!-- User Avatar -->
                             <div class="col-md-3 text-center">
-                                <div class="profile-avatar mb-3">
-                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/svgs/solid/user-circle.svg"
-                                         class="img-fluid rounded-circle" alt="Avatar Utilisateur"
-                                         style="width: 150px; height: 150px;">
+                                    <div class="profile-avatar" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;">
+                                    <img src="style/imgs/Logo.png"
+                                         alt="Avatar Utilisateur" style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
-                                <button class="btn btn-primary btn-sm">Changer l'avatar</button>
+                                <div style = "padding-top:8px">
+                                    <button class="btn btn-primary btn-sm">Changer l'avatar</button>
+                                </div>
                             </div>
 
                             <!-- User Details -->
@@ -69,7 +70,7 @@
                                     <div class="form-group">
                                         <label for="email">Email :</label>
                                         <input type="email" class="form-control" id="email"
-                                               placeholder="johndoe@example.com" value="">
+                                               placeholder="john.doe@example.com" value="">
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Téléphone :</label>
