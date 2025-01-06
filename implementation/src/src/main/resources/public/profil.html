@@ -18,9 +18,9 @@
 <div id="sidebar-placeholder"></div>
 
 <!-- Main Content -->
-<div class="col-10 main-content">
-    <div class="profile-container mt-4">
-        <div class="card">
+<div class="d-flex justify-content-center mt-2">
+    <div class="col-10 main-content">
+        <div class="profile-container mt-3">
             <div class="card-header">
                 <h2>Profil Utilisateur</h2>
             </div>
@@ -28,10 +28,8 @@
                 <div class="row">
                     <!-- User Avatar -->
                     <div class="col-md-3 d-flex flex-column align-items-center">
-                        <div class="profile-avatar"
-                             style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;">
-                            <img src="style/imgs/Default_profile_picture.png" alt="Avatar Utilisateur"
-                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="profile-avatar" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;">
+                            <img src="style/imgs/Default_profile_picture.png" alt="Avatar Utilisateur" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <div style="padding-top: 10px;">
                             <button class="btn btn-primary btn-sm">Changer l'avatar</button>
@@ -43,23 +41,19 @@
                         <form>
                             <div class="form-group">
                                 <label for="username">Nom d'utilisateur :</label>
-                                <input type="text" class="form-control" id="username" placeholder="John Doe"
-                                       value="">
+                                <input type="text" class="form-control" id="username" placeholder="John Doe" value="">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email :</label>
-                                <input type="email" class="form-control" id="email"
-                                       placeholder="john.doe@example.com" value="">
+                                <input type="email" class="form-control" id="email" placeholder="john.doe@example.com" value="">
                             </div>
                             <div class="form-group">
                                 <label for="phone">Téléphone :</label>
-                                <input type="tel" class="form-control" id="phone"
-                                       placeholder="+41 76 123 45 67" value="">
+                                <input type="tel" class="form-control" id="phone" placeholder="+41 76 123 45 67" value="">
                             </div>
                             <div class="form-group">
                                 <label for="address">Adresse :</label>
-                                <textarea class="form-control" id="address" rows="2"
-                                          placeholder="123 rue des Vins, 1063 Chapelle-sur-Moudon, Suisse"></textarea>
+                                <textarea class="form-control" id="address" rows="2" placeholder="123 rue des Vins, 1063 Chapelle-sur-Moudon, Suisse"></textarea>
                             </div>
                             <button type="submit" class="btn btn-success">Sauvegarder</button>
                         </form>
@@ -69,10 +63,8 @@
         </div>
     </div>
 </div>
-</div>
-</div>
 
-<footer class="mt-4">
+<footer class="mt-4 text-center">
     <p>Blablé, rue des Canettes 25<br>Winventory SA</p>
 </footer>
 
