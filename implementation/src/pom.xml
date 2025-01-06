@@ -13,12 +13,6 @@
   </properties>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/info.picocli/picocli -->
-    <dependency>
-      <groupId>info.picocli</groupId>
-      <artifactId>picocli</artifactId>
-      <version>4.7.6</version>
-    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
@@ -41,6 +35,12 @@
       <groupId>com.github.jasync-sql</groupId>
       <artifactId>jasync-postgresql</artifactId>
       <version>2.2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.18.1</version>
     </dependency>
 
   </dependencies>
