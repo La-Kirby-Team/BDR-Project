@@ -267,3 +267,69 @@ body.light-mode .table-dark td {
     color: #000; /* Cell text color */
 }
 
+/* Modal styles for dark mode */
+body.dark-mode .modal-content {
+    background-color: #333; /* Dark background */
+    color: #fff; /* Light text */
+    border: none;
+}
+
+body.dark-mode .modal-header {
+    background-color: #444; /* Slightly lighter than the modal content */
+    border-bottom: 1px solid #555;
+}
+
+body.dark-mode .modal-footer {
+    background-color: #444; /* Match the header */
+    border-top: 1px solid #555;
+}
+
+body.dark-mode .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.8); /* Dimmed background */
+}
+
+/* Button colors in modal */
+body.dark-mode .modal-footer .btn-secondary {
+    background-color: #555;
+    color: #fff;
+    border: none;
+}
+
+body.dark-mode .modal-footer .btn-secondary:hover {
+    background-color: #666;
+}
+
+body.dark-mode .modal-footer .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+body.dark-mode .modal-footer .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Input fields in modal */
+body.dark-mode .modal-body .form-control {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+body.dark-mode .modal-body .form-control:focus {
+    background-color: #555;
+    color: #fff;
+    border: 1px solid #777;
+    box-shadow: none;
+}
+/* Add hover effect for clickable rows */
+#waiting-orders-table tr {
+    cursor: pointer; /* Indicates the row is clickable */
+    transition: background-color 0.3s ease;
+}
+
+#waiting-orders-table tr:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue highlight */
+}
+
+
