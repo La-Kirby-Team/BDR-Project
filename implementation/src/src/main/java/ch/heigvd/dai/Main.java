@@ -1,5 +1,6 @@
 package ch.heigvd.dai;
 
+import ch.heigvd.dai.controllers.SupplyController;
 import io.javalin.Javalin;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -76,6 +77,9 @@ public class Main {
     });
 
 
+    // Initialiser le SupplyController
+    SupplyController supplyController = new SupplyController(pool);
+    supplyController.registerRoutes(app);
 
 
     app.get("/", ctx -> ctx.redirect("/index.html"));
