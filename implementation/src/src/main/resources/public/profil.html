@@ -21,41 +21,45 @@
 <div class="d-flex justify-content-center mt-2">
     <div class="col-10 main-content">
         <div class="profile-container mt-3">
-            <div class="card-header">
-                <h2>Profil Utilisateur</h2>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2>Profil Vendeur</h2>
+                <button id="edit-button" class="btn btn-primary">Modifier le profil</button>
             </div>
             <div class="card-body">
                 <div class="row">
                     <!-- User Avatar -->
                     <div class="col-md-3 d-flex flex-column align-items-center">
                         <div class="profile-avatar" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;">
-                            <img src="style/imgs/Default_profile_picture.png" alt="Avatar Utilisateur" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div style="padding-top: 10px;">
-                            <button class="btn btn-primary btn-sm">Changer l'avatar</button>
+                            <img src="style/imgs/Default_profile_picture.png" alt="Avatar Utilisateur" id="avatar" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </div>
 
                     <!-- User Details -->
                     <div class="col-md-9">
-                        <form>
+                        <form id="profile-form">
                             <div class="form-group">
-                                <label for="username">Nom d'utilisateur :</label>
-                                <input type="text" class="form-control" id="username" placeholder="John Doe" value="">
+                                <label for="idMagasin">Magasin :</label>
+                                <select class="form-control" id="idMagasin" disabled></select>
                             </div>
                             <div class="form-group">
-                                <label for="email">Email :</label>
-                                <input type="email" class="form-control" id="email" placeholder="john.doe@example.com" value="">
+                                <label for="username">Nom :</label>
+                                <input type="text" class="form-control" id="username" placeholder="Nom" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Téléphone :</label>
-                                <input type="tel" class="form-control" id="phone" placeholder="+41 76 123 45 67" value="">
+                                <label for="salaire">Salaire :</label>
+                                <input type="number" class="form-control" id="salaire" placeholder="Salaire" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="address">Adresse :</label>
-                                <textarea class="form-control" id="address" rows="2" placeholder="123 rue des Vins, 1063 Chapelle-sur-Moudon, Suisse"></textarea>
+                                <label for="estActif">Statut :</label>
+                                <select class="form-control" id="estActif" disabled>
+                                    <option value="true">Actif</option>
+                                    <option value="false">Inactif</option>
+                                </select>
                             </div>
-                            <button type="submit" class="btn btn-success">Sauvegarder</button>
+                            <div id="edit-buttons" class="d-none">
+                                <button type="button" id="cancel-button" class="btn btn-secondary">Annuler</button>
+                                <button type="submit" class="btn btn-success">Sauvegarder</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -73,6 +77,113 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="style/navSideBars.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Variables pour stocker les données initiales
+        let initialData = {};
 
+        // Remplissage des magasins
+        fetch('/api/magasins')
+            .then(response => response.json())
+            .then(data => {
+                const magasinSelect = document.getElementById('idMagasin');
+                data.forEach(magasin => {
+                    const option = document.createElement('option');
+                    option.value = magasin.id;
+                    option.textContent = magasin.nom;
+                    magasinSelect.appendChild(option);
+                });
+
+                // Après avoir rempli la liste, définir le magasin sélectionné pour le vendeur
+                fetch('/api/vendeur/1')
+                    .then(response => response.json())
+                    .then(vendeur => {
+                        initialData = vendeur; // Stocker les données initiales
+                        document.getElementById('username').value = vendeur.nom;
+                        document.getElementById('salaire').value = vendeur.salaire;
+                        document.getElementById('estActif').value = vendeur.estActif.toString();
+                        document.getElementById('idMagasin').value = vendeur.idMagasin;
+                        if (vendeur.avatar) {
+                            document.getElementById('avatar').src = vendeur.avatar;
+                        }
+                    })
+                    .catch(error => console.error('Erreur lors du chargement du vendeur:', error));
+            })
+            .catch(error => console.error('Erreur lors du chargement des magasins:', error));
+
+        // Gestion des boutons Modifier/Annuler/Sauvegarder
+        const editButton = document.getElementById('edit-button');
+        const cancelButton = document.getElementById('cancel-button');
+        const form = document.getElementById('profile-form');
+        const editButtons = document.getElementById('edit-buttons');
+        const fields = form.querySelectorAll('input, select');
+
+        editButton.addEventListener('click', () => {
+            fields.forEach(field => field.removeAttribute('readonly'));
+            fields.forEach(field => field.removeAttribute('disabled'));
+            editButton.classList.add('d-none');
+            editButtons.classList.remove('d-none');
+        });
+
+        cancelButton.addEventListener('click', () => {
+            fields.forEach(field => field.setAttribute('readonly', true));
+            fields.forEach(field => field.setAttribute('disabled', true));
+            editButton.classList.remove('d-none');
+            editButtons.classList.add('d-none');
+
+            // Réinitialiser les champs avec les données initiales
+            document.getElementById('username').value = initialData.nom;
+            document.getElementById('salaire').value = initialData.salaire;
+            document.getElementById('estActif').value = initialData.estActif.toString();
+            document.getElementById('idMagasin').value = initialData.idMagasin;
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const updatedData = {
+                nom: document.getElementById('username').value,
+                salaire: parseFloat(document.getElementById('salaire').value),
+                estActif: document.getElementById('estActif').value === 'true',
+                idMagasin: parseInt(document.getElementById('idMagasin').value)
+            };
+
+            // Vérifier si les données ont changé avant de faire la requête
+            if (JSON.stringify(updatedData) === JSON.stringify(initialData)) {
+                alert('Aucune modification détectée.');
+                fields.forEach(field => field.setAttribute('readonly', true));
+                fields.forEach(field => field.setAttribute('disabled', true));
+                editButton.classList.remove('d-none');
+                editButtons.classList.add('d-none');
+                return;
+            }
+
+            fetch('/api/updateVendeur/1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Profil mis à jour avec succès !');
+                        initialData = updatedData; // Mettre à jour les données initiales
+                        fields.forEach(field => field.setAttribute('readonly', true));
+                        fields.forEach(field => field.setAttribute('disabled', true));
+                        editButton.classList.remove('d-none');
+                        editButtons.classList.add('d-none');
+                    } else {
+                        alert('Erreur lors de la mise à jour du profil.');
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la mise à jour du vendeur:', error));
+        });
+    });
+
+    function changeAvatar() {
+        alert("Cette fonctionnalité sera bientôt disponible !");
+    }
+</script>
 </body>
 </html>

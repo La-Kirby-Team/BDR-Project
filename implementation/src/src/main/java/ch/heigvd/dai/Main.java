@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -75,13 +76,51 @@ public class Main {
               .toList());
     });
 
+    app.get("/api/vendeur/{id}", ctx -> {
+      String vendeurId = ctx.pathParam("id");
+      String infoVendeur = "SELECT id, idMagasin, nom, salaire, estActif FROM Vendeur WHERE id = ?";
 
+      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(infoVendeur, Arrays.asList(Integer.parseInt(vendeurId)));
+      QueryResult queryResult = future.get();
+
+      if (!queryResult.getRows().isEmpty()) {
+        ArrayRowData row = (ArrayRowData) queryResult.getRows().get(0);
+        Map<String, Object> vendeur = Map.of(
+                "id", row.get(0),
+                "idMagasin", row.get(1),
+                "nom", row.get(2),
+                "salaire", row.get(3),
+                "estActif", row.get(4)
+        );
+
+        ObjectMapper mapper = new ObjectMapper();
+        ctx.json(vendeur);
+      } else {
+        ctx.status(404).result("Vendeur non trouvé");
+      }
+    });
+
+    app.get("/api/magasins", ctx -> {
+      String idMagasin = "SELECT id, nom FROM Magasin";
+      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(idMagasin);
+      QueryResult queryResult = future.get();
+
+      // Convert result to JSON
+      ObjectMapper mapper = new ObjectMapper();
+      ctx.json(queryResult.getRows().stream()
+              .map(row -> Map.of(
+                      "id", row.get(0),
+                      "nom", row.get(1)
+              ))
+              .toList());
+    });
 
 
     app.get("/", ctx -> ctx.redirect("/index.html"));
     app.get("/mainMenu", ctx -> ctx.redirect("/mainMenu.html"));
     app.get("/manage-suppliers", ctx -> ctx.result("/supply.html"));
     app.get("/generate-reports", ctx -> ctx.result("Generating reports..."));
+    //app.get("/jsp", ctx -> ctx.result("profil.html"));
 
   }
 }
