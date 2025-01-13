@@ -66,8 +66,8 @@
                         <input type="text" id="name-1" name="product[]" class="form-control" placeholder="Produit" required>
                     </div>
                     <div class="col-md-3">
-                        <label for="volume-1" class="form-label text-left">Volume</label>
-                        <input type="number" id="volume-1" name="volume[]" class="form-control" placeholder="1 litre" required>
+                        <label for="volume-1" class="form-label text-left">Volume (cl)</label>
+                        <input type="number" id="volume-1" name="volume[]" class="form-control" placeholder="33" required>
                     </div>
                     <div class="col-md-3">
                         <label for="recipient-1" class="form-label text-left">Récipient</label>
@@ -92,6 +92,10 @@
                         <label for="Peremption-1" class="form-label text-left">Date Péremption</label>
                         <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" placeholder="Date Péremption" required>
                     </div>
+                    <div class="col-md-3">
+                        <label for="alcohol-1" class="form-label text-left">Taux d'alcool (%)</label>
+                        <input type="number" id="alcohol-1" name="tauxAlcool[]" class="form-control" placeholder="5.0" step="0.1" required>
+                    </div>
                 </div>
 
                 <div class="highlight row mb-3 justify-content-center">
@@ -104,7 +108,9 @@
                         <input type="number" id="prix-1" name="prix[]" class="form-control" placeholder="0.0" required>
                     </div>
                  </div>
-            </div>
+
+
+             </div>
             </div>
 
         </form>
@@ -169,8 +175,8 @@
                     <input type="text" id="name-${fieldCount}" name="product[]" class="form-control" placeholder="Produit"required>
                 </div>
                 <div class="col-md-3">
-                    <label for="volume-${fieldCount}" class="form-label text-left">Volume</label>
-                    <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" placeholder="1 litre" required>
+                    <label for="volume-${fieldCount}" class="form-label text-left">Volume (cl)</label>
+                    <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" placeholder="33" required>
                 </div>
                 <div class="col-md-3">
                     <label for="recipient-${fieldCount}" class="form-label text-left">Récipient</label>
@@ -195,6 +201,10 @@
                     <label for="Peremption-${fieldCount}" class="form-label text-left">Date Péremption</label>
                     <input type="date" id="Peremption-${fieldCount}" name="Peremption[]" class="form-control" placeholder="Date péremption" required>
                 </div>
+                <div class="col-md-3">
+                    <label for="alcohol-${fieldCount}" class="form-label text-left">Taux d'alcool (%)</label>
+                    <input type="number" id="alcohol-${fieldCount}" name="tauxAlcool[]" class="form-control" placeholder="5.0" step="0.1" required>
+                </div>
             </div>
 
                 <div class="highlight row mb-3 justify-content-center">
@@ -207,6 +217,7 @@
                         <input type="number" id="prix-${fieldCount}" name="prix[]" class="form-control" placeholder="0.0" required>
                     </div>
                 </div>
+
             </div>
             </fieldset>
         `;

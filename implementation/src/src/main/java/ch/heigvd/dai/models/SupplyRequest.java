@@ -11,6 +11,7 @@ public class SupplyRequest {
     public List<String> Peremption;
     public List<Integer> quantity;
     public List<Double> prix;
+    public List<Double> tauxAlcool;
     public String dateJour;
 
     @Override

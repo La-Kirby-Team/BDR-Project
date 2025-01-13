@@ -21,6 +21,7 @@ public class Main {
   private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) throws ExecutionException, InterruptedException {
+
     Javalin app = Javalin.create(config -> config.staticFiles.add("/public"));
 
     app.start(port);
@@ -65,6 +66,9 @@ public class Main {
                 p.nom;
             """;
 
+
+
+
     app.get("/api/articles", ctx -> {
       CompletableFuture<QueryResult> future = connection.sendPreparedStatement(query);
       QueryResult queryResult = future.get();
@@ -79,12 +83,13 @@ public class Main {
 
     // Initialiser le SupplyController
     SupplyController supplyController = new SupplyController(pool);
-    supplyController.registerRoutes(app);
+    supplyController.registerRoutes(app, connection);
 
 
     app.get("/", ctx -> ctx.redirect("/index.html"));
     app.get("/mainMenu", ctx -> ctx.redirect("/mainMenu.html"));
-    app.get("/manage-suppliers", ctx -> ctx.result("/supply.html"));
+    app.get("/manage-suppliers", ctx -> ctx.redirect("/supply.html"));
+
     app.get("/generate-reports", ctx -> ctx.result("Generating reports..."));
 
   }
