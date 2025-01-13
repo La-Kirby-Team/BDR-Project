@@ -1,5 +1,6 @@
 package ch.heigvd.dai;
 
+import ch.heigvd.dai.controllers.SupplyController;
 import io.javalin.Javalin;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Map;
@@ -124,53 +126,59 @@ public class Main {
         });
 
         app.post("/api/updateVendeur/{id}", ctx -> {
-            String vendeurId = ctx.pathParam("id");
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> updatedData = mapper.readValue(ctx.body(), Map.class);
+                    String vendeurId = ctx.pathParam("id");
+                    ObjectMapper mapper = new ObjectMapper();
+                    Map<String, Object> updatedData = mapper.readValue(ctx.body(), Map.class);
 
-            String ancienNom = (String) updatedData.get("ancienNom");
-            String ancienPrenom = (String) updatedData.get("ancienPrenom");
-            String nouveauNom = (String) updatedData.get("nom");
-            String nouveauPrenom = (String) updatedData.get("prenom");
+                    String ancienNom = (String) updatedData.get("ancienNom");
+                    String ancienPrenom = (String) updatedData.get("ancienPrenom");
+                    String nouveauNom = (String) updatedData.get("nom");
+                    String nouveauPrenom = (String) updatedData.get("prenom");
 
-            // Supprimez l'ancienne image si le nom ou prénom change
-            if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
-                String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
-                String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
-                Files.deleteIfExists(Paths.get(ancienFilePath));
-            }
+                    // Supprimez l'ancienne image si le nom ou prénom change
+                    if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
+                        String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
+                        String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
+                        Files.deleteIfExists(Paths.get(ancienFilePath));
+                    }
 
-            String updateQuery = """
-                    UPDATE Vendeur
-                    SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
-                    WHERE id = ?
-                    """;
+                    String updateQuery = """
+                    
+                            UPDATE Vendeur
+                                                SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
+                                                   WHERE i
 
-            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
-                    updatedData.get("idMagasin"),
-                    nouveauNom,
-                    updatedData.get("salaire"),
+                                        """;
+
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
+                            updateQuery, Arrays.asList(
+                    updatedData.get(
+                            "idMagasin"),
+                            nouveauNom,
+                    updatedData.get(
+                            "salaire"),
                     updatedData.get("estActif"),
-                    Integer.parseInt(vendeurId)
-            ));
+                    Integer.parseInt(
 
+                vendeurId)
+            ));
+            });
 
             app.post("/api/orders-confirm", ctx -> {
-                ObjectMapper mapper = new ObjectMapper();
-                Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
+                        ObjectMapper mapper = new ObjectMapper();
+                        Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
 
-                int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
-                String receivedDate = requestData.get("date").toString();
-                int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
+                        int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
+                        String receivedDate = requestData.get("date").toString();
+                        int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
 
-                String updateQuery = """
+                        String updateQuery =
+                                """
                             UPDATE MouvementStock
-                            SET date = ?, quantite = ?
-                            WHERE id = ?
-                        """;
-    // Initialiser le SupplyController
-    SupplyController supplyController = new SupplyController(pool);
-    supplyController.registerRoutes(app, connection);
+                            SET date =
+                                                
+                                                """;
+
 
                 CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
                         receivedDate,
@@ -188,7 +196,6 @@ public class Main {
                     ctx.status(500).result("Erreur interne : " + e.getMessage());
                     return null;
                 });
-            });
 
             future.thenAccept(queryResult -> {
                 if (queryResult.getRowsAffected() > 0) {
@@ -237,6 +244,10 @@ public class Main {
                 ctx.status(500).result("Erreur lors de l'upload de l'avatar : " + e.getMessage());
             }
         });
+
+      // Initialiser le SupplyController
+      SupplyController supplyController = new SupplyController(pool);
+      supplyController.registerRoutes(app, connection);
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
