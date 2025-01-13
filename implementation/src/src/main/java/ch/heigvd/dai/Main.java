@@ -115,6 +115,37 @@ public class Main {
               .toList());
     });
 
+    app.post("/api/updateVendeur/{id}", ctx -> {
+      String vendeurId = ctx.pathParam("id");
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> updatedData = mapper.readValue(ctx.body(), Map.class);
+
+      String updateQuery = """
+            UPDATE Vendeur
+            SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
+            WHERE id = ?
+            """;
+
+      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
+              updatedData.get("idMagasin"),
+              updatedData.get("nom"),
+              updatedData.get("salaire"),
+              updatedData.get("estActif"),
+              Integer.parseInt(vendeurId)
+      ));
+
+      future.thenAccept(queryResult -> {
+        if (queryResult.getRowsAffected() > 0) {
+          ctx.status(200).result("Mise à jour réussie");
+        } else {
+          ctx.status(404).result("Vendeur non trouvé");
+        }
+      }).exceptionally(e -> {
+        ctx.status(500).result("Erreur interne : " + e.getMessage());
+        return null;
+      });
+    });
+
 
     app.get("/", ctx -> ctx.redirect("/index.html"));
     app.get("/mainMenu", ctx -> ctx.redirect("/mainMenu.html"));

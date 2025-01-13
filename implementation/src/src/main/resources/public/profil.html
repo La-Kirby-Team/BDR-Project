@@ -148,13 +148,9 @@
                 idMagasin: parseInt(document.getElementById('idMagasin').value)
             };
 
-            // Vérifier si les données ont changé avant de faire la requête
+            // Vérification des changements
             if (JSON.stringify(updatedData) === JSON.stringify(initialData)) {
                 alert('Aucune modification détectée.');
-                fields.forEach(field => field.setAttribute('readonly', true));
-                fields.forEach(field => field.setAttribute('disabled', true));
-                editButton.classList.remove('d-none');
-                editButtons.classList.add('d-none');
                 return;
             }
 
@@ -177,7 +173,10 @@
                         alert('Erreur lors de la mise à jour du profil.');
                     }
                 })
-                .catch(error => console.error('Erreur lors de la mise à jour du vendeur:', error));
+                .catch(error => {
+                    console.error('Erreur lors de la mise à jour du vendeur:', error);
+                    alert('Erreur réseau. Veuillez réessayer plus tard.');
+                });
         });
     });
 
