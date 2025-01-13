@@ -1,15 +1,18 @@
 SELECT
     p.nom AS produit,
     ms.quantite AS quantite,
-    a.dateCommande AS date_commande,
-    CURRENT_DATE - a.dateCommande AS jours_depuis_commande
+    a.dateCommande AS dateCommande,
+    CURRENT_DATE - a.dateCommande AS joursDepuisCommande,
+    ms.id AS mouvementStockId
 FROM
     Approvisionnement a
-        JOIN
+        INNER JOIN
     MouvementStock ms ON a.idMouvementStock = ms.id
-        JOIN
-    Produit p ON ms.idProduit = p.id
+        INNER JOIN
+    Article art ON ms.idProduit = art.idProduit
+        INNER JOIN
+    Produit p ON art.idProduit = p.id
 WHERE
     ms.date IS NULL
 ORDER BY
-    a.dateCommande ASC;
+    a.dateCommande;

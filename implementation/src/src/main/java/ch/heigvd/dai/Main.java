@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -64,15 +65,61 @@ public class Main {
     String waitingOrders = Files.readString(Path.of("src/main/resources/public/sql/waitingOrders.sql"), StandardCharsets.UTF_8);
 
     app.get("/api/orders-waiting", ctx -> {
-      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
-      QueryResult queryResult = future.get();
+      try {
+        CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
+        QueryResult queryResult = future.get();
 
-      // Convert result to JSON
-      ObjectMapper mapper = new ObjectMapper();
-      ctx.json(queryResult.getRows().stream()
-              .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-              .toList());
+        // Convert result to JSON
+        ObjectMapper mapper = new ObjectMapper();
+        ctx.json(queryResult.getRows().stream()
+                .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                .toList());
+      } catch (Exception e) {
+        // Log the error and return a 500 status
+        e.printStackTrace();
+        ctx.status(500).result("Server Error: " + e.getMessage());
+      }
     });
+
+
+
+    app.post("/api/orders-confirm", ctx -> {
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
+
+      int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
+      String receivedDate = requestData.get("date").toString();
+      int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
+
+      String updateQuery = """
+        UPDATE MouvementStock
+        SET date = ?, quantite = ?
+        WHERE id = ?
+    """;
+
+      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
+              receivedDate,
+              receivedQuantity,
+              mouvementStockId
+      ));
+
+      future.thenAccept(queryResult -> {
+        if (queryResult.getRowsAffected() > 0) {
+          ctx.status(200).result("Commande mise à jour avec succès");
+        } else {
+          ctx.status(404).result("MouvementStock non trouvé");
+        }
+      }).exceptionally(e -> {
+        ctx.status(500).result("Erreur interne : " + e.getMessage());
+        return null;
+      });
+    });
+
+
+
+
+
+
 
 
 

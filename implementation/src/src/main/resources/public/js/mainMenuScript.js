@@ -1,15 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Fetch data from the API
+    // Fetch low quantity articles
     fetch('/api/articles-lowQT')
         .then(response => response.json())
         .then(data => {
-            // Find the container for dynamic content
             const articleTable = document.querySelector('#low-article-table');
-
-            // Clear any existing content
             articleTable.innerHTML = '';
 
-            // Create a header row
             const headerRow = document.createElement('tr');
             headerRow.innerHTML = `
                 <th>Nom du produit</th>
@@ -17,13 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
             articleTable.appendChild(headerRow);
 
-            // Populate table with parsed data
             data.forEach(item => {
-                // Remove square brackets if present and split the string
-                const cleanedItem = item.replace(/[\[\]]/g, ''); // Remove brackets
+                const cleanedItem = item.replace(/[\[\]]/g, '');
                 const [name, quantity] = cleanedItem.split(',').map(value => value.trim());
 
-                // Create a new table row
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${name}</td>
@@ -47,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const articleTable = document.querySelector('#waiting-orders-table');
             articleTable.innerHTML = '';
 
+            // Create a header row
             const headerRow = document.createElement('tr');
             headerRow.innerHTML = `
                 <th>Nom du produit</th>
@@ -56,9 +50,10 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
             articleTable.appendChild(headerRow);
 
+            // Populate table with parsed data
             data.forEach(item => {
-                const [name, quantity, orderDate, daysSince] = item
-                    .replace(/[\[\]]/g, '')
+                const [name, quantity, orderDate, daysSince, mouvementStockId] = item
+                    .replace(/[\[\]"]/g, '') // Remove brackets and quotes
                     .split(',')
                     .map(value => value.trim());
 
@@ -72,50 +67,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Add click event to show modal
                 row.addEventListener('click', () => {
-                    // Populate modal with data
-                    document.getElementById('orderDetails').textContent = `Produit : ${name}, Quantité prévue : ${quantity}`;
-                    document.getElementById('adjustQuantity').value = quantity;
+                    // Set up the modal with relevant data
+                    document.getElementById('productInfo').textContent = `Produit : ${name}, Quantité prévue : ${quantity}`;
+                    document.getElementById('receivedQuantity').value = quantity;
 
-                    // Store current order details for confirmation
-                    document.getElementById('confirmOrderBtn').dataset.name = name;
+                    // Pass the movementStock ID to the confirm button
+                    const confirmButton = document.getElementById('confirmOrderButton');
+                    confirmButton.setAttribute('data-id', mouvementStockId); // Assign the ID to the button
 
                     // Show the modal
-                    const orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
-                    orderModal.show();
+                    const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+                    modal.show();
                 });
 
                 articleTable.appendChild(row);
             });
 
             // Handle confirmation
-            document.getElementById('confirmOrderBtn').addEventListener('click', () => {
-                const adjustedQuantity = document.getElementById('adjustQuantity').value;
-                const productName = document.getElementById('confirmOrderBtn').dataset.name;
+            document.getElementById('confirmOrderButton').addEventListener('click', function () {
+                const id = this.getAttribute('data-id'); // Retrieve the movementStock ID from the button's attribute
+                const quantiteRecu = document.getElementById('receivedQuantity').value;
+                const dateRecu = document.getElementById('receivedDateCheckbox').checked
+                    ? new Date().toISOString().split('T')[0] // Default to today
+                    : document.getElementById('receivedDateInput').value; // Custom date
 
-                // Perform an API call to update the order (POST/PUT request)
-                fetch('/api/orders-confirm', {
+                fetch(`/api/orders-confirm?id=${id}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({
-                        name: productName,
-                        adjustedQuantity: adjustedQuantity
-                    })
+                        date: dateRecu,
+                        quantite: quantiteRecu,
+                    }),
                 })
                     .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Error confirming the order');
+                        if (response.ok) {
+                            alert('Commande mise à jour avec succès');
+                            location.reload(); // Refresh the page to show updated data
+                        } else {
+                            return response.text().then(text => {
+                                throw new Error(text);
+                            });
                         }
-                        return response.json();
-                    })
-                    .then(() => {
-                        alert('Commande confirmée avec succès!');
-                        location.reload(); // Refresh the table after confirmation
                     })
                     .catch(error => {
-                        console.error('Error confirming the order:', error);
-                        alert('Une erreur s\'est produite lors de la confirmation.');
+                        console.error('Erreur lors de la mise à jour de la commande :', error);
                     });
             });
+
         })
         .catch(error => {
             console.error('Error fetching orders:', error);
@@ -124,3 +124,71 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    const todayCheckbox = document.getElementById('setTodayDate');
+    const customDateContainer = document.getElementById('customDateContainer');
+    const customDateInput = document.getElementById('customDate');
+
+    // Set default date to today
+    const today = new Date().toISOString().split('T')[0];
+    customDateInput.value = today;
+
+    // Toggle visibility of custom date input based on checkbox
+    todayCheckbox.addEventListener('change', () => {
+        if (todayCheckbox.checked) {
+            customDateContainer.style.display = 'none';
+            customDateInput.value = today; // Reset to today's date
+        } else {
+            customDateContainer.style.display = 'block';
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Select the modal elements
+    const orderModal = document.getElementById("orderModal");
+    const closeModalButtons = document.querySelectorAll(".close-modal"); // Select elements with class "close-modal"
+
+    // Add event listeners to close buttons (cross and "Annuler" button)
+    closeModalButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const modalInstance = bootstrap.Modal.getInstance(orderModal);
+            modalInstance.hide();
+        });
+    });
+
+    // Handle confirmation
+    document.getElementById('confirmOrderButton').addEventListener('click', function () {
+        const mouvementStockId = this.getAttribute('data-id'); // Retrieve the ID from the button
+        const receivedQuantity = document.getElementById('receivedQuantity').value;
+        const receivedDate = document.getElementById('setTodayDate').checked
+            ? new Date().toISOString().split('T')[0] // Default to today
+            : document.getElementById('customDate').value; // Custom date
+
+        fetch(`/api/orders-confirm`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: mouvementStockId,
+                date: receivedDate,
+                quantite: receivedQuantity,
+            }),
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Commande mise à jour avec succès');
+                    location.reload(); // Refresh the page
+                } else {
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la mise à jour de la commande :', error);
+            });
+    });
+});
