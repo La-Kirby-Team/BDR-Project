@@ -28,63 +28,63 @@ import java.util.concurrent.ExecutionException;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Main {
-  static final int port = 8080;
-  private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    static final int port = 8080;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-  public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
-    Javalin app = Javalin.create(config -> config.staticFiles.add("/public"));
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
+        Javalin app = Javalin.create(config -> config.staticFiles.add("/public"));
 
-    app.start(port);
+        app.start(port);
 
-    logger.error("starting");
-    logger.warn("starting warn");
-    logger.info("starting info");
-    logger.debug("starting debug");
-    logger.trace("starting trace");
-    String host = "localhost";
-    int SQLport = 5666;
-    String database = "bdr_project";
-    String username = "postgres";
-    String password = "trustno1";
+        logger.error("starting");
+        logger.warn("starting warn");
+        logger.info("starting info");
+        logger.debug("starting debug");
+        logger.trace("starting trace");
+        String host = "localhost";
+        int SQLport = 5666;
+        String database = "bdr_project";
+        String username = "postgres";
+        String password = "trustno1";
 
-    String url = String.format("jdbc:postgresql://%s:%d/%s?user=%s&password=%s",
-            host, SQLport, database, username, password);
+        String url = String.format("jdbc:postgresql://%s:%d/%s?user=%s&password=%s",
+                host, SQLport, database, username, password);
 
-    ConnectionPool<PostgreSQLConnection> pool = PostgreSQLConnectionBuilder.createConnectionPool(url);
+        ConnectionPool<PostgreSQLConnection> pool = PostgreSQLConnectionBuilder.createConnectionPool(url);
 
-    Connection connection = pool.connect().get();
+        Connection connection = pool.connect().get();
 
-    String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
+        String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
 
-    app.get("/api/articles-lowQT", ctx -> {
-      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
-      QueryResult queryResult = future.get();
+        app.get("/api/articles-lowQT", ctx -> {
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
+            QueryResult queryResult = future.get();
 
-      // Convert result to JSON
-      ObjectMapper mapper = new ObjectMapper();
-      ctx.json(queryResult.getRows().stream()
-              .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-              .toList());
-    });
+            // Convert result to JSON
+            ObjectMapper mapper = new ObjectMapper();
+            ctx.json(queryResult.getRows().stream()
+                    .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                    .toList());
+        });
 
-    String waitingOrders = Files.readString(Path.of("src/main/resources/public/sql/waitingOrders.sql"), StandardCharsets.UTF_8);
+        String waitingOrders = Files.readString(Path.of("src/main/resources/public/sql/waitingOrders.sql"), StandardCharsets.UTF_8);
 
-    app.get("/api/orders-waiting", ctx -> {
-      try {
-        CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
-        QueryResult queryResult = future.get();
+        app.get("/api/orders-waiting", ctx -> {
+            try {
+                CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
+                QueryResult queryResult = future.get();
 
-        // Convert result to JSON
-        ObjectMapper mapper = new ObjectMapper();
-        ctx.json(queryResult.getRows().stream()
-                .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-                .toList());
-      } catch (Exception e) {
-        // Log the error and return a 500 status
-        e.printStackTrace();
-        ctx.status(500).result("Server Error: " + e.getMessage());
-      }
-    });
+                // Convert result to JSON
+                ObjectMapper mapper = new ObjectMapper();
+                ctx.json(queryResult.getRows().stream()
+                        .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                        .toList());
+            } catch (Exception e) {
+                // Log the error and return a 500 status
+                e.printStackTrace();
+                ctx.status(500).result("Server Error: " + e.getMessage());
+            }
+        });
 
         app.get("/api/vendeur/{id}", ctx -> {
             String vendeurId = ctx.pathParam("id");
@@ -126,76 +126,76 @@ public class Main {
         });
 
         app.post("/api/updateVendeur/{id}", ctx -> {
-                    String vendeurId = ctx.pathParam("id");
-                    ObjectMapper mapper = new ObjectMapper();
-                    Map<String, Object> updatedData = mapper.readValue(ctx.body(), Map.class);
+            String vendeurId = ctx.pathParam("id");
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> updatedData = mapper.readValue(ctx.body(), Map.class);
 
-                    String ancienNom = (String) updatedData.get("ancienNom");
-                    String ancienPrenom = (String) updatedData.get("ancienPrenom");
-                    String nouveauNom = (String) updatedData.get("nom");
-                    String nouveauPrenom = (String) updatedData.get("prenom");
+            String ancienNom = (String) updatedData.get("ancienNom");
+            String ancienPrenom = (String) updatedData.get("ancienPrenom");
+            String nouveauNom = (String) updatedData.get("nom");
+            String nouveauPrenom = (String) updatedData.get("prenom");
 
-                    // Supprimez l'ancienne image si le nom ou prénom change
-                    if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
-                        String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
-                        String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
-                        Files.deleteIfExists(Paths.get(ancienFilePath));
-                    }
+            // Supprimez l'ancienne image si le nom ou prénom change
+            if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
+                String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
+                String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
+                Files.deleteIfExists(Paths.get(ancienFilePath));
+            }
 
-                    String updateQuery = """
+            String updateQuery = """
                     
-                            UPDATE Vendeur
-                                                SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
-                                                   WHERE i
-
-                                        """;
+                    UPDATE Vendeur
+                                        SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
+                                           WHERE i
+                    
+                    """;
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
-                            updateQuery, Arrays.asList(
-                    updatedData.get(
-                            "idMagasin"),
+                    updateQuery, Arrays.asList(
+                            updatedData.get(
+                                    "idMagasin"),
                             nouveauNom,
-                    updatedData.get(
-                            "salaire"),
-                    updatedData.get("estActif"),
-                    Integer.parseInt(
+                            updatedData.get(
+                                    "salaire"),
+                            updatedData.get("estActif"),
+                            Integer.parseInt(
 
-                vendeurId)
-            ));
-            });
+                                    vendeurId)
+                    ));
+        });
 
-            app.post("/api/orders-confirm", ctx -> {
-                        ObjectMapper mapper = new ObjectMapper();
-                        Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
+        app.post("/api/orders-confirm", ctx -> {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
 
-                        int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
-                        String receivedDate = requestData.get("date").toString();
-                        int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
+            int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
+            String receivedDate = requestData.get("date").toString();
+            int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
 
-                        String updateQuery =
-                                """
+            String updateQuery =
+                    """
                             UPDATE MouvementStock
                             SET date =
-                                                
-                                                """;
+                            
+                            """;
 
 
-                CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
-                        receivedDate,
-                        receivedQuantity,
-                        mouvementStockId
-                ));
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
+                    receivedDate,
+                    receivedQuantity,
+                    mouvementStockId
+            ));
 
-                future.thenAccept(queryResult -> {
-                    if (queryResult.getRowsAffected() > 0) {
-                        ctx.status(200).result("Commande mise à jour avec succès");
-                    } else {
-                        ctx.status(404).result("MouvementStock non trouvé");
-                    }
-                }).exceptionally(e -> {
-                    ctx.status(500).result("Erreur interne : " + e.getMessage());
-                    return null;
-                });
+            future.thenAccept(queryResult -> {
+                if (queryResult.getRowsAffected() > 0) {
+                    ctx.status(200).result("Commande mise à jour avec succès");
+                } else {
+                    ctx.status(404).result("MouvementStock non trouvé");
+                }
+            }).exceptionally(e -> {
+                ctx.status(500).result("Erreur interne : " + e.getMessage());
+                return null;
+            });
 
             future.thenAccept(queryResult -> {
                 if (queryResult.getRowsAffected() > 0) {
@@ -245,9 +245,9 @@ public class Main {
             }
         });
 
-      // Initialiser le SupplyController
-      SupplyController supplyController = new SupplyController(pool);
-      supplyController.registerRoutes(app, connection);
+        // Initialiser le SupplyController
+        SupplyController supplyController = new SupplyController(pool);
+        supplyController.registerRoutes(app, connection);
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
@@ -255,5 +255,5 @@ public class Main {
         app.get("/generate-reports", ctx -> ctx.result("Generating reports..."));
 
 
-  }
+    }
 }
