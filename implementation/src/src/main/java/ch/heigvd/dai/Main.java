@@ -1,6 +1,5 @@
 package ch.heigvd.dai;
 
-import ch.heigvd.dai.controllers.SupplyController;
 import io.javalin.Javalin;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -12,16 +11,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Main {
   static final int port = 8080;
   private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) throws ExecutionException, InterruptedException {
-
     Javalin app = Javalin.create(config -> config.staticFiles.add("/public"));
 
     app.start(port);
@@ -44,33 +49,10 @@ public class Main {
 
     Connection connection = pool.connect().get();
 
-    String query = """
-            SELECT\s
-                p.nom AS produit,
-                COALESCE(SUM(CASE\s
-                    WHEN ms.id IN (SELECT idMouvementStock FROM Approvisionnement) THEN ms.quantite
-                    WHEN ms.id IN (SELECT idMouvementStock FROM Vente) THEN -ms.quantite
-                    ELSE 0
-                END), 0) AS quantite_totale
-            FROM\s
-                Produit p
-            LEFT JOIN\s
-                Article a ON p.id = a.idProduit
-            LEFT JOIN\s
-                MouvementStock ms ON a.idProduit = ms.idProduit\s
-                    AND a.volume = ms.volume\s
-                    AND a.recipient = ms.recipient
-            GROUP BY\s
-                p.nom
-            ORDER BY\s
-                p.nom;
-            """;
+    String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
 
-
-
-
-    app.get("/api/articles", ctx -> {
-      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(query);
+    app.get("/api/articles-lowQT", ctx -> {
+      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
       QueryResult queryResult = future.get();
 
       // Convert result to JSON
@@ -78,6 +60,25 @@ public class Main {
       ctx.json(queryResult.getRows().stream()
               .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
               .toList());
+    });
+
+    String waitingOrders = Files.readString(Path.of("src/main/resources/public/sql/waitingOrders.sql"), StandardCharsets.UTF_8);
+
+    app.get("/api/orders-waiting", ctx -> {
+      try {
+        CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
+        QueryResult queryResult = future.get();
+
+        // Convert result to JSON
+        ObjectMapper mapper = new ObjectMapper();
+        ctx.json(queryResult.getRows().stream()
+                .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                .toList());
+      } catch (Exception e) {
+        // Log the error and return a 500 status
+        e.printStackTrace();
+        ctx.status(500).result("Server Error: " + e.getMessage());
+      }
     });
 
 
@@ -89,7 +90,6 @@ public class Main {
     app.get("/", ctx -> ctx.redirect("/index.html"));
     app.get("/mainMenu", ctx -> ctx.redirect("/mainMenu.html"));
     app.get("/manage-suppliers", ctx -> ctx.redirect("/supply.html"));
-
     app.get("/generate-reports", ctx -> ctx.result("Generating reports..."));
 
   }
