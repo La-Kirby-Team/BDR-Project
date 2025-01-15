@@ -9,6 +9,7 @@ public class SupplyRequest {
     public List<String> provider;
     public List<String> EndOfSales;
     public List<String> Peremption;
+    public List<String> fournisseur;
     public List<Integer> quantity;
     public List<Double> prix;
     public List<Double> tauxAlcool;
@@ -23,6 +24,7 @@ public class SupplyRequest {
                 ", provider=" + provider +
                 ", EndOfSales=" + EndOfSales +
                 ", Peremption=" + Peremption +
+                ", fournisseur=" + fournisseur +
                 ", quantity=" + quantity +
                 ", prix=" + prix +
                 ", dateJour='" + dateJour + '\'' +
