@@ -95,29 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const newFieldRow = document.createElement('div');
         newFieldRow.innerHTML = `
             <fieldset>
-            <!--
-                <legend>Produit N°${fieldCount}</legend>
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="name-${fieldCount}" class="form-label">Produit</label>
-                        <input type="text" id="name-${fieldCount}" name="product[]" class="form-control" placeholder="Produit" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="volume-${fieldCount}" class="form-label">Volume (cl)</label>
-                        <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" placeholder="33" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="recipient-${fieldCount}" class="form-label">Récipient</label>
-                        <select id="recipient-${fieldCount}" name="recipient[]" class="form-control" required>
-                            <option value="Can">Cannette</option>
-                            <option value="Bottle">Bouteille</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="provider-${fieldCount}" class="form-label">Fournisseur</label>
-                        <input type="text" id="provider-${fieldCount}" name="provider[]" class="form-control" placeholder="Fournisseur" required>
-                    </div>
-                </div>-->
                 <div class="bordure">
                  <legend>Produit N°${fieldCount}</legend>
                 <div class="row mb-3">
