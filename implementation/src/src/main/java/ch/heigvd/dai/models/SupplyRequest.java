@@ -13,7 +13,18 @@ public class SupplyRequest {
     public List<Double> tauxAlcool;
     public List<Integer> quantity;
     public List<Double> prix;
-
+/*
+    public String dateJour;
+    public List<String> product;
+    public List<String> volume;
+    public List<String> recipient;
+    public List<String> provider;
+    public List<String> EndOfSales;
+    public List<String> Peremption;
+    public List<String> tauxAlcool;
+    public List<String> quantity;
+    public List<Double> prix;
+*/
 
     @Override
     public String toString() {

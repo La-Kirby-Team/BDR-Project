@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         console.log("🚀 Formulaire soumis !");
 
+        // Valider les champs
         const inputs = document.querySelectorAll('#dynamic-form input, #dynamic-form select');
         let isValid = true;
 
@@ -36,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log("✅ Validation passée !");
 
-        try {
+        // Tester l'accessibilité de l'API
+       /* try {
             const testAPI = await fetch('/api/add-supply', { method: 'POST' });
             if (!testAPI.ok) {
                 throw new Error("API inaccessible");
@@ -46,32 +48,45 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("🚨 problème dans l'API !", error);
             alert("🚨 problème dans l'API !");
             return;
-        }
+        }*/
 
+        // Collecter les données du formulaire et les transformer en JSON
         const formData = new FormData(form);
         let data = {};
 
-
         formData.forEach((value, key) => {
-            if (!data[key]) {
-                data[key] = [];
+            // Supprimer les crochets [] des clés
+            const cleanedKey = key.replace('[]', '');
+
+            // Si la clé n'existe pas, créez un tableau
+            if (!data[cleanedKey]) {
+                data[cleanedKey] = [];
             }
-            data[key].push(value);
+
+            // Convertir les valeurs en fonction du type attendu (entier ou flottant)
+            if (!isNaN(value)) {
+                // Si c'est un entier (par exemple "quantity[]"), utilisez parseInt
+                if (cleanedKey === 'quantity' || cleanedKey === 'volume') {
+                    value = parseInt(value); // Conversion en entier
+                } else {
+                    value = parseFloat(value); // Conversion en flottant pour d'autres champs comme prix et taux d'alcool
+                }
+            }
+
+            // Ajoutez la valeur convertie au tableau correspondant
+            data[cleanedKey].push(value);
         });
 
-
+        // Afficher les données envoyées
         console.log("📡 Données envoyées :", JSON.stringify(data, null, 2));
 
+        // Envoyer les données via une seule requête POST
         try {
-            console.log("📡 Envoi des données à l'API...");
-
             const response = await fetch('/api/add-supply', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-
-            console.log("✅ Réponse reçue :", response);
 
             if (!response.ok) {
                 const errorResponse = await response.json();
@@ -79,21 +94,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const result = await response.json();
-            alert(result.message);
+            alert(result.message);  // Affiche le message du serveur
         } catch (error) {
             console.error("❌ Erreur lors de l'envoi :", error);
-            alert("Une erreur est survenue lors de l'envoi des données. Vérifiez la console.");
+            alert("Une erreur est survenue lors de l'envoi des données.");
         }
-        const response = await fetch('/api/add-supply', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-
-        console.log("✅ Réponse du serveur :", await response.json());
-
     });
 });
+
 
 //Ajout de nouveaux champs d'articles
 document.addEventListener('DOMContentLoaded', function() {

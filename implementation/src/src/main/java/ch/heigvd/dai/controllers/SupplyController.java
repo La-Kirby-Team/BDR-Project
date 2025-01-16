@@ -29,10 +29,12 @@ public class SupplyController {
 
           ObjectMapper objectMapper = new ObjectMapper();
 
+
           SupplyRequest request = objectMapper.readValue(ctx.body(), SupplyRequest.class);
 
 
           logger.info(request.toString());
+
 
           logger.info("Données reçues : " + request);
 
@@ -77,18 +79,25 @@ public class SupplyController {
                         VALUES (?, ?);
                         """;
 
-              String dateJour = request.dateJour;
-              for (int i = 1; i < request.product.size(); i++) {
+              for (int i = 0; i < request.product.size(); i++) {
                   String productName = request.product.get(i);
                   int productVolume = request.volume.get(i);
+                 // String productVolume = request.volume.get(i);
                   String productRecipient = request.recipient.get(i);
                   String productProvider = request.provider.get(i);
                   String productEndOfSales = request.EndOfSales.get(i);
                   String productPeremption = request.Peremption.get(i);
                   double tauxAlcool = request.tauxAlcool.get(i);
+                  //String tauxAlcool = request.tauxAlcool.get(i);
                   int productQuantity = request.quantity.get(i);
-                  double productPrice = request.prix.get(i);
+                  //String productQuantity = request.quantity.get(i);
 
+                  System.out.println("productName: " + productName + ", volume: "+productVolume + ", recipient: "+ productRecipient + ", provider: "+ productProvider
+                                  + ", EndOdSale: " + productEndOfSales + ", Peremption: " + productPeremption +", tauxAlcool "+ tauxAlcool+ ", Quantity: " + productQuantity
+                          );
+                  /*Le premier problème est là, c'est un problème de SQL*/
+
+                  double productPrice = request.prix.get(i);
                   // Vérification si l'article avec un prix différent existe déjà
                   CompletableFuture<QueryResult> checkArticleFuture = connection.sendPreparedStatement(
                           checkArticleQuery, Arrays.asList(
@@ -96,7 +105,8 @@ public class SupplyController {
                           )
                   );
 
-                  QueryResult checkArticleResult = checkArticleFuture.get();
+                 // QueryResult checkArticleResult = checkArticleFuture.get();
+                  ctx.status(200).json(Map.of("message", "Succès"));/*
 
                   if (!checkArticleResult.getRows().isEmpty()) {
                       ctx.status(400).json(Map.of("error", "Un article avec des informations identiques existe déjà, mais avec un prix différent."));
@@ -157,6 +167,8 @@ public class SupplyController {
               ctx.json(Map.of("message", "Approvisionnement enregistré avec succès !"));
               ctx.status(200).json(Map.of("message", "OK, enregistrement effectué"));
 
+              */
+              }
           } catch (Exception e) {
               logger.error("Erreur d'insertion :", e);
               ctx.status(500).json(Map.of("error", "Erreur lors de l'enregistrement"));
@@ -164,6 +176,11 @@ public class SupplyController {
 
 
       });
+/*
+        app.post("/api/add-supply", ctx -> {
+            logger.info("Requête reçue avec le corps suivant : {}", ctx.body());
+            ctx.status(200).json(Map.of("message", "Succès"));
+        });*/
 
     }
 }
