@@ -11,7 +11,7 @@ FROM
         INNER JOIN
     Article art ON ms.idProduit = art.idProduit
         INNER JOIN
-    Produit p ON art.idProduit = p.id
+    Produit p ON art.idProduit = p.idProduit
 WHERE
     ms.date IS NULL
 ORDER BY

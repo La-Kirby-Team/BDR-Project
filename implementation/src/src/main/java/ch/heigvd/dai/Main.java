@@ -238,20 +238,16 @@ public class Main {
         });
 
 
-    String stockViewQuery = Files.readString(Path.of("src/main/resources/public/sql/stockView.sql"), StandardCharsets.UTF_8);
+      String stockQuery = Files.readString(Path.of("src/main/resources/public/sql/stockQuery.sql"), StandardCharsets.UTF_8);
       app.get("/api/stock", ctx -> {
-          try {
-              CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockViewQuery);
-              QueryResult queryResult = future.get();
+          CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockQuery);
+          QueryResult queryResult = future.get();
 
-              // Convert to JSON
-              ctx.json(queryResult.getRows().stream()
-                      .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-                      .toList());
-          } catch (Exception e) {
-              ctx.status(500).result("Erreur SQL: " + e.getMessage());
-              logger.error("Erreur SQL: ", e);
-          }
+          // Convert the result to JSON
+          ObjectMapper mapper = new ObjectMapper();
+          ctx.json(queryResult.getRows().stream()
+                  .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                  .toList());
       });
 
 
