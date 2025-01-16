@@ -153,7 +153,8 @@ public class SupplyController {
                   QueryResult findFournisseurResult = findFIdFournisseur.get();
 
                   if (findFournisseurResult.getRows().isEmpty()) {
-                      ctx.status(500).json(Map.of("message", "Fournisseur inconnu"));
+                      ctx.status(400).json(Map.of("message", "Fournisseur inconnu"));
+                      return;
 
                       //TODO
                       //throw new Exception("Fournisseur inconnu");
