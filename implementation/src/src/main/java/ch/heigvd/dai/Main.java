@@ -1,6 +1,8 @@
 package ch.heigvd.dai;
 
+//
 import ch.heigvd.dai.controllers.SupplyController;
+import ch.heigvd.dai.models.SupplyRequest;
 import io.javalin.Javalin;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -21,6 +23,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -53,8 +56,20 @@ public class Main {
     ConnectionPool<PostgreSQLConnection> pool = PostgreSQLConnectionBuilder.createConnectionPool(url);
 
     Connection connection = pool.connect().get();
+//je sais pas à quoi ça sert
+      app.before(ctx -> {
+          ctx.header("Access-Control-Allow-Origin", "*");
+          ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+          ctx.header("Access-Control-Allow-Headers", "Content-Type");
+      });
 
-    String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
+// Gérer les requêtes OPTIONS pour le prévol CORS
+      app.options("/*", ctx -> {
+          ctx.status(200);
+      });
+// fin du je sais pas à quoi ça sert
+
+      String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
 
     app.get("/api/articles-lowQT", ctx -> {
       CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
@@ -246,8 +261,9 @@ public class Main {
         });
 
       // Initialiser le SupplyController
-      SupplyController supplyController = new SupplyController(pool);
+      SupplyController supplyController = new SupplyController();
       supplyController.registerRoutes(app, connection);
+
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));

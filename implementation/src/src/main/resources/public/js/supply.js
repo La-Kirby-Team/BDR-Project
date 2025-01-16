@@ -37,19 +37,20 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("✅ Validation passée !");
 
         try {
-            const testAPI = await fetch('http://localhost:8080/api/add-supply', { method: 'HEAD' });
+            const testAPI = await fetch('/api/add-supply', { method: 'POST' });
             if (!testAPI.ok) {
                 throw new Error("API inaccessible");
             }
             console.log("✅ API accessible !");
         } catch (error) {
-            console.error("🚨 L'API ne répond pas !", error);
-            alert("🚨 L'API ne répond pas !");
+            console.error("🚨 problème dans l'API !", error);
+            alert("🚨 problème dans l'API !");
             return;
         }
 
         const formData = new FormData(form);
         let data = {};
+
 
         formData.forEach((value, key) => {
             if (!data[key]) {
@@ -58,12 +59,13 @@ document.addEventListener('DOMContentLoaded', function () {
             data[key].push(value);
         });
 
+
         console.log("📡 Données envoyées :", JSON.stringify(data, null, 2));
 
         try {
             console.log("📡 Envoi des données à l'API...");
 
-            const response = await fetch('http://localhost:8080/api/add-supply', {
+            const response = await fetch('/api/add-supply', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -82,9 +84,18 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("❌ Erreur lors de l'envoi :", error);
             alert("Une erreur est survenue lors de l'envoi des données. Vérifiez la console.");
         }
+        const response = await fetch('/api/add-supply', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        console.log("✅ Réponse du serveur :", await response.json());
+
     });
 });
 
+//Ajout de nouveaux champs d'articles
 document.addEventListener('DOMContentLoaded', function() {
     let fieldCount = 1;
 
@@ -161,6 +172,71 @@ document.addEventListener('DOMContentLoaded', function() {
             fieldCount--;
         } else {
             alert("Il doit y avoir au moins un produit.");
+        }
+    });
+});
+
+// Fonction pour obtenir la date du jour au format YYYY-MM-DD
+function getTodayDate() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mois avec 2 chiffres
+    const dd = String(today.getDate()).padStart(2, '0');      // Jour avec 2 chiffres
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+function initializeDateField(dateField, autoCheck) {
+    if (autoCheck.checked) {
+        dateField.value = getTodayDate();
+        dateField.setAttribute('readonly', true); // Lecture seule
+        dateField.removeAttribute('required');   // Non obligatoire
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dateField = document.getElementById('custom-date-1');
+    const autoCheck = document.getElementById('auto-date-1');
+
+    // Initialisation : remplir le champ avec la date du jour et le rendre readonly
+
+    initializeDateField(dateField, autoCheck); // Appel initial
+
+    // Gérer les interactions avec la case à cocher
+    autoCheck.addEventListener('change', function () {
+        if (autoCheck.checked) {
+            // Si la case est cochée, remplir automatiquement et verrouiller
+            dateField.value = getTodayDate();
+            dateField.setAttribute('readonly', true); // Lecture seule
+            dateField.removeAttribute('required');   // Non obligatoire
+        } else {
+            // Si la case est décochée, effacer, rendre modifiable et obligatoire
+            dateField.value = ''; // Effacer le champ
+            dateField.removeAttribute('readonly');   // Permettre l'édition
+            dateField.setAttribute('required', true); // Champ obligatoire
+        }
+    });
+
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const dateField = document.getElementById('dateJour');
+    const autoCheck = document.getElementById('auto-dateJour');
+
+    // Initialisation : remplir le champ avec la date du jour et le rendre readonly
+
+    initializeDateField(dateField, autoCheck); // Appel initial
+
+    // Gérer les interactions avec la case à cocher
+    autoCheck.addEventListener('change', function () {
+        if (autoCheck.checked) {
+            // Si la case est cochée, remplir automatiquement et verrouiller
+            dateField.value = getTodayDate();
+            dateField.setAttribute('readonly', true); // Lecture seule
+            dateField.removeAttribute('required');   // Non obligatoire
+        } else {
+            // Si la case est décochée, effacer, rendre modifiable et obligatoire
+            dateField.value = ''; // Effacer le champ
+            dateField.removeAttribute('readonly');   // Permettre l'édition
+            dateField.setAttribute('required', true); // Champ obligatoire
         }
     });
 });

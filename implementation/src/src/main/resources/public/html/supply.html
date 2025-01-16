@@ -28,33 +28,25 @@
 
     </div>
 
-    <!--Date Commande -->
-    <div class="commandeDate row align-items-center justify-content-between mb-3">
-        <div class="col-md-3">
-            <label for="custom-date-1" class="form-label text-left mb-0"><b>Date de la Commande</b></label>
-            <div class="d-flex align-items-center">
-                <input type="date" id="custom-date-1" name="customDate[]" class="form-control" required>
-                <div class="checkbox form-check ml-2">
-                    <input type="checkbox" id="auto-date-1" class="form-check-input" checked>
-                    <label for="auto-date-1" class="form-check-label">Date du jour</label>
-                </div>
-            </div>
-        </div>
-        <nav class="col-md-3 text-right">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Magasins
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Magasin 1</a>
-                    <a class="dropdown-item" href="#">Magasin 2</a>
-                    <a class="dropdown-item" href="#">Magasin 3</a>
-                </div>
-            </div>
-        </nav>
-    </div>
+
     <!-- Formulaire/Produit -->
         <form id="dynamic-form" action="/submit-form" method="post">
+
+            <!--Date Commande -->
+            <div class="commandeDate row align-items-center justify-content-between mb-3">
+                <div class="col-md-3">
+                    <label for="custom-date-1" class="form-label text-left mb-0"><b>Date de la Commande</b></label>
+                    <div class="d-flex align-items-center">
+                        <input type="date" id="custom-date-1" name="customDate[]" class="form-control" required>
+                        <div class="checkbox form-check ml-2">
+                            <input type="checkbox" id="auto-date-1" class="form-check-input" checked>
+                            <label for="auto-date-1" class="form-check-label">Date du jour</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Form -->
             <fieldset>
             <!-- Champs dynamiques -->
             <div id="dynamic-fields">
