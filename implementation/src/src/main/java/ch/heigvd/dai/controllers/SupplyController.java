@@ -40,11 +40,15 @@ public class SupplyController {
 
           try {
               // Vérification si l'article existe avec le même prix
+              /*
+
+               */
               String checkArticleQuery = """
                         SELECT idProduit FROM Article
-                        WHERE idProduit = (SELECT idProduit FROM Produit WHERE nom = ?)
-                            AND volume = ?
-                            AND recipient = ?::typeRecipient
+                        WHERE idProduit = (SELECT idProduit FROM Produit WHERE nom = ? 
+                                                                           AND recipient = ?::typeRecipient
+                                                                            AND volume = ?
+                                                                           AND tauxAlcool = ?)
                             AND datePeremption = ?
                             AND dateFinDeVente = ?
                             AND prix != ?;
@@ -70,7 +74,7 @@ public class SupplyController {
                         VALUES (?, ?);
                         """;
               String findFournisseurQuery = """
-                        SELECT idFournisseur FROM Fournisseur
+                        SELECT id FROM Fournisseur
                         WHERE nom = ?;
                         """;
 
@@ -78,35 +82,26 @@ public class SupplyController {
                         INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur)
                         VALUES (?, ?);
                         """;
-
+                String customDate = request.customDate.getFirst();
               for (int i = 0; i < request.product.size(); i++) {
                   String productName = request.product.get(i);
                   int productVolume = request.volume.get(i);
-                 // String productVolume = request.volume.get(i);
                   String productRecipient = request.recipient.get(i);
                   String productProvider = request.provider.get(i);
                   String productEndOfSales = request.EndOfSales.get(i);
                   String productPeremption = request.Peremption.get(i);
                   double tauxAlcool = request.tauxAlcool.get(i);
-                  //String tauxAlcool = request.tauxAlcool.get(i);
                   int productQuantity = request.quantity.get(i);
-                  //String productQuantity = request.quantity.get(i);
-
-                  System.out.println("productName: " + productName + ", volume: "+productVolume + ", recipient: "+ productRecipient + ", provider: "+ productProvider
-                                  + ", EndOdSale: " + productEndOfSales + ", Peremption: " + productPeremption +", tauxAlcool "+ tauxAlcool+ ", Quantity: " + productQuantity
-                          );
-                  /*Le premier problème est là, c'est un problème de SQL*/
-
                   double productPrice = request.prix.get(i);
+
                   // Vérification si l'article avec un prix différent existe déjà
                   CompletableFuture<QueryResult> checkArticleFuture = connection.sendPreparedStatement(
                           checkArticleQuery, Arrays.asList(
-                                  productName, productVolume, productRecipient, productPeremption, productEndOfSales, productPrice
+                                  productName, productRecipient, productVolume, tauxAlcool, productPeremption, productEndOfSales, productPrice
                           )
                   );
 
-                 // QueryResult checkArticleResult = checkArticleFuture.get();
-                  ctx.status(200).json(Map.of("message", "Succès"));/*
+                  QueryResult checkArticleResult = checkArticleFuture.get();
 
                   if (!checkArticleResult.getRows().isEmpty()) {
                       ctx.status(400).json(Map.of("error", "Un article avec des informations identiques existe déjà, mais avec un prix différent."));
@@ -119,6 +114,7 @@ public class SupplyController {
                           Arrays.asList(1, productName, tauxAlcool));
 
                   QueryResult productResult = productFuture.get();
+
                   int idProduit;
                   if (productResult.getRows().getFirst().getFirst() != null) {
                       idProduit = (int) productResult.getRows().getFirst().getFirst();
@@ -130,11 +126,14 @@ public class SupplyController {
                   connection.sendPreparedStatement(insertArticleQuery,
                           Arrays.asList(idProduit, productVolume, productRecipient, productPrice, productPeremption, productEndOfSales));
 
+
                   // Insérer le mouvement de stock
                   CompletableFuture<QueryResult> mouvementStockFuture = connection.sendPreparedStatement(
-                          insertMouvementStockQuery, Arrays.asList(productProvider, idProduit, productVolume, productRecipient, productQuantity));
+                          insertMouvementStockQuery, Arrays.asList(1, idProduit, productVolume, productRecipient, productQuantity));
 
                   QueryResult mouvementStockResult = mouvementStockFuture.get();
+
+
                   int idMouvementStock;
                   if (mouvementStockResult.getRows().getFirst().getFirst() != null) {
                       idMouvementStock = (int) mouvementStockResult.getRows().getFirst().getFirst();
@@ -144,22 +143,28 @@ public class SupplyController {
 
                   // Insérer l'approvisionnement
                   connection.sendPreparedStatement(insertApprovisionnementQuery,
-                          Arrays.asList(idMouvementStock, request.dateJour));
+                          Arrays.asList(idMouvementStock, customDate));
 
 
                   CompletableFuture<QueryResult> findFIdFournisseur = connection.sendPreparedStatement(
                           findFournisseurQuery, Collections.singletonList(productProvider));
 
+
                   QueryResult findFournisseurResult = findFIdFournisseur.get();
 
-                  if (findFournisseurResult.getRows().getFirst() == null) {
-                      connection.sendPreparedStatement(insertApprovisionnementFournisseurQuery,
-                              Arrays.asList(idMouvementStock, null));
+                  if (findFournisseurResult.getRows().isEmpty()) {
+                      ctx.status(500).json(Map.of("message", "Fournisseur inconnu"));
+
+                      //TODO
+                      //throw new Exception("Fournisseur inconnu");
+
+                     // connection.sendPreparedStatement(insertApprovisionnementFournisseurQuery,
+                            //  Arrays.asList(idMouvementStock, null));
 
                   } else {
                       // Associer à un fournisseur
                       connection.sendPreparedStatement(insertApprovisionnementFournisseurQuery,
-                              Arrays.asList(idMouvementStock, findFournisseurResult.getRows().getFirst()));
+                              Arrays.asList(idMouvementStock, findFournisseurResult.getRows().getFirst().getFirst()));
                   }
 
               }
@@ -167,8 +172,8 @@ public class SupplyController {
               ctx.json(Map.of("message", "Approvisionnement enregistré avec succès !"));
               ctx.status(200).json(Map.of("message", "OK, enregistrement effectué"));
 
-              */
-              }
+
+
           } catch (Exception e) {
               logger.error("Erreur d'insertion :", e);
               ctx.status(500).json(Map.of("error", "Erreur lors de l'enregistrement"));
@@ -176,11 +181,6 @@ public class SupplyController {
 
 
       });
-/*
-        app.post("/api/add-supply", ctx -> {
-            logger.info("Requête reçue avec le corps suivant : {}", ctx.body());
-            ctx.status(200).json(Map.of("message", "Succès"));
-        });*/
 
     }
 }

@@ -1,142 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="fr">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Winventory - Gestion de Stock de Vin - Approvisionnement</title>-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
-<!--    <link rel="stylesheet" href="../css/supply.css">-->
-<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
-<!--    <script src="../js/supply.js"></script>-->
-
-
-<!--</head>-->
-<!--<body>-->
-<!--&lt;!&ndash; Placeholder for Navbar &ndash;&gt;-->
-<!--<div id="navbar-placeholder"></div>-->
-
-<!--&lt;!&ndash; Placeholder for Sidebar &ndash;&gt;-->
-<!--<div id="sidebar-placeholder"></div>-->
-
-<!--&lt;!&ndash; Main Content &ndash;&gt;-->
-<!--<div class="container mt-5 ">-->
-<!--    <div class="row align-items-center justify-content-center">-->
-<!--        <div class="col-md-9 text-center ">-->
-<!--             <h1 class="text-primary mb-4">Approvisionnement</h1>-->
-<!--        </div>-->
-
-<!--    </div>-->
-
-
-<!--    &lt;!&ndash; Formulaire/Produit &ndash;&gt;-->
-<!--        <form id="dynamic-form" action="/submit-form" method="post">-->
-
-<!--            &lt;!&ndash;Date Commande &ndash;&gt;-->
-<!--            <div class="commandeDate row align-items-center justify-content-between mb-3">-->
-<!--                <div class="col-md-3">-->
-<!--                    <label for="custom-date-1" class="form-label text-left mb-0"><b>Date de la Commande</b></label>-->
-<!--                    <div class="d-flex align-items-center">-->
-<!--                        <input type="date" id="custom-date-1" name="customDate[]" class="form-control" required>-->
-<!--                        <div class="checkbox form-check ml-2">-->
-<!--                            <input type="checkbox" id="auto-date-1" class="form-check-input" checked>-->
-<!--                            <label for="auto-date-1" class="form-check-label">Date du jour</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash;Form &ndash;&gt;-->
-<!--            <fieldset>-->
-<!--            &lt;!&ndash; Champs dynamiques &ndash;&gt;-->
-<!--            <div id="dynamic-fields">-->
-
-<!--             <div class="bordure">-->
-<!--                 <legend>Produit N°1</legend>-->
-<!--                <div class="row mb-3">-->
-<!--                    <div class="col-md-3">-->
-<!--                        <label for="name-1" class="form-label text-left">Produit</label>-->
-<!--                        <input type="text" id="name-1" name="product[]" class="form-control" placeholder="Produit" required>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-3">-->
-<!--                        <label for="volume-1" class="form-label text-left">Volume (cl)</label>-->
-<!--                        <input type="number" id="volume-1" name="volume[]" class="form-control" placeholder="33" required>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-3">-->
-<!--                        <label for="recipient-1" class="form-label text-left">Récipient</label>-->
-<!--                        <select id="recipient-1" name="recipient[]" class="form-control" required>-->
-<!--                            <option value="Can">Canette</option>-->
-<!--                            <option value="Bottle">Bouteille</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-3">-->
-<!--                        <label for="provider-1" class="form-label text-left">Fournisseur</label>-->
-<!--                        <input type="text" id="provider-1" name="provider[]" class="form-control" placeholder="Fournisseur" required>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-
-<!--                <div class="row mb-3 justify-content">-->
-<!--                    <div class="col-md-4">-->
-<!--                        <label for="EndOfSales-1" class="form-label text-left">Date Fin de Vente</label>-->
-<!--                        <input type="date" id="EndOfSales-1" name="EndOfSales[]" class="form-control" placeholder="Date de fin de série" required>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                        <label for="Peremption-1" class="form-label text-left">Date Péremption</label>-->
-<!--                        <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" placeholder="Date Péremption" required>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-3">-->
-<!--                        <label for="alcohol-1" class="form-label text-left">Taux d'alcool (%)</label>-->
-<!--                        <input type="number" id="alcohol-1" name="tauxAlcool[]" class="form-control" placeholder="5.0" step="0.1" required>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="highlight row mb-3 justify-content-center">-->
-<!--                     <div class="col-md-4 ">-->
-<!--                         <label for="quantity-1" class="form-label text-left>">Quantité</label>-->
-<!--                         <input type="number" id="quantity-1" name="quantity[]" class="form-control" placeholder="0" required>-->
-<!--                     </div>-->
-<!--                    <div class="col-md-4 ">-->
-<!--                        <label for="prix-1" class="form-label text-left>">Prix</label>-->
-<!--                        <input type="number" id="prix-1" name="prix[]" class="form-control" placeholder="0.3" required>-->
-<!--                    </div>-->
-<!--                 </div>-->
-
-
-<!--             </div>-->
-<!--            </div>-->
-<!--            </fieldset>-->
-
-
-<!--            <div class="row justify-content-end">-->
-<!--                &lt;!&ndash; Bouton Retirer &ndash;&gt;-->
-<!--                <div class="bouton text-right">-->
-<!--                    <button type="button" id="remove-field" class="btn btn-danger mt-4">Retirer un produit</button>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; Bouton Ajouter &ndash;&gt;-->
-<!--                <div class="bouton text-right">-->
-<!--                    <button type="button" id="add-field" class="btn btn-primary mt-4">Ajouter un produit</button>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Bouton Soumettre &ndash;&gt;-->
-<!--            <div class="text-right bouton">-->
-<!--                <button type="submit" class="btn btn-success btn-lg">Soumettre</button>-->
-<!--            </div>-->
-<!--        </form>-->
-
-
-
-
-<!--</div>-->
-
-<!--</body>-->
-<!--</html>-->
-
-
-
-<!-- Version debbug -->
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -148,6 +9,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/supply.js"></script>
+
+
 </head>
 <body>
 <!-- Placeholder for Navbar -->
@@ -160,106 +23,243 @@
 <div class="container mt-5 ">
     <div class="row align-items-center justify-content-center">
         <div class="col-md-9 text-center ">
-            <h1 class="text-primary mb-4">Approvisionnement</h1>
+             <h1 class="text-primary mb-4">Approvisionnement</h1>
         </div>
+
     </div>
 
-    <!--Date Commande -->
-    <div class="commandeDate row align-items-center justify-content-between mb-3">
-        <div class="col-md-3">
-            <label for="custom-date-1" class="form-label text-left mb-0"><b>Date de la Commande</b></label>
-            <div class="d-flex align-items-center">
-                <input type="date" id="custom-date-1" name="customDate[]" class="form-control" value="2025-01-16" required>
-                <div class="checkbox form-check ml-2">
-                    <input type="checkbox" id="auto-date-1" class="form-check-input" checked>
-                    <label for="auto-date-1" class="form-check-label">Date du jour</label>
-                </div>
-            </div>
-        </div>
-        <nav class="col-md-3 text-right">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Magasins
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Magasin Principal</a>
-                    <a class="dropdown-item" href="#">Magasin Secondaire</a>
-                    <a class="dropdown-item" href="#">Dépôt</a>
-                </div>
-            </div>
-        </nav>
-    </div>
 
     <!-- Formulaire/Produit -->
-    <form id="dynamic-form" action="/submit-form" method="post">
-        <fieldset>
-            <div id="dynamic-fields">
-                <div class="bordure">
-                    <legend>Produit N°1</legend>
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="name-1" class="form-label text-left">Produit</label>
-                            <input type="text" id="name-1" name="product[]" class="form-control" value="Vin Rouge" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="volume-1" class="form-label text-left">Volume (cl)</label>
-                            <input type="number" id="volume-1" name="volume[]" class="form-control" value="75" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="recipient-1" class="form-label text-left">Récipient</label>
-                            <select id="recipient-1" name="recipient[]" class="form-control" required>
-                                <option value="Bottle" selected>Bouteille</option>
-                                <option value="Can">Canette</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="provider-1" class="form-label text-left">Fournisseur</label>
-                            <input type="text" id="provider-1" name="provider[]" class="form-control" value="Domaine du Château" required>
-                        </div>
-                    </div>
+        <form id="dynamic-form" action="/submit-form" method="post">
 
-                    <div class="row mb-3 justify-content">
-                        <div class="col-md-4">
-                            <label for="EndOfSales-1" class="form-label text-left">Date Fin de Vente</label>
-                            <input type="date" id="EndOfSales-1" name="EndOfSales[]" class="form-control" value="2025-12-31" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="Peremption-1" class="form-label text-left">Date Péremption</label>
-                            <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" value="2027-12-31" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="alcohol-1" class="form-label text-left">Taux d'alcool (%)</label>
-                            <input type="number" id="alcohol-1" name="tauxAlcool[]" class="form-control" value="12.5" step="0.1" required>
-                        </div>
-                    </div>
-
-                    <div class="highlight row mb-3 justify-content-center">
-                        <div class="col-md-4 ">
-                            <label for="quantity-1" class="form-label text-left">Quantité</label>
-                            <input type="number" id="quantity-1" name="quantity[]" class="form-control" value="50" required>
-                        </div>
-                        <div class="col-md-4 ">
-                            <label for="prix-1" class="form-label text-left">Prix</label>
-                            <input type="number" id="prix-1" name="prix[]" class="form-control" value="15.50" required>
+            <!--Date Commande -->
+            <div class="commandeDate row align-items-center justify-content-between mb-3">
+                <div class="col-md-3">
+                    <label for="custom-date-1" class="form-label text-left mb-0"><b>Date de la Commande</b></label>
+                    <div class="d-flex align-items-center">
+                        <input type="date" id="custom-date-1" name="customDate[]" class="form-control" required>
+                        <div class="checkbox form-check ml-2">
+                            <input type="checkbox" id="auto-date-1" class="form-check-input" checked>
+                            <label for="auto-date-1" class="form-check-label">Date du jour</label>
                         </div>
                     </div>
                 </div>
             </div>
-        </fieldset>
 
-        <div class="row justify-content-end">
-            <div class="bouton text-right">
-                <button type="button" id="remove-field" class="btn btn-danger mt-4">Retirer un produit</button>
-            </div>
-            <div class="bouton text-right">
-                <button type="button" id="add-field" class="btn btn-primary mt-4">Ajouter un produit</button>
-            </div>
-        </div>
+            <!--Form -->
+            <fieldset>
+            <!-- Champs dynamiques -->
+            <div id="dynamic-fields">
 
-        <div class="text-right bouton">
-            <button type="submit" class="btn btn-success btn-lg">Soumettre</button>
-        </div>
-    </form>
+             <div class="bordure">
+                 <legend>Produit N°1</legend>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="name-1" class="form-label text-left">Produit</label>
+                        <input type="text" id="name-1" name="product[]" class="form-control" placeholder="Produit" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="volume-1" class="form-label text-left">Volume (cl)</label>
+                        <input type="number" id="volume-1" name="volume[]" class="form-control" placeholder="33" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="recipient-1" class="form-label text-left">Récipient</label>
+                        <select id="recipient-1" name="recipient[]" class="form-control" required>
+                            <option value="canette">Canette</option>
+                            <option value="bouteille">Bouteille</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="provider-1" class="form-label text-left">Fournisseur</label>
+                        <input type="text" id="provider-1" name="provider[]" class="form-control" placeholder="Fournisseur" required>
+                    </div>
+                </div>
+
+
+                <div class="row mb-3 justify-content">
+                    <div class="col-md-4">
+                        <label for="EndOfSales-1" class="form-label text-left">Date Fin de Vente</label>
+                        <input type="date" id="EndOfSales-1" name="EndOfSales[]" class="form-control" placeholder="Date de fin de série" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="Peremption-1" class="form-label text-left">Date Péremption</label>
+                        <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" placeholder="Date Péremption" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="alcohol-1" class="form-label text-left">Taux d'alcool (%)</label>
+                        <input type="number" id="alcohol-1" name="tauxAlcool[]" class="form-control" placeholder="5.0" step="0.1" required>
+                    </div>
+                </div>
+
+                <div class="highlight row mb-3 justify-content-center">
+                     <div class="col-md-4 ">
+                         <label for="quantity-1" class="form-label text-left>">Quantité</label>
+                         <input type="number" id="quantity-1" name="quantity[]" class="form-control" placeholder="0" required>
+                     </div>
+                    <div class="col-md-4 ">
+                        <label for="prix-1" class="form-label text-left>">Prix</label>
+                        <input type="number" id="prix-1" name="prix[]" class="form-control" placeholder="0.3" required>
+                    </div>
+                 </div>
+
+
+             </div>
+            </div>
+            </fieldset>
+
+
+            <div class="row justify-content-end">
+                <!-- Bouton Retirer -->
+                <div class="bouton text-right">
+                    <button type="button" id="remove-field" class="btn btn-danger mt-4">Retirer un produit</button>
+                </div>
+                <!-- Bouton Ajouter -->
+                <div class="bouton text-right">
+                    <button type="button" id="add-field" class="btn btn-primary mt-4">Ajouter un produit</button>
+                </div>
+            </div>
+
+            <!-- Bouton Soumettre -->
+            <div class="text-right bouton">
+                <button type="submit" class="btn btn-success btn-lg">Soumettre</button>
+            </div>
+        </form>
+
+
+
+
 </div>
+
 </body>
 </html>
+
+
+
+<!-- Version debbug -->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="fr">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Winventory - Gestion de Stock de Vin - Approvisionnement</title>-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="../css/supply.css">-->
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--    <script src="../js/supply.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash; Placeholder for Navbar &ndash;&gt;-->
+<!--<div id="navbar-placeholder"></div>-->
+
+<!--&lt;!&ndash; Placeholder for Sidebar &ndash;&gt;-->
+<!--<div id="sidebar-placeholder"></div>-->
+
+<!--&lt;!&ndash; Main Content &ndash;&gt;-->
+<!--<div class="container mt-5 ">-->
+<!--    <div class="row align-items-center justify-content-center">-->
+<!--        <div class="col-md-9 text-center ">-->
+<!--            <h1 class="text-primary mb-4">Approvisionnement</h1>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash;Date Commande &ndash;&gt;-->
+<!--    <div class="commandeDate row align-items-center justify-content-between mb-3">-->
+<!--        <div class="col-md-3">-->
+<!--            <label for="custom-date-1" class="form-label text-left mb-0"><b>Date de la Commande</b></label>-->
+<!--            <div class="d-flex align-items-center">-->
+<!--                <input type="date" id="custom-date-1" name="customDate[]" class="form-control" value="2025-01-16" required>-->
+<!--                <div class="checkbox form-check ml-2">-->
+<!--                    <input type="checkbox" id="auto-date-1" class="form-check-input" checked>-->
+<!--                    <label for="auto-date-1" class="form-check-label">Date du jour</label>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <nav class="col-md-3 text-right">-->
+<!--            <div class="dropdown">-->
+<!--                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                    Magasins-->
+<!--                </button>-->
+<!--                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                    <a class="dropdown-item" href="#">Magasin Principal</a>-->
+<!--                    <a class="dropdown-item" href="#">Magasin Secondaire</a>-->
+<!--                    <a class="dropdown-item" href="#">Dépôt</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </nav>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Formulaire/Produit &ndash;&gt;-->
+<!--    <form id="dynamic-form" action="/submit-form" method="post">-->
+<!--        <fieldset>-->
+<!--            <div id="dynamic-fields">-->
+<!--                <div class="bordure">-->
+<!--                    <legend>Produit N°1</legend>-->
+<!--                    <div class="row mb-3">-->
+<!--                        <div class="col-md-3">-->
+<!--                            <label for="name-1" class="form-label text-left">Produit</label>-->
+<!--                            <input type="text" id="name-1" name="product[]" class="form-control" value="Vin Rouge" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-3">-->
+<!--                            <label for="volume-1" class="form-label text-left">Volume (cl)</label>-->
+<!--                            <input type="number" id="volume-1" name="volume[]" class="form-control" value="75" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-3">-->
+<!--                            <label for="recipient-1" class="form-label text-left">Récipient</label>-->
+<!--                            <select id="recipient-1" name="recipient[]" class="form-control" required>-->
+<!--                                <option value="bouteille" selected>Bouteille</option>-->
+<!--                                <option value="canette">Canette</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-3">-->
+<!--                            <label for="provider-1" class="form-label text-left">Fournisseur</label>-->
+<!--                            <input type="text" id="provider-1" name="provider[]" class="form-control" value="Domaine du Château" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="row mb-3 justify-content">-->
+<!--                        <div class="col-md-4">-->
+<!--                            <label for="EndOfSales-1" class="form-label text-left">Date Fin de Vente</label>-->
+<!--                            <input type="date" id="EndOfSales-1" name="EndOfSales[]" class="form-control" value="2025-12-31" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4">-->
+<!--                            <label for="Peremption-1" class="form-label text-left">Date Péremption</label>-->
+<!--                            <input type="date" id="Peremption-1" name="Peremption[]" class="form-control" value="2027-12-31" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-3">-->
+<!--                            <label for="alcohol-1" class="form-label text-left">Taux d'alcool (%)</label>-->
+<!--                            <input type="number" id="alcohol-1" name="tauxAlcool[]" class="form-control" value="12.5" step="0.1" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="highlight row mb-3 justify-content-center">-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <label for="quantity-1" class="form-label text-left">Quantité</label>-->
+<!--                            <input type="number" id="quantity-1" name="quantity[]" class="form-control" value="50" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-4 ">-->
+<!--                            <label for="prix-1" class="form-label text-left">Prix</label>-->
+<!--                            <input type="number" id="prix-1" name="prix[]" class="form-control" value="15.50" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </fieldset>-->
+
+<!--        <div class="row justify-content-end">-->
+<!--            <div class="bouton text-right">-->
+<!--                <button type="button" id="remove-field" class="btn btn-danger mt-4">Retirer un produit</button>-->
+<!--            </div>-->
+<!--            <div class="bouton text-right">-->
+<!--                <button type="button" id="add-field" class="btn btn-primary mt-4">Ajouter un produit</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="text-right bouton">-->
+<!--            <button type="submit" class="btn btn-success btn-lg">Soumettre</button>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

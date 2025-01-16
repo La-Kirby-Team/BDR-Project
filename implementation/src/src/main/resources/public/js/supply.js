@@ -37,19 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log("✅ Validation passée !");
 
-        // Tester l'accessibilité de l'API
-       /* try {
-            const testAPI = await fetch('/api/add-supply', { method: 'POST' });
-            if (!testAPI.ok) {
-                throw new Error("API inaccessible");
-            }
-            console.log("✅ API accessible !");
-        } catch (error) {
-            console.error("🚨 problème dans l'API !", error);
-            alert("🚨 problème dans l'API !");
-            return;
-        }*/
-
         // Collecter les données du formulaire et les transformer en JSON
         const formData = new FormData(form);
         let data = {};
@@ -128,8 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-3">
                         <label for="recipient-${fieldCount}" class="form-label text-left">Récipient</label>
                         <select id="recipient-${fieldCount}" name="recipient[]" class="form-control" required>
-                            <option value="Can">Canette</option>
-                            <option value="Bottle">Bouteille</option>
+                            <option value="canette">Canette</option>
+                            <option value="bouteille">Bouteille</option>
                         </select>
                     </div>
                     <div class="col-md-3">
