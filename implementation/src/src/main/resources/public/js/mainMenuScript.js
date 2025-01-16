@@ -97,13 +97,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        id: id,
                         date: dateRecu,
                         quantite: quantiteRecu,
                     }),
                 })
                     .then(response => {
                         if (response.ok) {
-                            alert('Commande mise à jour avec succès');
+                            alert('Commande mise à jour avec succès avec les informations suivantes :\n' +
+                                `Date de réception : ${dateRecu}\nQuantité reçue : ${quantiteRecu}\n` + `id : ${id}`);
+
                             location.reload(); // Refresh the page to show updated data
                         } else {
                             return response.text().then(text => {
@@ -126,13 +129,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const todayCheckbox = document.getElementById('setTodayDate');
+    const todayCheckbox = document.getElementById('receivedDateCheckbox'); // Ensure correct ID
     const customDateContainer = document.getElementById('customDateContainer');
-    const customDateInput = document.getElementById('customDate');
+    const customDateInput = document.getElementById('receivedDateInput'); // Ensure correct ID
 
-    // Set default date to today
+    // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split('T')[0];
+
+    // Set the default date and max date to today
     customDateInput.value = today;
+    customDateInput.setAttribute('max', today); // Prevent selecting future dates
 
     // Toggle visibility of custom date input based on checkbox
     todayCheckbox.addEventListener('change', () => {
@@ -143,7 +149,16 @@ document.addEventListener("DOMContentLoaded", () => {
             customDateContainer.style.display = 'block';
         }
     });
+
+    // Ensure selected date is not in the future
+    customDateInput.addEventListener('input', () => {
+        if (customDateInput.value > today) {
+            alert("Vous ne pouvez pas sélectionner une date future !");
+            customDateInput.value = today; // Reset to today if invalid
+        }
+    });
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     // Select the modal elements
@@ -156,39 +171,5 @@ document.addEventListener("DOMContentLoaded", function () {
             const modalInstance = bootstrap.Modal.getInstance(orderModal);
             modalInstance.hide();
         });
-    });
-
-    // Handle confirmation
-    document.getElementById('confirmOrderButton').addEventListener('click', function () {
-        const mouvementStockId = this.getAttribute('data-id'); // Retrieve the ID from the button
-        const receivedQuantity = document.getElementById('receivedQuantity').value;
-        const receivedDate = document.getElementById('setTodayDate').checked
-            ? new Date().toISOString().split('T')[0] // Default to today
-            : document.getElementById('customDate').value; // Custom date
-
-        fetch(`/api/orders-confirm`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: mouvementStockId,
-                date: receivedDate,
-                quantite: receivedQuantity,
-            }),
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Commande mise à jour avec succès');
-                    location.reload(); // Refresh the page
-                } else {
-                    return response.text().then(text => {
-                        throw new Error(text);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de la mise à jour de la commande :', error);
-            });
     });
 });

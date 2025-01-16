@@ -21,11 +21,10 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Main {
   static final int port = 8080;
@@ -60,8 +59,6 @@ public class Main {
       CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
       QueryResult queryResult = future.get();
 
-      // Convert result to JSON
-      ObjectMapper mapper = new ObjectMapper();
       ctx.json(queryResult.getRows().stream()
               .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
               .toList());
@@ -74,27 +71,25 @@ public class Main {
         CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
         QueryResult queryResult = future.get();
 
-        // Convert result to JSON
-        ObjectMapper mapper = new ObjectMapper();
         ctx.json(queryResult.getRows().stream()
                 .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
                 .toList());
       } catch (Exception e) {
         // Log the error and return a 500 status
-        e.printStackTrace();
+        logger.error("Error during query execution", e);
         ctx.status(500).result("Server Error: " + e.getMessage());
       }
     });
 
-        app.get("/api/vendeur/{id}", ctx -> {
+    app.get("/api/vendeur/{id}", ctx -> {
             String vendeurId = ctx.pathParam("id");
             String infoVendeur = "SELECT id, idMagasin, nom, salaire, estActif FROM Vendeur WHERE id = ?";
 
-            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(infoVendeur, Arrays.asList(Integer.parseInt(vendeurId)));
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(infoVendeur, List.of(Integer.parseInt(vendeurId)));
             QueryResult queryResult = future.get();
 
             if (!queryResult.getRows().isEmpty()) {
-                ArrayRowData row = (ArrayRowData) queryResult.getRows().get(0);
+                ArrayRowData row = (ArrayRowData) queryResult.getRows().getFirst();
                 Map<String, Object> vendeur = Map.of(
                         "id", row.get(0),
                         "idMagasin", row.get(1),
@@ -110,13 +105,11 @@ public class Main {
             }
         });
 
-        app.get("/api/magasins", ctx -> {
+    app.get("/api/magasins", ctx -> {
             String idMagasin = "SELECT id, nom FROM Magasin";
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(idMagasin);
             QueryResult queryResult = future.get();
 
-            // Convert result to JSON
-            ObjectMapper mapper = new ObjectMapper();
             ctx.json(queryResult.getRows().stream()
                     .map(row -> Map.of(
                             "id", row.get(0),
@@ -125,10 +118,10 @@ public class Main {
                     .toList());
         });
 
-        app.post("/api/updateVendeur/{id}", ctx -> {
+    app.post("/api/updateVendeur/{id}", ctx -> {
                     String vendeurId = ctx.pathParam("id");
                     ObjectMapper mapper = new ObjectMapper();
-                    Map<String, Object> updatedData = mapper.readValue(ctx.body(), Map.class);
+                    Map updatedData = mapper.readValue(ctx.body(), Map.class);
 
                     String ancienNom = (String) updatedData.get("ancienNom");
                     String ancienPrenom = (String) updatedData.get("ancienPrenom");
@@ -147,8 +140,7 @@ public class Main {
                             UPDATE Vendeur
                                                 SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
                                                    WHERE i
-
-                                        """;
+""";
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
                             updateQuery, Arrays.asList(
@@ -164,9 +156,9 @@ public class Main {
             ));
             });
 
-            app.post("/api/orders-confirm", ctx -> {
+    app.post("/api/orders-confirm", ctx -> {
                         ObjectMapper mapper = new ObjectMapper();
-                        Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
+                        Map requestData = mapper.readValue(ctx.body(), Map.class);
 
                         int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
                         String receivedDate = requestData.get("date").toString();
@@ -175,9 +167,9 @@ public class Main {
                         String updateQuery =
                                 """
                             UPDATE MouvementStock
-                            SET date =
-                                                
-                                                """;
+                            SET date = ?, quantite = ?
+                            WHERE id = ?
+                            """;
 
 
                 CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
@@ -209,7 +201,7 @@ public class Main {
             });
         });
 
-        app.post("/api/uploadAvatar", ctx -> {
+    app.post("/api/uploadAvatar", ctx -> {
             String vendeurId = ctx.queryParam("id");
             String nom = ctx.queryParam("nom");
             String prenom = ctx.queryParam("prenom");
@@ -245,6 +237,25 @@ public class Main {
             }
         });
 
+
+    String stockViewQuery = Files.readString(Path.of("src/main/resources/public/sql/stockView.sql"), StandardCharsets.UTF_8);
+      app.get("/api/stock", ctx -> {
+          try {
+              CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockViewQuery);
+              QueryResult queryResult = future.get();
+
+              // Convert to JSON
+              ctx.json(queryResult.getRows().stream()
+                      .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                      .toList());
+          } catch (Exception e) {
+              ctx.status(500).result("Erreur SQL: " + e.getMessage());
+              logger.error("Erreur SQL: ", e);
+          }
+      });
+
+
+
       // Initialiser le SupplyController
       SupplyController supplyController = new SupplyController(pool);
       supplyController.registerRoutes(app, connection);
@@ -252,7 +263,7 @@ public class Main {
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
         app.get("/manage-suppliers", ctx -> ctx.redirect("html/supply.html"));
-        app.get("/generate-reports", ctx -> ctx.result("Generating reports..."));
+        app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
 
 
   }

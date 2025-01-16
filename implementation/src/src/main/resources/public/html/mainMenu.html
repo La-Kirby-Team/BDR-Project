@@ -39,7 +39,7 @@
 
 <!-- Modal popup for orders -->
 <div class="modal" id="orderModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered"> <!-- Added class -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="productInfo">Produit Info</h5>
@@ -57,7 +57,7 @@
                     </div>
                     <div id="customDateContainer" style="display: none;">
                         <label for="receivedDateInput" class="form-label">Date personnalisée :</label>
-                        <input type="date" id="receivedDateInput" class="form-control" />
+                        <input type="date" id="receivedDateInput" class="form-control" max="" />
                     </div>
                 </form>
             </div>
@@ -68,6 +68,7 @@
         </div>
     </div>
 </div>
+
 
 
 <footer class="footer">
