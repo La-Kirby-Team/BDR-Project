@@ -6,7 +6,7 @@ SELECT p.nom AS produit, COALESCE(SUM(CASE
 FROM
 Produit p
 LEFT JOIN
-Article a ON p.id = a.idProduit
+Article a ON p.idProduit = a.idProduit
 LEFT JOIN
 MouvementStock ms ON a.idProduit = ms.idProduit
 AND a.volume = ms.volume

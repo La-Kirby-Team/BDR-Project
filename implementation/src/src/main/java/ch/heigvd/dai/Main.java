@@ -2,23 +2,23 @@ package ch.heigvd.dai;
 
 import ch.heigvd.dai.controllers.AddProviderController;
 import ch.heigvd.dai.controllers.SupplyController;
-import io.javalin.Javalin;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
 import com.github.jasync.sql.db.general.ArrayRowData;
 import com.github.jasync.sql.db.pool.ConnectionPool;
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnection;
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.Javalin;
+import io.javalin.http.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.javalin.http.UploadedFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
@@ -157,38 +157,38 @@ public class Main {
             ));
             });
 
-    app.post("/api/orders-confirm", ctx -> {
-                        ObjectMapper mapper = new ObjectMapper();
-                        Map requestData = mapper.readValue(ctx.body(), Map.class);
+        app.post("/api/orders-confirm", ctx -> {
+            ObjectMapper mapper = new ObjectMapper();
+            Map requestData = mapper.readValue(ctx.body(), Map.class);
 
-                        int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
-                        String receivedDate = requestData.get("date").toString();
-                        int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
+            int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
+            String receivedDate = requestData.get("date").toString();
+            int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
 
-                        String updateQuery =
-                                """
+            String updateQuery =
+                    """
                             UPDATE MouvementStock
                             SET date = ?, quantite = ?
                             WHERE id = ?
                             """;
 
 
-                CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
-                        receivedDate,
-                        receivedQuantity,
-                        mouvementStockId
-                ));
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
+                    receivedDate,
+                    receivedQuantity,
+                    mouvementStockId
+            ));
 
-                future.thenAccept(queryResult -> {
-                    if (queryResult.getRowsAffected() > 0) {
-                        ctx.status(200).result("Commande mise à jour avec succès");
-                    } else {
-                        ctx.status(404).result("MouvementStock non trouvé");
-                    }
-                }).exceptionally(e -> {
-                    ctx.status(500).result("Erreur interne : " + e.getMessage());
-                    return null;
-                });
+            future.thenAccept(queryResult -> {
+                if (queryResult.getRowsAffected() > 0) {
+                    ctx.status(200).result("Commande mise à jour avec succès");
+                } else {
+                    ctx.status(404).result("MouvementStock non trouvé");
+                }
+            }).exceptionally(e -> {
+                ctx.status(500).result("Erreur interne : " + e.getMessage());
+                return null;
+            });
 
             future.thenAccept(queryResult -> {
                 if (queryResult.getRowsAffected() > 0) {
@@ -239,27 +239,86 @@ public class Main {
         });
 
 
-    /*String stockViewQuery = Files.readString(Path.of("src/main/resources/public/sql/stockView.sql"), StandardCharsets.UTF_8);
-      app.get("/api/stock", ctx -> {
-          try {
-              CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockViewQuery);
-              QueryResult queryResult = future.get();
+        String stockQuery = Files.readString(Path.of("src/main/resources/public/sql/stockQuery.sql"), StandardCharsets.UTF_8);
+        app.get("/api/stock", ctx -> {
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockQuery);
+            QueryResult queryResult = future.get();
 
-              // Convert to JSON
-              ctx.json(queryResult.getRows().stream()
-                      .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-                      .toList());
-          } catch (Exception e) {
-              ctx.status(500).result("Erreur SQL: " + e.getMessage());
-              logger.error("Erreur SQL: ", e);
-          }
-      });
-*/
+            // Convert the result to JSON
+            ObjectMapper mapper = new ObjectMapper();
+            ctx.json(queryResult.getRows().stream()
+                    .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                    .toList());
+        });
 
 
-      // Initialiser le SupplyController
-      SupplyController supplyController = new SupplyController();
-      supplyController.registerRoutes(app, connection);
+        app.post("/api/update-stock", ctx -> {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
+
+            int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
+            int updatedQuantity = Integer.parseInt(requestData.get("quantity").toString());
+
+            // Retrieve the movement type from the database
+            String getTypeQuery = """
+        SELECT 
+            CASE 
+                WHEN EXISTS (SELECT 1 FROM Vente v WHERE v.idMouvementStock = ms.id) THEN 'vente'
+                ELSE 'approvisionnement'
+            END AS Type
+        FROM MouvementStock ms
+        WHERE ms.id = ?
+    """;
+
+            CompletableFuture<QueryResult> futureType = connection.sendPreparedStatement(getTypeQuery, List.of(mouvementStockId));
+            QueryResult typeResult = futureType.get();
+
+
+            if (!typeResult.getRows().isEmpty()) {
+                String movementType = (String) ((ArrayRowData) typeResult.getRows().getFirst()).getFirst();
+                logger.info("\n " + updatedQuantity + " " + movementType + "\n");
+
+                // Ensure correct sign
+                if ("vente".equals(movementType) && updatedQuantity > 0) {
+                    logger.info("\nVente\n");
+                    updatedQuantity = Math.abs(updatedQuantity);
+                }
+                if ("approvisionnement".equals(movementType) && updatedQuantity < 0) {
+                    logger.info("\nApprovisionnement\n");
+                    updatedQuantity = Math.abs(updatedQuantity);
+                }
+            }
+
+            // Update the database
+            String updateQuery = """
+        UPDATE MouvementStock
+        SET quantite = ?
+        WHERE id = ?
+    """;
+
+            CompletableFuture<QueryResult> futureUpdate = connection.sendPreparedStatement(updateQuery, Arrays.asList(
+                    updatedQuantity, mouvementStockId
+            ));
+
+            logger.info("Updated stock with id " + mouvementStockId + " to " + updatedQuantity);
+
+            futureUpdate.thenAccept(queryResult -> {
+                if (queryResult.getRowsAffected() > 0) {
+                    ctx.status(200).json(Map.of("message", "Stock mis à jour avec succès"));
+                } else {
+                    ctx.status(404).json(Map.of("error", "MouvementStock non trouvé"));
+                }
+            }).exceptionally(e -> {
+                ctx.status(500).json(Map.of("error", "Erreur interne : " + e.getMessage()));
+                return null;
+            });
+        });
+
+
+
+        // Initialiser le SupplyController
+        SupplyController supplyController = new SupplyController();
+        supplyController.registerRoutes(app, connection);
 
       //Inialiser le AddProviderController
       AddProviderController appProviderController = new AddProviderController();
