@@ -5,15 +5,21 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             document.getElementById('navbar-placeholder').innerHTML = data;
 
-            // Add dark mode toggle listener after loading the navbar
-            const themeToggle = document.getElementById('theme-toggle');
-            const body = document.body;
-
-            themeToggle.addEventListener('click', () => {
-                body.classList.toggle('light-mode');
-                themeToggle.textContent = body.classList.contains('light-mode') ? 'Mode Sombre' : 'Mode Clair';
-            });
-        });
+            // Delay execution to allow DOM to update
+            setTimeout(() => {
+                const themeToggle = document.getElementById('theme-toggle');
+                if (themeToggle) {
+                    const body = document.body;
+                    themeToggle.addEventListener('click', () => {
+                        body.classList.toggle('light-mode');
+                        themeToggle.textContent = body.classList.contains('light-mode') ? 'Mode Sombre' : 'Mode Clair';
+                    });
+                } else {
+                    console.warn("⚠️ theme-toggle not found, skipping event listener.");
+                }
+            }, 100); // Wait 100ms before executing
+        })
+        .catch(error => console.error("Error loading navbar:", error));
 
     // Load sidebar
     fetch('sideBar.html')
@@ -21,19 +27,26 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             document.getElementById('sidebar-placeholder').innerHTML = data;
 
-            // Add sidebar toggle listener after loading the sidebar
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.querySelector('.overlay');
-            const menuToggle = document.getElementById('menu-toggle');
+            // Delay execution to allow DOM to update
+            setTimeout(() => {
+                const sidebar = document.querySelector('.sidebar');
+                const overlay = document.querySelector('.overlay');
+                const menuToggle = document.getElementById('menu-toggle');
 
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('show');
-            });
+                if (menuToggle && sidebar && overlay) {
+                    menuToggle.addEventListener('click', () => {
+                        sidebar.classList.toggle('open');
+                        overlay.classList.toggle('show');
+                    });
 
-            overlay.addEventListener('click', () => {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('show');
-            });
-        });
+                    overlay.addEventListener('click', () => {
+                        sidebar.classList.remove('open');
+                        overlay.classList.remove('show');
+                    });
+                } else {
+                    console.warn("⚠️ Sidebar elements not found even after delay. Check sideBar.html structure.");
+                }
+            }, 100); // Wait 100ms before executing
+        })
+        .catch(error => console.error("Error loading sidebar:", error));
 });
