@@ -136,35 +136,80 @@ public class Main {
             String nouveauPrenom = (String) updatedData.get("prenom");
 
             // Supprimez l'ancienne image si le nom ou prénom change
-            if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
+            if (ancienNom != null && ancienPrenom != null && (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom))) {
                 String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
                 String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
                 Files.deleteIfExists(Paths.get(ancienFilePath));
             }
 
             String updateQuery = """
-                    
                     UPDATE Vendeur
-                                        SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
-                                           WHERE i
-                    
+                    SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
+                    WHERE id = ?
                     """;
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
                     updateQuery, Arrays.asList(
-                            updatedData.get(
-                                    "idMagasin"),
+                            updatedData.get("idMagasin"),
                             nouveauNom,
-                            updatedData.get(
-                                    "salaire"),
+                            updatedData.get("salaire"),
                             updatedData.get("estActif"),
-                            Integer.parseInt(
-
-                                    vendeurId)
+                            Integer.parseInt(vendeurId)
                     ));
+
+            future.thenAccept(queryResult -> {
+                if (queryResult.getRowsAffected() > 0) {
+                    ctx.status(200).result("Profil mis à jour avec succès");
+                } else {
+                    ctx.status(404).result("Vendeur non trouvé");
+                }
+            }).exceptionally(e -> {
+                ctx.status(500).result("Erreur interne : " + e.getMessage());
+                return null;
+            });
+        });
+
+        app.post("/api/uploadAvatar", ctx -> {
+            String vendeurId = ctx.queryParam("id");
+            String nom = ctx.queryParam("nom");
+            String prenom = ctx.queryParam("prenom");
+
+            if (vendeurId == null || nom == null || prenom == null) {
+                ctx.status(400).result("ID, nom ou prénom du vendeur manquant");
+                return;
+            }
+
+            UploadedFile file = ctx.uploadedFile("avatar");
+            if (file == null) {
+                ctx.status(400).result("Fichier manquant");
+                return;
+            }
+
+            try (InputStream inputStream = file.content()) {
+                // Formatez le nom du fichier en utilisant le nom et prénom
+                String fileName = prenom.toLowerCase() + "_" + nom.toLowerCase() + ".png";
+                String directoryPath = "src/main/resources/public/avatars/";
+                String filePath = directoryPath + fileName;
+
+                // Supprimer l'ancienne image si elle existe
+                Files.deleteIfExists(Paths.get(filePath));
+
+                // Créez le répertoire si nécessaire
+                Files.createDirectories(Paths.get(directoryPath));
+
+                // Enregistrez le fichier
+                Files.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+
+                System.out.println("Fichier enregistré à : " + filePath);
+
+                ctx.status(200).result("Avatar mis à jour avec succès !");
+            } catch (Exception e) {
+                ctx.status(500).result("Erreur lors de l'upload de l'avatar : " + e.getMessage());
+            }
         });
 
         app.post("/api/orders-confirm", ctx -> {
+            logger.info("ICI : {}", ctx.body());
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
 
@@ -209,42 +254,6 @@ public class Main {
             });
         });
 
-        app.post("/api/uploadAvatar", ctx -> {
-            String vendeurId = ctx.queryParam("id");
-            String nom = ctx.queryParam("nom");
-            String prenom = ctx.queryParam("prenom");
-
-            if (vendeurId == null || nom == null || prenom == null) {
-                ctx.status(400).result("ID, nom ou prénom du vendeur manquant");
-                return;
-            }
-
-            UploadedFile file = ctx.uploadedFile("avatar");
-            if (file == null) {
-                ctx.status(400).result("Fichier manquant");
-                return;
-            }
-
-            try (InputStream inputStream = file.content()) {
-                // Formatez le nom du fichier en utilisant le nom et prénom
-                String fileName = prenom.toLowerCase() + "_" + nom.toLowerCase() + ".png";
-                String directoryPath = "public/avatars/";
-                String filePath = directoryPath + fileName;
-
-                // Créez le répertoire si nécessaire
-                Files.createDirectories(Paths.get(directoryPath));
-
-                // Enregistrez le fichier
-                Files.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-                System.out.println("Fichier enregistré à : " + filePath);
-
-                ctx.status(200).result("Avatar mis à jour avec succès !");
-            } catch (Exception e) {
-                ctx.status(500).result("Erreur lors de l'upload de l'avatar : " + e.getMessage());
-            }
-        });
-
         // Initialiser le SupplyController
         SupplyController supplyController = new SupplyController(pool);
         supplyController.registerRoutes(app, connection);
@@ -253,7 +262,6 @@ public class Main {
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
         app.get("/manage-suppliers", ctx -> ctx.redirect("html/supply.html"));
         app.get("/generate-reports", ctx -> ctx.result("Generating reports..."));
-
 
     }
 }
