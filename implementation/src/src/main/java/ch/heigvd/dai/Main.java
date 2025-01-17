@@ -1,5 +1,6 @@
 package ch.heigvd.dai;
 
+import ch.heigvd.dai.controllers.AddProviderController;
 import ch.heigvd.dai.controllers.SupplyController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
@@ -21,7 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -320,12 +320,17 @@ public class Main {
         SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
+      //Inialiser le AddProviderController
+      AddProviderController appProviderController = new AddProviderController();
+      appProviderController.registerRoutes(app, connection);
+
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
         app.get("/manage-suppliers", ctx -> ctx.redirect("html/supply.html"));
         app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
+        app.get("/add-provider", ctx -> ctx.redirect("html/addProvider.html"));
 
 
-    }
+  }
 }
