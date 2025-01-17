@@ -1,23 +1,23 @@
 package ch.heigvd.dai;
 
 import ch.heigvd.dai.controllers.SupplyController;
-import io.javalin.Javalin;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
 import com.github.jasync.sql.db.general.ArrayRowData;
 import com.github.jasync.sql.db.pool.ConnectionPool;
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnection;
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.Javalin;
+import io.javalin.http.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.javalin.http.UploadedFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
@@ -27,61 +27,63 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class Main {
-  static final int port = 8080;
-  private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    static final int port = 8080;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-  public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
-    Javalin app = Javalin.create(config -> config.staticFiles.add("/public"));
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
+        Javalin app = Javalin.create(config -> config.staticFiles.add("/public"));
 
-    app.start(port);
+        logger.info("Starting the application on port " + port);
 
-    logger.error("starting");
-    logger.warn("starting warn");
-    logger.info("starting info");
-    logger.debug("starting debug");
-    logger.trace("starting trace");
-    String host = "localhost";
-    int SQLport = 5666;
-    String database = "bdr_project";
-    String username = "postgres";
-    String password = "trustno1";
+        app.start(port);
 
-    String url = String.format("jdbc:postgresql://%s:%d/%s?user=%s&password=%s",
-            host, SQLport, database, username, password);
+        logger.error("starting");
+        logger.warn("starting warn");
+        logger.info("starting info");
+        logger.debug("starting debug");
+        logger.trace("starting trace");
+        String host = "localhost";
+        int SQLport = 5666;
+        String database = "bdr_project";
+        String username = "postgres";
+        String password = "trustno1";
 
-    ConnectionPool<PostgreSQLConnection> pool = PostgreSQLConnectionBuilder.createConnectionPool(url);
+        String url = String.format("jdbc:postgresql://%s:%d/%s?user=%s&password=%s",
+                host, SQLport, database, username, password);
 
-    Connection connection = pool.connect().get();
+        ConnectionPool<PostgreSQLConnection> pool = PostgreSQLConnectionBuilder.createConnectionPool(url);
 
-    String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
+        Connection connection = pool.connect().get();
 
-    app.get("/api/articles-lowQT", ctx -> {
-      CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
-      QueryResult queryResult = future.get();
+        String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
 
-      ctx.json(queryResult.getRows().stream()
-              .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-              .toList());
-    });
+        app.get("/api/articles-lowQT", ctx -> {
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
+            QueryResult queryResult = future.get();
 
-    String waitingOrders = Files.readString(Path.of("src/main/resources/public/sql/waitingOrders.sql"), StandardCharsets.UTF_8);
+            ctx.json(queryResult.getRows().stream()
+                    .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                    .toList());
+        });
 
-    app.get("/api/orders-waiting", ctx -> {
-      try {
-        CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
-        QueryResult queryResult = future.get();
+        String waitingOrders = Files.readString(Path.of("src/main/resources/public/sql/waitingOrders.sql"), StandardCharsets.UTF_8);
 
-        ctx.json(queryResult.getRows().stream()
-                .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-                .toList());
-      } catch (Exception e) {
-        // Log the error and return a 500 status
-        logger.error("Error during query execution", e);
-        ctx.status(500).result("Server Error: " + e.getMessage());
-      }
-    });
+        app.get("/api/orders-waiting", ctx -> {
+            try {
+                CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrders);
+                QueryResult queryResult = future.get();
 
-    app.get("/api/vendeur/{id}", ctx -> {
+                ctx.json(queryResult.getRows().stream()
+                        .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                        .toList());
+            } catch (Exception e) {
+                // Log the error and return a 500 status
+                logger.error("Error during query execution", e);
+                ctx.status(500).result("Server Error: " + e.getMessage());
+            }
+        });
+
+        app.get("/api/vendeur/{id}", ctx -> {
             String vendeurId = ctx.pathParam("id");
             String infoVendeur = "SELECT id, idMagasin, nom, salaire, estActif FROM Vendeur WHERE id = ?";
 
@@ -105,7 +107,7 @@ public class Main {
             }
         });
 
-    app.get("/api/magasins", ctx -> {
+        app.get("/api/magasins", ctx -> {
             String idMagasin = "SELECT id, nom FROM Magasin";
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(idMagasin);
             QueryResult queryResult = future.get();
@@ -118,76 +120,76 @@ public class Main {
                     .toList());
         });
 
-    app.post("/api/updateVendeur/{id}", ctx -> {
-                    String vendeurId = ctx.pathParam("id");
-                    ObjectMapper mapper = new ObjectMapper();
-                    Map updatedData = mapper.readValue(ctx.body(), Map.class);
+        app.post("/api/updateVendeur/{id}", ctx -> {
+            String vendeurId = ctx.pathParam("id");
+            ObjectMapper mapper = new ObjectMapper();
+            Map updatedData = mapper.readValue(ctx.body(), Map.class);
 
-                    String ancienNom = (String) updatedData.get("ancienNom");
-                    String ancienPrenom = (String) updatedData.get("ancienPrenom");
-                    String nouveauNom = (String) updatedData.get("nom");
-                    String nouveauPrenom = (String) updatedData.get("prenom");
+            String ancienNom = (String) updatedData.get("ancienNom");
+            String ancienPrenom = (String) updatedData.get("ancienPrenom");
+            String nouveauNom = (String) updatedData.get("nom");
+            String nouveauPrenom = (String) updatedData.get("prenom");
 
-                    // Supprimez l'ancienne image si le nom ou prénom change
-                    if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
-                        String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
-                        String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
-                        Files.deleteIfExists(Paths.get(ancienFilePath));
-                    }
+            // Supprimez l'ancienne image si le nom ou prénom change
+            if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
+                String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
+                String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
+                Files.deleteIfExists(Paths.get(ancienFilePath));
+            }
 
-                    String updateQuery = """
+            String updateQuery = """
                     
-                            UPDATE Vendeur
-                                                SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
-                                                   WHERE i
-""";
+                                                UPDATE Vendeur
+                                                                    SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
+                                                                       WHERE i
+                    """;
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
-                            updateQuery, Arrays.asList(
-                    updatedData.get(
-                            "idMagasin"),
+                    updateQuery, Arrays.asList(
+                            updatedData.get(
+                                    "idMagasin"),
                             nouveauNom,
-                    updatedData.get(
-                            "salaire"),
-                    updatedData.get("estActif"),
-                    Integer.parseInt(
+                            updatedData.get(
+                                    "salaire"),
+                            updatedData.get("estActif"),
+                            Integer.parseInt(
 
-                vendeurId)
-            ));
-            });
+                                    vendeurId)
+                    ));
+        });
 
-    app.post("/api/orders-confirm", ctx -> {
-                        ObjectMapper mapper = new ObjectMapper();
-                        Map requestData = mapper.readValue(ctx.body(), Map.class);
+        app.post("/api/orders-confirm", ctx -> {
+            ObjectMapper mapper = new ObjectMapper();
+            Map requestData = mapper.readValue(ctx.body(), Map.class);
 
-                        int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
-                        String receivedDate = requestData.get("date").toString();
-                        int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
+            int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
+            String receivedDate = requestData.get("date").toString();
+            int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
 
-                        String updateQuery =
-                                """
+            String updateQuery =
+                    """
                             UPDATE MouvementStock
                             SET date = ?, quantite = ?
                             WHERE id = ?
                             """;
 
 
-                CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
-                        receivedDate,
-                        receivedQuantity,
-                        mouvementStockId
-                ));
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
+                    receivedDate,
+                    receivedQuantity,
+                    mouvementStockId
+            ));
 
-                future.thenAccept(queryResult -> {
-                    if (queryResult.getRowsAffected() > 0) {
-                        ctx.status(200).result("Commande mise à jour avec succès");
-                    } else {
-                        ctx.status(404).result("MouvementStock non trouvé");
-                    }
-                }).exceptionally(e -> {
-                    ctx.status(500).result("Erreur interne : " + e.getMessage());
-                    return null;
-                });
+            future.thenAccept(queryResult -> {
+                if (queryResult.getRowsAffected() > 0) {
+                    ctx.status(200).result("Commande mise à jour avec succès");
+                } else {
+                    ctx.status(404).result("MouvementStock non trouvé");
+                }
+            }).exceptionally(e -> {
+                ctx.status(500).result("Erreur interne : " + e.getMessage());
+                return null;
+            });
 
             future.thenAccept(queryResult -> {
                 if (queryResult.getRowsAffected() > 0) {
@@ -201,7 +203,7 @@ public class Main {
             });
         });
 
-    app.post("/api/uploadAvatar", ctx -> {
+        app.post("/api/uploadAvatar", ctx -> {
             String vendeurId = ctx.queryParam("id");
             String nom = ctx.queryParam("nom");
             String prenom = ctx.queryParam("prenom");
@@ -238,23 +240,86 @@ public class Main {
         });
 
 
-      String stockQuery = Files.readString(Path.of("src/main/resources/public/sql/stockQuery.sql"), StandardCharsets.UTF_8);
-      app.get("/api/stock", ctx -> {
-          CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockQuery);
-          QueryResult queryResult = future.get();
+        String stockQuery = Files.readString(Path.of("src/main/resources/public/sql/stockQuery.sql"), StandardCharsets.UTF_8);
+        app.get("/api/stock", ctx -> {
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockQuery);
+            QueryResult queryResult = future.get();
 
-          // Convert the result to JSON
-          ObjectMapper mapper = new ObjectMapper();
-          ctx.json(queryResult.getRows().stream()
-                  .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-                  .toList());
-      });
+            // Convert the result to JSON
+            ObjectMapper mapper = new ObjectMapper();
+            ctx.json(queryResult.getRows().stream()
+                    .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                    .toList());
+        });
+
+
+        app.post("/api/update-stock", ctx -> {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
+
+            int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
+            int updatedQuantity = Integer.parseInt(requestData.get("quantity").toString());
+
+            // Retrieve the movement type from the database
+            String getTypeQuery = """
+        SELECT 
+            CASE 
+                WHEN EXISTS (SELECT 1 FROM Vente v WHERE v.idMouvementStock = ms.id) THEN 'vente'
+                ELSE 'approvisionnement'
+            END AS Type
+        FROM MouvementStock ms
+        WHERE ms.id = ?
+    """;
+
+            CompletableFuture<QueryResult> futureType = connection.sendPreparedStatement(getTypeQuery, List.of(mouvementStockId));
+            QueryResult typeResult = futureType.get();
+
+
+            if (!typeResult.getRows().isEmpty()) {
+                String movementType = (String) ((ArrayRowData) typeResult.getRows().getFirst()).getFirst();
+                logger.info("\n " + updatedQuantity + " " + movementType + "\n");
+
+                // Ensure correct sign
+                if ("vente".equals(movementType) && updatedQuantity > 0) {
+                    logger.info("\nVente\n");
+                    updatedQuantity = Math.abs(updatedQuantity);
+                }
+                if ("approvisionnement".equals(movementType) && updatedQuantity < 0) {
+                    logger.info("\nApprovisionnement\n");
+                    updatedQuantity = Math.abs(updatedQuantity);
+                }
+            }
+
+            // Update the database
+            String updateQuery = """
+        UPDATE MouvementStock
+        SET quantite = ?
+        WHERE id = ?
+    """;
+
+            CompletableFuture<QueryResult> futureUpdate = connection.sendPreparedStatement(updateQuery, Arrays.asList(
+                    updatedQuantity, mouvementStockId
+            ));
+
+            logger.info("Updated stock with id " + mouvementStockId + " to " + updatedQuantity);
+
+            futureUpdate.thenAccept(queryResult -> {
+                if (queryResult.getRowsAffected() > 0) {
+                    ctx.status(200).json(Map.of("message", "Stock mis à jour avec succès"));
+                } else {
+                    ctx.status(404).json(Map.of("error", "MouvementStock non trouvé"));
+                }
+            }).exceptionally(e -> {
+                ctx.status(500).json(Map.of("error", "Erreur interne : " + e.getMessage()));
+                return null;
+            });
+        });
 
 
 
-      // Initialiser le SupplyController
-      SupplyController supplyController = new SupplyController(pool);
-      supplyController.registerRoutes(app, connection);
+        // Initialiser le SupplyController
+        SupplyController supplyController = new SupplyController(pool);
+        supplyController.registerRoutes(app, connection);
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
@@ -262,5 +327,5 @@ public class Main {
         app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
 
 
-  }
+    }
 }

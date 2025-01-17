@@ -24,3 +24,11 @@ body.light-mode #stock-table th {
     background-color: rgba(0, 123, 255, 0.1);
     cursor: pointer;
 }
+#stock-table tr {
+    cursor: pointer; /* Changes cursor to pointer */
+    transition: background-color 0.2s ease-in-out;
+}
+
+#stock-table tr:hover {
+    background-color: rgba(0, 123, 255, 0.2); /* Subtle highlight effect */
+}

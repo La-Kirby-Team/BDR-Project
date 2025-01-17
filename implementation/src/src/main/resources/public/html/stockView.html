@@ -46,6 +46,39 @@
   <p>Blablé, rue des Canettes 25<br>Winventory SA</p>
 </footer>
 
+<!-- Stock Edit Modal -->
+<div class="modal fade" id="editStockModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier Stock - <span id="modalProductName"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="modalVolume" class="form-label">Volume :</label>
+            <input type="number" id="modalVolume" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="modalRecipient" class="form-label">Recipient :</label>
+            <input type="text" id="modalRecipient" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="modalQuantity" class="form-label">Quantité :</label>
+            <input type="number" id="modalQuantity" class="form-control" required />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirmUpdateButton">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Scripts -->
 <script src="../js/navSideBars.js"></script>
 <script src="../js/stockView.js"></script>
