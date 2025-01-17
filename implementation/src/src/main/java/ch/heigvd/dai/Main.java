@@ -2,6 +2,7 @@ package ch.heigvd.dai;
 
 import ch.heigvd.dai.controllers.SaleController;
 import ch.heigvd.dai.controllers.SupplyController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -261,6 +262,10 @@ public class Main {
       // Initialiser le SupplyController
       SupplyController supplyController = new SupplyController();
       supplyController.registerRoutes(app, connection);
+
+      //Initialiser le AddProviderController
+      AddProviderController appProviderController = new AddProviderController();
+      appProviderController.registerRoutes(app, connection);
 
 
       SaleController saleController = new SaleController();
