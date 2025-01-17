@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("idMagasin").value = vendeur.idMagasin;
 
                 // Mise à jour de l'avatar
-                const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?${new Date().getTime()}`;
+                const avatarPath = `src/main/resources/public/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?${new Date().getTime()}`;
                 document.getElementById("avatar").src = avatarPath;
             })
             .catch(error => console.error('Erreur lors du chargement du profil du vendeur:', error));
@@ -126,9 +126,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(() => {
                 alert("Profil et image mis à jour avec succès !");
                 toggleEditMode(false);
-                // Recharge l'image avec un cache-buster
-                const updatedAvatarPath = `/avatars/${updatedData.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
+
+                // Ajout du timestamp pour forcer le rechargement
+                const updatedAvatarPath = `src/main/resources/public/avatars/${updatedData.nom.toLowerCase().replace(' ', '_')}.png?timestamp=${Date.now()}`;
                 document.getElementById("avatar").src = updatedAvatarPath;
+                console.log("Image rechargée :", updatedAvatarPath);
             })
             .catch(error => {
                 console.error("Erreur lors de la mise à jour :", error);

@@ -136,15 +136,33 @@
             return fetch(`/api/vendeur/${id}`)
                 .then(response => response.json())
                 .then(vendeur => {
+                    console.log("Données du vendeur :", vendeur);
                     initialData = vendeur;
+
+                    // Mise à jour des champs du profil
                     document.getElementById("username").value = vendeur.nom;
                     document.getElementById("salaire").value = vendeur.salaire;
                     document.getElementById("estActif").value = vendeur.estActif.toString();
                     document.getElementById("idMagasin").value = vendeur.idMagasin;
-                    if (vendeur.avatar) {
-                        document.getElementById("avatar").src = vendeur.avatar;
-                    }
-                });
+
+                    // Chargement de l'image de profil en fonction du nom du vendeur
+                    const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
+                    console.log("Chemin généré pour l'avatar :", avatarPath);
+                    document.getElementById("avatar").src = avatarPath;
+                    const avatarElement = document.getElementById("avatar");
+                    const img = new Image();
+
+                    img.onload = () => {
+                        avatarElement.src = avatarPath;
+                        console.log("Avatar chargé :", avatarPath);
+                    };
+                    img.onerror = () => {
+                        avatarElement.src = "/imgs/Default_profile_picture.png"; // Chemin de l'image par défaut
+                        console.warn("Image introuvable, image par défaut utilisée :", avatarPath);
+                    };
+                    img.src = avatarPath;
+                })
+                .catch(error => console.error('Erreur lors du chargement du profil du vendeur:', error));
         }
 
         function toggleEditMode(isEditing) {

@@ -56,6 +56,23 @@ public class Main {
 
         String lowQTQuery = Files.readString(Path.of("src/main/resources/public/sql/lowQTArticles.sql"), StandardCharsets.UTF_8);
 
+        app.before("/avatars/*", ctx -> {
+            ctx.header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+            ctx.header("Pragma", "no-cache");
+            ctx.header("Expires", "0");
+        });
+
+        app.get("/avatars/{filename}", ctx -> {
+            String filename = ctx.pathParam("filename");
+            Path filePath = Paths.get("src/main/resources/public/avatars/" + filename);
+            if (Files.exists(filePath)) {
+                ctx.header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+                ctx.result(Files.newInputStream(filePath));
+            } else {
+                ctx.status(404).result("File not found");
+            }
+        });
+
         app.get("/api/articles-lowQT", ctx -> {
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(lowQTQuery);
             QueryResult queryResult = future.get();
