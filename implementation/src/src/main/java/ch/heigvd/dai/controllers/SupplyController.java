@@ -33,11 +33,6 @@ public class SupplyController {
           SupplyRequest request = objectMapper.readValue(ctx.body(), SupplyRequest.class);
 
 
-          logger.info(request.toString());
-
-
-          logger.info("Données reçues : " + request);
-
           try {
               // Vérification si l'article existe avec le même prix
               /*
