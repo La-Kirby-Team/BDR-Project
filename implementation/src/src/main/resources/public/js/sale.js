@@ -182,3 +182,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('dynamic-sale-form');
+    const totalField = document.getElementById('total');
+
+    // Fonction pour recalculer le total
+    function updateTotal() {
+        let total = 0;
+
+        // Récupérer tous les champs "prix" et "quantité"
+        const prices = document.querySelectorAll('[name="prix[]"]');
+        const quantities = document.querySelectorAll('[name="quantity[]"]');
+
+        // Additionner le prix * quantité pour chaque produit
+        for (let i = 0; i < prices.length; i++) {
+            const price = parseFloat(prices[i].value) || 0; // Utiliser 0 si le prix est vide ou invalide
+            const quantity = parseInt(quantities[i].value) || 0; // Utiliser 0 si la quantité est vide ou invalide
+            total += price * quantity;
+        }
+
+        // Afficher le total
+        totalField.value = total.toFixed(2); // Formatage en 2 décimales
+    }
+
+    // Ajouter un événement pour recalculer le total lorsque le prix ou la quantité change
+    form.addEventListener('input', function(event) {
+        // Vérifier si l'élément modifié est l'un des champs de prix ou de quantité
+        if (event.target.name === 'prix[]' || event.target.name === 'quantity[]') {
+            updateTotal();
+        }
+    });
+
+    // Initialiser le total lorsque la page est chargée
+    updateTotal();
+});

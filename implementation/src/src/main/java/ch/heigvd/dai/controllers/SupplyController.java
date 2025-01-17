@@ -128,7 +128,6 @@ public class SupplyController {
 
                   QueryResult mouvementStockResult = mouvementStockFuture.get();
 
-
                   int idMouvementStock;
                   if (mouvementStockResult.getRows().getFirst().getFirst() != null) {
                       idMouvementStock = (int) mouvementStockResult.getRows().getFirst().getFirst();
