@@ -1,9 +1,6 @@
 package ch.heigvd.dai;
 
-import ch.heigvd.dai.controllers.AddProviderController;
-import ch.heigvd.dai.controllers.OrderController;
-import ch.heigvd.dai.controllers.StockController;
-import ch.heigvd.dai.controllers.SupplyController;
+import ch.heigvd.dai.controllers.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -18,13 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -167,6 +161,9 @@ public class Main {
                 ctx.status(500).result("Erreur lors de l'upload de l'avatar : " + e.getMessage());
             }
         });
+
+        ProviderController providerController = new ProviderController();
+        providerController.registerRoutes(app, connection);
 
         // Initialize OrderController
         OrderController orderController = new OrderController();
