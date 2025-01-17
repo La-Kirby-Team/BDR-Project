@@ -192,28 +192,30 @@ public class Main {
             }
 
             try (InputStream inputStream = file.content()) {
-                // Formatez le nom du fichier en utilisant le nom complet
-                String fileName = nomComplet.toLowerCase().replace(" ", "_") + ".png"; // Remplace les espaces par des underscores
+                // Formatez le nom du fichier
+                String fileName = nomComplet.toLowerCase().replace(" ", "_") + ".png";
                 String directoryPath = "src/main/resources/public/avatars/";
                 String filePath = directoryPath + fileName;
 
                 // Créez le répertoire si nécessaire
                 Files.createDirectories(Paths.get(directoryPath));
 
-                // Log avant la sauvegarde
-                System.out.println("Enregistrement du fichier : " + filePath);
+                // Vérifiez si le fichier existe déjà, puis remplacez-le
+                Path targetPath = Paths.get(filePath);
+                if (Files.exists(targetPath)) {
+                    System.out.println("Le fichier existe déjà, suppression : " + filePath);
+                    Files.delete(targetPath);
+                }
 
-                // Enregistrez ou remplacez le fichier
-                Files.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-                // Log après la sauvegarde
+                // Copie du nouveau fichier
+                Files.copy(inputStream, targetPath, StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Fichier enregistré avec succès à : " + filePath);
 
                 ctx.status(200).result("Avatar mis à jour avec succès !");
             } catch (Exception e) {
-                // Log de l'erreur
                 e.printStackTrace();
                 ctx.status(500).result("Erreur lors de l'upload de l'avatar : " + e.getMessage());
+                return;
             }
         });
 

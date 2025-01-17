@@ -113,10 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(() => {
                 alert("Profil et image mis à jour avec succès !");
                 toggleEditMode(false);
-
-                // Vérification périodique pour charger la nouvelle image
-                const updatedAvatarPath = `/avatars/${updatedData.nom.toLowerCase().replace(' ', '_')}.png?reload=${Math.random()}`;
-                checkImageUpdate(updatedAvatarPath, 500, 5000); // Vérifie toutes les 500ms, maximum 5 secondes
+                // Recharge l'image avec un cache-buster
+                const updatedAvatarPath = `/avatars/${updatedData.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
+                document.getElementById("avatar").src = updatedAvatarPath;
             })
             .catch(error => {
                 console.error("Erreur lors de la mise à jour :", error);
@@ -136,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
             img.onerror = () => {
                 if (Date.now() - startTime < timeout) {
                     console.log("Nouvelle image non encore disponible, nouvelle tentative...");
-                    setTimeout(check, interval); // Réessaie après l'intervalle
+                    setTimeout(check, interval);
                 } else {
                     console.error("Nouvelle image non disponible après le délai imparti.");
                     alert("La nouvelle image n'a pas pu être rechargée. Veuillez actualiser la page.");
@@ -144,10 +143,8 @@ document.addEventListener("DOMContentLoaded", function () {
             };
             img.src = imagePath; // Déclenche le chargement de l'image
         };
-
-        check(); // Lance la vérification initiale
+        check();
     }
-
 
     function uploadAvatar(file, nom) {
         const formData = new FormData();
