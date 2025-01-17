@@ -135,6 +135,8 @@ public class SaleController {
 
                     connection.sendPreparedStatement(insertSale, Arrays.asList(idMouvementStock, idVendeur, idClient));
 
+                    ctx.json(Map.of("message", "Approvisionnement enregistré avec succès !"));
+                    ctx.status(200).json(Map.of("message", "OK, enregistrement effectué"));
 
 
 
