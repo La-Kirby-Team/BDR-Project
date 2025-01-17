@@ -1,5 +1,6 @@
 package ch.heigvd.dai;
 
+import ch.heigvd.dai.controllers.AddProviderController;
 import ch.heigvd.dai.controllers.SupplyController;
 import io.javalin.Javalin;
 import com.github.jasync.sql.db.Connection;
@@ -21,7 +22,6 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -239,7 +239,7 @@ public class Main {
         });
 
 
-    String stockViewQuery = Files.readString(Path.of("src/main/resources/public/sql/stockView.sql"), StandardCharsets.UTF_8);
+    /*String stockViewQuery = Files.readString(Path.of("src/main/resources/public/sql/stockView.sql"), StandardCharsets.UTF_8);
       app.get("/api/stock", ctx -> {
           try {
               CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockViewQuery);
@@ -254,18 +254,23 @@ public class Main {
               logger.error("Erreur SQL: ", e);
           }
       });
-
+*/
 
 
       // Initialiser le SupplyController
       SupplyController supplyController = new SupplyController();
       supplyController.registerRoutes(app, connection);
 
+      //Inialiser le AddProviderController
+      AddProviderController appProviderController = new AddProviderController();
+      appProviderController.registerRoutes(app, connection);
+
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
         app.get("/manage-suppliers", ctx -> ctx.redirect("html/supply.html"));
         app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
+        app.get("/add-provider", ctx -> ctx.redirect("html/addProvider.html"));
 
 
   }
