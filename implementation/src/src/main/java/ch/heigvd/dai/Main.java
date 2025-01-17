@@ -317,7 +317,7 @@ public class Main {
 
 
         // Initialiser le SupplyController
-        SupplyController supplyController = new SupplyController(pool);
+        SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
 
