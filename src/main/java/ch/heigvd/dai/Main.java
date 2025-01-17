@@ -133,24 +133,6 @@ public class Main {
             });
 
         app.post("/api/uploadAvatar", ctx -> {
-                            updatedData.get("salaire"),
-                            updatedData.get("estActif"),
-                            Integer.parseInt(vendeurId)
-                    ));
-
-            future.thenAccept(queryResult -> {
-                if (queryResult.getRowsAffected() > 0) {
-                    ctx.status(200).result("Profil mis à jour avec succès");
-                } else {
-                    ctx.status(404).result("Vendeur non trouvé");
-                }
-            }).exceptionally(e -> {
-                ctx.status(500).result("Erreur interne : " + e.getMessage());
-                return null;
-            });
-        });
-
-        app.post("/api/uploadAvatar", ctx -> {
             String vendeurId = ctx.queryParam("id");
             String nomComplet = ctx.queryParam("nom");
 
