@@ -6,7 +6,7 @@
     <title>Winventory - Gestion de Stock de Vin</title>
     <script src="../js/profil.js"></script>
     <script src="../js/navSideBars.js"></script>
-    <!-- Font Awesome for icons (optional) -->
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
 <body>
@@ -84,14 +84,10 @@
 <script src="../js/navSideBars.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Variables pour stocker les données initiales
         let initialData = {};
 
-        // Charger les magasins et le profil du vendeur
-        Promise.all([fetchMagasins(), fetchVendeur(1)])
-            .catch(error => console.error("Erreur lors du chargement des données:", error));
+        Promise.all([fetchMagasins(), fetchVendeur(1)]);
 
-        // Boutons et champs du formulaire
         const editButton = document.getElementById("edit-button");
         const cancelButton = document.getElementById("cancel-button");
         const form = document.getElementById("profile-form");
@@ -100,24 +96,17 @@
         const avatarUpload = document.getElementById("avatar-upload");
         const fields = form.querySelectorAll("input, select");
 
-        // Gestion du bouton Modifier
-        editButton.addEventListener("click", () => {
-            toggleEditMode(true);
-        });
-
-        // Gestion du bouton Annuler
+        editButton.addEventListener("click", () => toggleEditMode(true));
         cancelButton.addEventListener("click", () => {
             toggleEditMode(false);
             resetFormFields();
         });
 
-        // Gestion du formulaire de sauvegarde
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             saveProfile();
         });
 
-        // Fonctions utilitaires
         function fetchMagasins() {
             return fetch("/api/magasins")
                 .then(response => response.json())
@@ -136,33 +125,24 @@
             return fetch(`/api/vendeur/${id}`)
                 .then(response => response.json())
                 .then(vendeur => {
-                    console.log("Données du vendeur :", vendeur);
                     initialData = vendeur;
-
-                    // Mise à jour des champs du profil
                     document.getElementById("username").value = vendeur.nom;
                     document.getElementById("salaire").value = vendeur.salaire;
                     document.getElementById("estActif").value = vendeur.estActif.toString();
                     document.getElementById("idMagasin").value = vendeur.idMagasin;
 
-                    // Chargement de l'image de profil en fonction du nom du vendeur
                     const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
-                    console.log("Chemin généré pour l'avatar :", avatarPath);
-                    document.getElementById("avatar").src = avatarPath;
                     const avatarElement = document.getElementById("avatar");
                     const img = new Image();
 
                     img.onload = () => {
                         avatarElement.src = avatarPath;
-                        console.log("Avatar chargé :", avatarPath);
                     };
                     img.onerror = () => {
-                        avatarElement.src = "/imgs/Default_profile_picture.png"; // Chemin de l'image par défaut
-                        console.warn("Image introuvable, image par défaut utilisée :", avatarPath);
+                        avatarElement.src = "/imgs/Default_profile_picture.png";
                     };
                     img.src = avatarPath;
-                })
-                .catch(error => console.error('Erreur lors du chargement du profil du vendeur:', error));
+                });
         }
 
         function toggleEditMode(isEditing) {
@@ -200,39 +180,27 @@
                 const formData = new FormData();
                 formData.append("avatar", file);
                 formData.append("nom", updatedData.nom);
-                formData.append("prenom", ""); // Remplacez par le prénom si nécessaire
 
                 fetch(`/api/uploadAvatar?id=1&nom=${updatedData.nom}`, {
                     method: "POST",
                     body: formData
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            document.getElementById("avatar").src = `src/main/resources/public/avatars/${updatedData.nom.toLowerCase()}.png?${new Date().getTime()}`;
-                        } else {
-                            alert("Erreur lors de la mise à jour de la photo de profil.");
-                        }
-                    })
-                    .catch(error => console.error("Erreur lors de l'upload de la photo de profil:", error));
+                    .catch(() => alert("Erreur lors de la mise à jour de la photo de profil."));
             }
 
             fetch("/api/updateVendeur/1", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedData)
             })
                 .then(response => {
                     if (response.ok) {
-                        alert("Profil mis à jour avec succès !");
-                        initialData = updatedData;
                         toggleEditMode(false);
                     } else {
                         alert("Erreur lors de la mise à jour du profil.");
                     }
                 })
-                .catch(error => console.error("Erreur lors de la mise à jour du profil:", error));
+                .catch(() => alert("Erreur lors de la mise à jour du profil."));
         }
     });
 </script>

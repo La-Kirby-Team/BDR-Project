@@ -13,8 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fields = form.querySelectorAll("input, select");
 
     // Charger les magasins et le profil du vendeur
-    Promise.all([fetchMagasins(), fetchVendeur(vendeurId)])
-        .catch(error => console.error("Erreur lors du chargement des données:", error));
+    Promise.all([fetchMagasins(), fetchVendeur(vendeurId)]).catch(() => {});
 
     // Gestion du bouton Modifier
     editButton.addEventListener("click", () => {
@@ -37,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchMagasins(forceReload = false) {
         if (magasinsLoaded && !forceReload) {
-            console.log("fetchMagasins ignoré, déjà chargé.");
             return Promise.resolve(); // Ignorer l'appel si les magasins ont déjà été chargés
         }
         magasinsLoaded = true; // Marque les magasins comme chargés
@@ -58,16 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         addedIds.add(magasin.id); // Marque l'ID comme ajouté
                     }
                 });
-                console.log("Magasins chargés :", data);
-            })
-            .catch(error => console.error('Erreur lors du chargement des magasins:', error));
+            });
     }
 
     function fetchVendeur(id) {
         return fetch(`/api/vendeur/${id}`)
             .then(response => response.json())
             .then(vendeur => {
-                console.log("Données du vendeur :", vendeur);
                 initialData = vendeur;
                 document.getElementById("username").value = vendeur.nom;
                 document.getElementById("salaire").value = vendeur.salaire;
@@ -77,8 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Mise à jour de l'avatar
                 const avatarPath = `src/main/resources/public/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?${new Date().getTime()}`;
                 document.getElementById("avatar").src = avatarPath;
-            })
-            .catch(error => console.error('Erreur lors du chargement du profil du vendeur:', error));
+            });
     }
 
     function toggleEditMode(isEditing) {
@@ -104,18 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function saveProfile() {
-        const idMagasin = document.getElementById('idMagasin').value;
-
-        if (!idMagasin) {
-            alert('Veuillez sélectionner un magasin.');
-            return;
-        }
-
         const updatedData = {
-            nom: document.getElementById('username').value,
-            salaire: parseFloat(document.getElementById('salaire').value),
-            estActif: document.getElementById('estActif').value === "true",
-            idMagasin: parseInt(idMagasin)
+            nom: document.getElementById("username").value,
+            salaire: parseFloat(document.getElementById("salaire").value),
+            estActif: document.getElementById("estActif").value === "true",
+            idMagasin: parseInt(document.getElementById("idMagasin").value),
         };
 
         const file = avatarUpload.files[0];
@@ -124,41 +111,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         Promise.all([imagePromise, profilePromise])
             .then(() => {
-                alert("Profil et image mis à jour avec succès !");
                 toggleEditMode(false);
 
-                // Ajout du timestamp pour forcer le rechargement
-                const updatedAvatarPath = `src/main/resources/public/avatars/${updatedData.nom.toLowerCase().replace(' ', '_')}.png?timestamp=${Date.now()}`;
-                document.getElementById("avatar").src = updatedAvatarPath;
-                console.log("Image rechargée :", updatedAvatarPath);
+                // Rafraîchir la page pour afficher les nouvelles modifications
+                window.location.href = window.location.href.split('?')[0] + '?reload=' + new Date().getTime();
             })
-            .catch(error => {
-                console.error("Erreur lors de la mise à jour :", error);
+            .catch(() => {
                 alert("Une erreur est survenue lors de la mise à jour du profil ou de l'image.");
             });
-    }
-
-    function checkImageUpdate(imagePath, interval, timeout) {
-        const startTime = Date.now();
-
-        const check = () => {
-            const img = new Image();
-            img.onload = () => {
-                document.getElementById("avatar").src = imagePath;
-                console.log("Nouvelle image chargée :", imagePath);
-            };
-            img.onerror = () => {
-                if (Date.now() - startTime < timeout) {
-                    console.log("Nouvelle image non encore disponible, nouvelle tentative...");
-                    setTimeout(check, interval);
-                } else {
-                    console.error("Nouvelle image non disponible après le délai imparti.");
-                    alert("La nouvelle image n'a pas pu être rechargée. Veuillez actualiser la page.");
-                }
-            };
-            img.src = imagePath; // Déclenche le chargement de l'image
-        };
-        check();
     }
 
     function uploadAvatar(file, nom) {
@@ -171,14 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
             body: formData
         })
             .then(response => {
-                console.log("Réponse de l'upload:", response.status, response.statusText);
                 if (!response.ok) {
                     throw new Error("Erreur lors de l'upload de l'image.");
                 }
-            })
-            .catch(error => {
-                console.error("Erreur d'upload :", error);
-                throw error;
             });
     }
 
