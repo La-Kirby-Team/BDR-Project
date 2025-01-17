@@ -50,3 +50,14 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error("Error loading sidebar:", error));
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+        const dropdownToggle = document.querySelector("#userDropdown"); // Target the dropdown button
+        if (dropdownToggle) {
+            new bootstrap.Dropdown(dropdownToggle);
+        } else {
+            console.warn("⚠️ User dropdown not found!");
+        }
+    }, 300);  // Delay to ensure the navbar is fully loaded
+});
