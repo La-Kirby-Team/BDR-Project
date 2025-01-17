@@ -317,7 +317,7 @@ public class Main {
 
 
         // Initialiser le SupplyController
-        SupplyController supplyController = new SupplyController(pool);
+        SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
 
@@ -325,6 +325,7 @@ public class Main {
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
         app.get("/manage-suppliers", ctx -> ctx.redirect("html/supply.html"));
         app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
+        app.get("/providerView", ctx -> ctx.redirect("html/providerView.html"));
 
 
     }
