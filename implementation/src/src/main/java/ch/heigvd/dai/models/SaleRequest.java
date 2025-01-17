@@ -1,32 +1,34 @@
 package ch.heigvd.dai.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class SaleRequest {
-    List<String> date;
-    List<String> vendeur;
-    List<String> client;
-    List<String> product;
-    List<Integer> volume;
-    List<String> recipient;
-    List<Double> tauxAlcohol;
-    List<Integer> quantity;
-    List<Double> price;
-
+    public List<String> customDate;
+    public List<String> saler;
+    public List<String> client;
+    public List<String> product;
+    public List<Integer> volume;
+    public List<String> recipient;
+    public List<Double> tauxAlcool;
+    public List<Integer> quantity;
+    public List<Double> prix;
 
 
     @Override
     public String toString() {
         return "SupplyRequest{ +"
-                + "date='" + date
-                + ", vendeur='" + vendeur
+                + "date='" + customDate
+                + ", vendeur='" + saler
                 + ", client='" + client
                 + ", product=" + product
                 + ", volume=" + volume
                 + ", recipient=" + recipient
-                + ", tauxAlcohol=" + tauxAlcohol
+                + ", tauxAlcohol=" + tauxAlcool
                 + ", quantity=" + quantity
-                + ", price=" + price + '\'';
+                + ", price=" + prix + '\'';
 
     }
 }
