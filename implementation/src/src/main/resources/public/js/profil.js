@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Variables pour stocker les données initiales
     let initialData = {};
-    const vendeurId = 1; // ID du vendeur (remplacez-le dynamiquement si nécessaire)
+    const vendeurId = 1;
 
-    // Boutons et champs du formulaire
     const editButton = document.getElementById("edit-button");
     const cancelButton = document.getElementById("cancel-button");
     const form = document.getElementById("profile-form");
@@ -12,48 +10,39 @@ document.addEventListener("DOMContentLoaded", function () {
     const avatarUpload = document.getElementById("avatar-upload");
     const fields = form.querySelectorAll("input, select");
 
-    // Charger les magasins et le profil du vendeur
-    Promise.all([fetchMagasins(), fetchVendeur(vendeurId)]).catch(() => {});
+    Promise.all([fetchMagasins(), fetchVendeur(vendeurId)]);
 
-    // Gestion du bouton Modifier
-    editButton.addEventListener("click", () => {
-        toggleEditMode(true);
-    });
-
-    // Gestion du bouton Annuler
+    editButton.addEventListener("click", () => toggleEditMode(true));
     cancelButton.addEventListener("click", () => {
         toggleEditMode(false);
         resetFormFields();
     });
 
-    // Gestion du formulaire de sauvegarde
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         saveProfile();
     });
 
-    let magasinsLoaded = false; // Variable pour suivre si les magasins ont été chargés
+    let magasinsLoaded = false;
 
     function fetchMagasins(forceReload = false) {
-        if (magasinsLoaded && !forceReload) {
-            return Promise.resolve(); // Ignorer l'appel si les magasins ont déjà été chargés
-        }
-        magasinsLoaded = true; // Marque les magasins comme chargés
+        if (magasinsLoaded && !forceReload) return Promise.resolve();
+        magasinsLoaded = true;
 
-        const magasinSelect = document.getElementById('idMagasin');
-        magasinSelect.innerHTML = ''; // Efface toutes les options existantes
+        const magasinSelect = document.getElementById("idMagasin");
+        magasinSelect.innerHTML = "";
 
-        return fetch('/api/magasins')
+        return fetch("/api/magasins")
             .then(response => response.json())
             .then(data => {
-                const addedIds = new Set(); // Utilisé pour éviter les doublons
+                const addedIds = new Set();
                 data.forEach(magasin => {
                     if (!addedIds.has(magasin.id)) {
-                        const option = document.createElement('option');
+                        const option = document.createElement("option");
                         option.value = magasin.id;
                         option.textContent = magasin.nom;
                         magasinSelect.appendChild(option);
-                        addedIds.add(magasin.id); // Marque l'ID comme ajouté
+                        addedIds.add(magasin.id);
                     }
                 });
             });
@@ -69,9 +58,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("estActif").value = vendeur.estActif.toString();
                 document.getElementById("idMagasin").value = vendeur.idMagasin;
 
-                // Mise à jour de l'avatar
-                const avatarPath = `src/main/resources/public/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?${new Date().getTime()}`;
-                document.getElementById("avatar").src = avatarPath;
+                const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
+                const avatarElement = document.getElementById("avatar");
+                const img = new Image();
+
+                img.onload = () => {
+                    avatarElement.src = avatarPath;
+                };
+                img.onerror = () => {
+                    avatarElement.src = "/imgs/Default_profile_picture.png";
+                };
+                img.src = avatarPath;
             });
     }
 
@@ -102,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
             nom: document.getElementById("username").value,
             salaire: parseFloat(document.getElementById("salaire").value),
             estActif: document.getElementById("estActif").value === "true",
-            idMagasin: parseInt(document.getElementById("idMagasin").value),
+            idMagasin: parseInt(document.getElementById("idMagasin").value)
         };
 
         const file = avatarUpload.files[0];
@@ -111,10 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         Promise.all([imagePromise, profilePromise])
             .then(() => {
-                toggleEditMode(false);
-
-                // Rafraîchir la page pour afficher les nouvelles modifications
-                window.location.href = window.location.href.split('?')[0] + '?reload=' + new Date().getTime();
+                location.reload(); // Rafraîchir la page après mise à jour
             })
             .catch(() => {
                 alert("Une erreur est survenue lors de la mise à jour du profil ou de l'image.");
@@ -129,12 +123,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return fetch(`/api/uploadAvatar?id=1&nom=${nom}`, {
             method: "POST",
             body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Erreur lors de l'upload de l'image.");
-                }
-            });
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("Erreur lors de l'upload de l'image.");
+            }
+        });
     }
 
     function updateProfile(data) {
