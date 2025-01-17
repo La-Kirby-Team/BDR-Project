@@ -138,7 +138,7 @@ public class Main {
             // Supprimez l'ancienne image si le nom ou prénom change
             if (ancienNom != null && ancienPrenom != null && (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom))) {
                 String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
-                String ancienFilePath = "../avatars/" + ancienFileName;
+                String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
                 Files.deleteIfExists(Paths.get(ancienFilePath));
             }
 
@@ -171,11 +171,10 @@ public class Main {
 
         app.post("/api/uploadAvatar", ctx -> {
             String vendeurId = ctx.queryParam("id");
-            String nom = ctx.queryParam("nom");
-            String prenom = ctx.queryParam("prenom");
+            String nomComplet = ctx.queryParam("nom"); // Contient le nom et prénom dans le même champ
 
-            if (vendeurId == null || nom == null || prenom == null) {
-                ctx.status(400).result("ID, nom ou prénom du vendeur manquant");
+            if (vendeurId == null || nomComplet == null) {
+                ctx.status(400).result("ID ou nom complet du vendeur manquant");
                 return;
             }
 
@@ -193,13 +192,10 @@ public class Main {
             }
 
             try (InputStream inputStream = file.content()) {
-                // Formatez le nom du fichier
-                String fileName = prenom.toLowerCase() + "_" + nom.toLowerCase() + ".png";
-                String directoryPath = "../avatars/";
+                // Formatez le nom du fichier en utilisant le nom complet
+                String fileName = nomComplet.toLowerCase().replace(" ", "_") + ".png"; // Remplace les espaces par des underscores
+                String directoryPath = "src/main/resources/public/avatars/";
                 String filePath = directoryPath + fileName;
-
-                // Supprimer l'ancienne image si elle existe
-                Files.deleteIfExists(Paths.get(filePath));
 
                 // Créez le répertoire si nécessaire
                 Files.createDirectories(Paths.get(directoryPath));
@@ -207,7 +203,7 @@ public class Main {
                 // Log avant la sauvegarde
                 System.out.println("Enregistrement du fichier : " + filePath);
 
-                // Enregistrez le fichier
+                // Enregistrez ou remplacez le fichier
                 Files.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
                 // Log après la sauvegarde
@@ -223,7 +219,6 @@ public class Main {
 
 
         app.post("/api/orders-confirm", ctx -> {
-            logger.info("ICI : {}", ctx.body());
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> requestData = mapper.readValue(ctx.body(), Map.class);
 

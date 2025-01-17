@@ -33,29 +33,18 @@ document.addEventListener("DOMContentLoaded", function () {
         saveProfile();
     });
 
-
     function fetchMagasins(forceReload = false) {
-        if (magasinsLoaded && !forceReload) {
-            console.log("fetchMagasins ignoré, déjà chargé.");
-            return Promise.resolve(); // Ignorer l'appel si déjà chargé
-        }
-        magasinsLoaded = true;
-
         const magasinSelect = document.getElementById('idMagasin');
         magasinSelect.innerHTML = ''; // Efface toutes les options existantes
 
         return fetch('/api/magasins')
             .then(response => response.json())
             .then(data => {
-                const addedIds = new Set(); // Utilisez un ensemble pour éviter les doublons
                 data.forEach(magasin => {
-                    if (!addedIds.has(magasin.id)) {
-                        const option = document.createElement('option');
-                        option.value = magasin.id;
-                        option.textContent = magasin.nom;
-                        magasinSelect.appendChild(option);
-                        addedIds.add(magasin.id);
-                    }
+                    const option = document.createElement('option');
+                    option.value = magasin.id;
+                    option.textContent = magasin.nom;
+                    magasinSelect.appendChild(option);
                 });
             })
             .catch(error => console.error('Erreur lors du chargement des magasins:', error));
@@ -65,18 +54,19 @@ document.addEventListener("DOMContentLoaded", function () {
         return fetch(`/api/vendeur/${id}`)
             .then(response => response.json())
             .then(vendeur => {
-                console.log("Données du vendeur :", vendeur); // Ajoutez ce log
+                console.log("Données du vendeur :", vendeur);
                 initialData = vendeur;
                 document.getElementById("username").value = vendeur.nom;
                 document.getElementById("salaire").value = vendeur.salaire;
                 document.getElementById("estActif").value = vendeur.estActif.toString();
                 document.getElementById("idMagasin").value = vendeur.idMagasin;
-                if (vendeur.avatar) {
-                    document.getElementById("avatar").src = vendeur.avatar;
-                }
-            });
-    }
 
+                // Mise à jour de l'avatar
+                const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?${new Date().getTime()}`;
+                document.getElementById("avatar").src = avatarPath;
+            })
+            .catch(error => console.error('Erreur lors du chargement du profil du vendeur:', error));
+    }
 
     function toggleEditMode(isEditing) {
         fields.forEach(field => {
@@ -116,47 +106,68 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         const file = avatarUpload.files[0];
-        if (file) {
-            // Vérifiez les formats acceptés
-            const allowedFormats = ['image/png', 'image/jpeg', 'image/jpg'];
-            if (!allowedFormats.includes(file.type)) {
-                alert('Format de fichier non pris en charge. Veuillez sélectionner un fichier JPG, JPEG ou PNG.');
-                return;
-            }
-        }
-
-        const imagePromise = file
-            ? uploadAvatar(file, updatedData.nom)
-            : Promise.resolve(); // Ne rien faire si aucun fichier n'est uploadé
-
+        const imagePromise = file ? uploadAvatar(file, updatedData.nom) : Promise.resolve();
         const profilePromise = updateProfile(updatedData);
 
         Promise.all([imagePromise, profilePromise])
             .then(() => {
                 alert("Profil et image mis à jour avec succès !");
                 toggleEditMode(false);
+
+                // Vérification périodique pour charger la nouvelle image
+                const updatedAvatarPath = `/avatars/${updatedData.nom.toLowerCase().replace(' ', '_')}.png?reload=${Math.random()}`;
+                checkImageUpdate(updatedAvatarPath, 500, 5000); // Vérifie toutes les 500ms, maximum 5 secondes
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error("Erreur lors de la mise à jour :", error);
                 alert("Une erreur est survenue lors de la mise à jour du profil ou de l'image.");
             });
     }
 
+    function checkImageUpdate(imagePath, interval, timeout) {
+        const startTime = Date.now();
+
+        const check = () => {
+            const img = new Image();
+            img.onload = () => {
+                document.getElementById("avatar").src = imagePath;
+                console.log("Nouvelle image chargée :", imagePath);
+            };
+            img.onerror = () => {
+                if (Date.now() - startTime < timeout) {
+                    console.log("Nouvelle image non encore disponible, nouvelle tentative...");
+                    setTimeout(check, interval); // Réessaie après l'intervalle
+                } else {
+                    console.error("Nouvelle image non disponible après le délai imparti.");
+                    alert("La nouvelle image n'a pas pu être rechargée. Veuillez actualiser la page.");
+                }
+            };
+            img.src = imagePath; // Déclenche le chargement de l'image
+        };
+
+        check(); // Lance la vérification initiale
+    }
+
+
     function uploadAvatar(file, nom) {
         const formData = new FormData();
         formData.append("avatar", file);
         formData.append("nom", nom);
-        formData.append("prenom", ""); // Remplacez par le prénom si nécessaire
 
         return fetch(`/api/uploadAvatar?id=1&nom=${nom}`, {
             method: "POST",
             body: formData
-        }).then(response => {
-            console.log("Réponse de l'upload:", response.status, response.statusText);
-            if (!response.ok) {
-                throw new Error("Erreur lors de l'upload de l'image.");
-            }
-        });
+        })
+            .then(response => {
+                console.log("Réponse de l'upload:", response.status, response.statusText);
+                if (!response.ok) {
+                    throw new Error("Erreur lors de l'upload de l'image.");
+                }
+            })
+            .catch(error => {
+                console.error("Erreur d'upload :", error);
+                throw error;
+            });
     }
 
     function updateProfile(data) {

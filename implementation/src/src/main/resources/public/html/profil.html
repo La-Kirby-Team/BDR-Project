@@ -190,7 +190,7 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            document.getElementById("avatar").src = `/avatars/${updatedData.nom.toLowerCase()}.png?${new Date().getTime()}`;
+                            document.getElementById("avatar").src = `src/main/resources/public/avatars/${updatedData.nom.toLowerCase()}.png?${new Date().getTime()}`;
                         } else {
                             alert("Erreur lors de la mise à jour de la photo de profil.");
                         }
