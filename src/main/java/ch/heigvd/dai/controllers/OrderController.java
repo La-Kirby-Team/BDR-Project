@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -25,20 +24,29 @@ public class OrderController {
 
         // Fetch all waiting orders
         String waitingOrdersQuery = Files.readString(Path.of("src/main/resources/public/sql/waitingOrders.sql"), StandardCharsets.UTF_8);
-        app.get("/api/orders-waiting", ctx -> {
-            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrdersQuery);
-            QueryResult queryResult = future.get();
 
-            ctx.json(queryResult.getRows().stream()
-                    .map(row -> Map.of(
-                            "id", ((ArrayRowData) row).get(0),
-                            "product", ((ArrayRowData) row).get(1),
-                            "quantity", ((ArrayRowData) row).get(2),
-                            "date", ((ArrayRowData) row).get(3),
-                            "status", ((ArrayRowData) row).get(4)
-                    ))
-                    .toList());
+        app.get("/api/orders-waiting", ctx -> {
+            try {
+                CompletableFuture<QueryResult> future = connection.sendPreparedStatement(waitingOrdersQuery);
+                QueryResult queryResult = future.get();
+
+                ctx.json(queryResult.getRows().stream()
+                        .map(row -> {
+                            ArrayRowData rowData = (ArrayRowData) row;
+                            return Map.of(
+                                    "produit", rowData.get(0), // Product name
+                                    "quantite", rowData.get(1), // Quantity
+                                    "dateCommande", rowData.get(2).toString(), // Convert date to String format
+                                    "joursDepuisCommande", rowData.get(3), // Days since order
+                                    "mouvementStockId", rowData.get(4) // Stock movement ID
+                            );
+                        })
+                        .toList());
+            } catch (Exception e) {
+                ctx.status(500).json(Map.of("error", "Erreur serveur: " + e.getMessage()));
+            }
         });
+
 
         // Confirm an order (change status to 'confirmed' and update stock)
         app.post("/api/orders-confirm", ctx -> {
@@ -52,39 +60,19 @@ public class OrderController {
 
             // Update the order status to confirmed
             String updateOrderQuery = """
-                UPDATE Commandes
-                SET status = 'confirmed', received_date = ?
-                WHERE id = ?
-            """;
+                        UPDATE mouvementStock
+                        SET date = ?
+                        WHERE id = ?
+                    """;
 
             CompletableFuture<QueryResult> futureOrderUpdate = connection.sendPreparedStatement(updateOrderQuery, List.of(receivedDate, orderId));
-
-            // Update the stock quantity based on the received order
-            String updateStockQuery = """
-                UPDATE Stock
-                SET quantity = quantity + ?
-                WHERE id = (
-                    SELECT product_id FROM Commandes WHERE id = ?
-                )
-            """;
-
-            CompletableFuture<QueryResult> futureStockUpdate = connection.sendPreparedStatement(updateStockQuery, Arrays.asList(receivedQuantity, orderId));
 
             // Handle responses
             futureOrderUpdate.thenAccept(orderResult -> {
                 if (orderResult.getRowsAffected() > 0) {
-                    futureStockUpdate.thenAccept(stockResult -> {
-                        if (stockResult.getRowsAffected() > 0) {
-                            ctx.status(200).json(Map.of("message", "Commande confirmée et stock mis à jour avec succès"));
-                        } else {
-                            ctx.status(404).json(Map.of("error", "Stock non trouvé pour cette commande"));
-                        }
-                    }).exceptionally(e -> {
-                        ctx.status(500).json(Map.of("error", "Erreur mise à jour du stock : " + e.getMessage()));
-                        return null;
-                    });
+                    ctx.status(200).json(Map.of("message", "Commande confirmée et stock mis à jour avec succès"));
                 } else {
-                    ctx.status(404).json(Map.of("error", "Commande non trouvée"));
+                    ctx.status(404).json(Map.of("error", "Stock non trouvé pour cette commande"));
                 }
             }).exceptionally(e -> {
                 ctx.status(500).json(Map.of("error", "Erreur lors de la confirmation de la commande : " + e.getMessage()));
