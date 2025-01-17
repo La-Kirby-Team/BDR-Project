@@ -1,0 +1,13 @@
+.formChamp{
+    margin: 15px;
+}
+
+.custom-btn-size {
+    padding: 0.375rem 0.75rem; /* Taille intermédiaire */
+    font-size: 1rem; /* Taille de police intermédiaire */
+    line-height: 1.5; /* Ajuste la hauteur de ligne pour un meilleur espacement */
+}
+
+.bouton{
+    padding-top: 20px;
+}

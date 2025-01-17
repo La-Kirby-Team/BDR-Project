@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winventory - Gestion de Stock de Vin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/accueilStyle.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container text-center" style="margin-top: 5%">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Bienvenue sur Winventory</h1>
+        <p class="lead">Pour accéder au site, merci de vous connecter :</p>
+        <hr class="my-4">
+        <form>
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" class="form-control"
+                       style="width: 50%; display:block; margin:0 auto;"
+                       id="email" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">
+                    Nous ne partagerons peut-être jamais votre adresse e-mail avec qui que ce soit. Sauf s'il paie bien.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password"
+                       class="form-control"
+                       style="width: 50%; display:block; margin:0 auto;"
+                       id="password">
+            </div>
+            <hr class="my-2">
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-secondary">Mot de passe oublié</button>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Connexion</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<button class="btn btn-primary text-center">
+<a href="/html/mainMenu.html">Accéder au menu principal</a>
+</button>
+
+<footer class="text-center mt-4">
+    <p>&copy; 2024 Winventory. Tous droits réservés.</p>
+</footer>
+</body>
+</html>
