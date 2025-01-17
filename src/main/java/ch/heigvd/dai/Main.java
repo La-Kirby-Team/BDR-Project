@@ -82,15 +82,15 @@ public class Main {
       }
     });
 
-    app.get("/api/vendeur/{id}", ctx -> {
+        app.get("/api/vendeur/{id}", ctx -> {
             String vendeurId = ctx.pathParam("id");
             String infoVendeur = "SELECT id, idMagasin, nom, salaire, estActif FROM Vendeur WHERE id = ?";
 
-            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(infoVendeur, List.of(Integer.parseInt(vendeurId)));
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(infoVendeur, Arrays.asList(Integer.parseInt(vendeurId)));
             QueryResult queryResult = future.get();
 
             if (!queryResult.getRows().isEmpty()) {
-                ArrayRowData row = (ArrayRowData) queryResult.getRows().getFirst();
+                ArrayRowData row = (ArrayRowData) queryResult.getRows().get(0);
                 Map<String, Object> vendeur = Map.of(
                         "id", row.get(0),
                         "idMagasin", row.get(1),
@@ -106,11 +106,12 @@ public class Main {
             }
         });
 
-    app.get("/api/magasins", ctx -> {
-            String idMagasin = "SELECT id, nom FROM Magasin";
+        app.get("/api/magasins", ctx -> {
+            String idMagasin = "SELECT DISTINCT id, nom FROM Magasin";
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(idMagasin);
             QueryResult queryResult = future.get();
 
+            ObjectMapper mapper = new ObjectMapper();
             ctx.json(queryResult.getRows().stream()
                     .map(row -> Map.of(
                             "id", row.get(0),
@@ -119,80 +120,40 @@ public class Main {
                     .toList());
         });
 
-    app.post("/api/updateVendeur/{id}", ctx -> {
-                    String vendeurId = ctx.pathParam("id");
-                    ObjectMapper mapper = new ObjectMapper();
-                    Map updatedData = mapper.readValue(ctx.body(), Map.class);
+        app.post("/api/updateVendeur/{id}", ctx -> {
+            String vendeurId = ctx.pathParam("id");
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> updatedData = mapper.readValue(ctx.body(), Map.class);
 
-                    String ancienNom = (String) updatedData.get("ancienNom");
-                    String ancienPrenom = (String) updatedData.get("ancienPrenom");
-                    String nouveauNom = (String) updatedData.get("nom");
-                    String nouveauPrenom = (String) updatedData.get("prenom");
+            String ancienNom = (String) updatedData.get("ancienNom");
+            String ancienPrenom = (String) updatedData.get("ancienPrenom");
+            String nouveauNom = (String) updatedData.get("nom");
+            String nouveauPrenom = (String) updatedData.get("prenom");
 
-                    // Supprimez l'ancienne image si le nom ou prénom change
-                    if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
-                        String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
-                        String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
-                        Files.deleteIfExists(Paths.get(ancienFilePath));
-                    }
+            if (ancienNom != null && ancienPrenom != null && (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom))) {
+                String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
+                String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
+                Files.deleteIfExists(Paths.get(ancienFilePath));
+            }
 
-                    String updateQuery = """
-                    
-                            UPDATE Vendeur
-                                                SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
-                                                   WHERE i
-""";
+            String updateQuery = """
+                    UPDATE Vendeur
+                    SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
+                    WHERE id = ?
+                    """;
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
-                            updateQuery, Arrays.asList(
-                    updatedData.get(
-                            "idMagasin"),
+                    updateQuery, Arrays.asList(
+                            updatedData.get("idMagasin"),
                             nouveauNom,
-                    updatedData.get(
-                            "salaire"),
-                    updatedData.get("estActif"),
-                    Integer.parseInt(
-
-                vendeurId)
-            ));
-            });
-
-        app.post("/api/orders-confirm", ctx -> {
-            ObjectMapper mapper = new ObjectMapper();
-            Map requestData = mapper.readValue(ctx.body(), Map.class);
-
-            int mouvementStockId = Integer.parseInt(requestData.get("id").toString());
-            String receivedDate = requestData.get("date").toString();
-            int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
-
-            String updateQuery =
-                    """
-                            UPDATE MouvementStock
-                            SET date = ?, quantite = ?
-                            WHERE id = ?
-                            """;
-
-
-            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(
-                    receivedDate,
-                    receivedQuantity,
-                    mouvementStockId
-            ));
+                            updatedData.get("salaire"),
+                            updatedData.get("estActif"),
+                            Integer.parseInt(vendeurId)
+                    ));
 
             future.thenAccept(queryResult -> {
                 if (queryResult.getRowsAffected() > 0) {
-                    ctx.status(200).result("Commande mise à jour avec succès");
-                } else {
-                    ctx.status(404).result("MouvementStock non trouvé");
-                }
-            }).exceptionally(e -> {
-                ctx.status(500).result("Erreur interne : " + e.getMessage());
-                return null;
-            });
-
-            future.thenAccept(queryResult -> {
-                if (queryResult.getRowsAffected() > 0) {
-                    ctx.status(200).result("Mise à jour réussie");
+                    ctx.status(200).result("Profil mis à jour avec succès");
                 } else {
                     ctx.status(404).result("Vendeur non trouvé");
                 }
@@ -202,13 +163,12 @@ public class Main {
             });
         });
 
-    app.post("/api/uploadAvatar", ctx -> {
+        app.post("/api/uploadAvatar", ctx -> {
             String vendeurId = ctx.queryParam("id");
-            String nom = ctx.queryParam("nom");
-            String prenom = ctx.queryParam("prenom");
+            String nomComplet = ctx.queryParam("nom");
 
-            if (vendeurId == null || nom == null || prenom == null) {
-                ctx.status(400).result("ID, nom ou prénom du vendeur manquant");
+            if (vendeurId == null || nomComplet == null) {
+                ctx.status(400).result("ID ou nom complet du vendeur manquant");
                 return;
             }
 
@@ -218,19 +178,20 @@ public class Main {
                 return;
             }
 
+            String contentType = file.contentType();
+            if (!contentType.equals("image/png") && !contentType.equals("image/jpeg") && !contentType.equals("image/jpg")) {
+                ctx.status(400).result("Format de fichier non pris en charge.");
+                return;
+            }
+
             try (InputStream inputStream = file.content()) {
-                // Formatez le nom du fichier en utilisant le nom et prénom
-                String fileName = prenom.toLowerCase() + "_" + nom.toLowerCase() + ".png";
-                String directoryPath = "public/avatars/";
+                String fileName = nomComplet.toLowerCase().replace(" ", "_") + ".png";
+                String directoryPath = "src/main/resources/public/avatars/";
                 String filePath = directoryPath + fileName;
 
-                // Créez le répertoire si nécessaire
                 Files.createDirectories(Paths.get(directoryPath));
 
-                // Enregistrez le fichier
                 Files.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-                System.out.println("Fichier enregistré à : " + filePath);
 
                 ctx.status(200).result("Avatar mis à jour avec succès !");
             } catch (Exception e) {
