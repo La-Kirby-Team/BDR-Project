@@ -1,5 +1,5 @@
 FROM eclipse-temurin:21-jre
-LABEL authors="Carbonara Nicolas, Surbeck Léon"
+LABEL authors="Lestiboudois Maxime, Parisod Nathan, Surbeck Léon"
 WORKDIR /app
 COPY target/java-tcp-programming-1.0-SNAPSHOT.jar /app/app.jar
 EXPOSE 4242/tcp
