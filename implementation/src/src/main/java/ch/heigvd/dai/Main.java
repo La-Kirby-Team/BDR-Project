@@ -111,7 +111,7 @@ public class Main {
         });
 
         app.get("/api/magasins", ctx -> {
-            String idMagasin = "SELECT id, nom FROM Magasin";
+            String idMagasin = "SELECT DISTINCT id, nom FROM Magasin";
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(idMagasin);
             QueryResult queryResult = future.get();
 
@@ -138,7 +138,7 @@ public class Main {
             // Supprimez l'ancienne image si le nom ou prénom change
             if (ancienNom != null && ancienPrenom != null && (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom))) {
                 String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
-                String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
+                String ancienFilePath = "../avatars/" + ancienFileName;
                 Files.deleteIfExists(Paths.get(ancienFilePath));
             }
 
@@ -185,10 +185,17 @@ public class Main {
                 return;
             }
 
+            // Vérifiez le type de fichier accepté
+            String contentType = file.contentType();
+            if (!contentType.equals("image/png") && !contentType.equals("image/jpeg") && !contentType.equals("image/jpg")) {
+                ctx.status(400).result("Format de fichier non pris en charge. Formats acceptés : PNG, JPEG, JPG.");
+                return;
+            }
+
             try (InputStream inputStream = file.content()) {
-                // Formatez le nom du fichier en utilisant le nom et prénom
+                // Formatez le nom du fichier
                 String fileName = prenom.toLowerCase() + "_" + nom.toLowerCase() + ".png";
-                String directoryPath = "src/main/resources/public/avatars/";
+                String directoryPath = "../avatars/";
                 String filePath = directoryPath + fileName;
 
                 // Supprimer l'ancienne image si elle existe
@@ -197,16 +204,23 @@ public class Main {
                 // Créez le répertoire si nécessaire
                 Files.createDirectories(Paths.get(directoryPath));
 
+                // Log avant la sauvegarde
+                System.out.println("Enregistrement du fichier : " + filePath);
+
                 // Enregistrez le fichier
                 Files.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
-                System.out.println("Fichier enregistré à : " + filePath);
+                // Log après la sauvegarde
+                System.out.println("Fichier enregistré avec succès à : " + filePath);
 
                 ctx.status(200).result("Avatar mis à jour avec succès !");
             } catch (Exception e) {
+                // Log de l'erreur
+                e.printStackTrace();
                 ctx.status(500).result("Erreur lors de l'upload de l'avatar : " + e.getMessage());
             }
         });
+
 
         app.post("/api/orders-confirm", ctx -> {
             logger.info("ICI : {}", ctx.body());

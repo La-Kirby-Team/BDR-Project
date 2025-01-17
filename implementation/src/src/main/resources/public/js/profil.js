@@ -33,25 +33,39 @@ document.addEventListener("DOMContentLoaded", function () {
         saveProfile();
     });
 
-    // Fonctions utilitaires
-    function fetchMagasins() {
-        return fetch("/api/magasins")
+
+    function fetchMagasins(forceReload = false) {
+        if (magasinsLoaded && !forceReload) {
+            console.log("fetchMagasins ignoré, déjà chargé.");
+            return Promise.resolve(); // Ignorer l'appel si déjà chargé
+        }
+        magasinsLoaded = true;
+
+        const magasinSelect = document.getElementById('idMagasin');
+        magasinSelect.innerHTML = ''; // Efface toutes les options existantes
+
+        return fetch('/api/magasins')
             .then(response => response.json())
             .then(data => {
-                const magasinSelect = document.getElementById("idMagasin");
+                const addedIds = new Set(); // Utilisez un ensemble pour éviter les doublons
                 data.forEach(magasin => {
-                    const option = document.createElement("option");
-                    option.value = magasin.id;
-                    option.textContent = magasin.nom;
-                    magasinSelect.appendChild(option);
+                    if (!addedIds.has(magasin.id)) {
+                        const option = document.createElement('option');
+                        option.value = magasin.id;
+                        option.textContent = magasin.nom;
+                        magasinSelect.appendChild(option);
+                        addedIds.add(magasin.id);
+                    }
                 });
-            });
+            })
+            .catch(error => console.error('Erreur lors du chargement des magasins:', error));
     }
 
     function fetchVendeur(id) {
         return fetch(`/api/vendeur/${id}`)
             .then(response => response.json())
             .then(vendeur => {
+                console.log("Données du vendeur :", vendeur); // Ajoutez ce log
                 initialData = vendeur;
                 document.getElementById("username").value = vendeur.nom;
                 document.getElementById("salaire").value = vendeur.salaire;
@@ -62,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
     }
+
 
     function toggleEditMode(isEditing) {
         fields.forEach(field => {
@@ -86,52 +101,73 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function saveProfile() {
+        const idMagasin = document.getElementById('idMagasin').value;
+
+        if (!idMagasin) {
+            alert('Veuillez sélectionner un magasin.');
+            return;
+        }
+
         const updatedData = {
-            nom: document.getElementById("username").value,
-            salaire: parseFloat(document.getElementById("salaire").value),
-            estActif: document.getElementById("estActif").value === "true",
-            idMagasin: parseInt(document.getElementById("idMagasin").value),
-            ancienNom: initialData.nom,
-            ancienPrenom: "" // Ajoutez le prénom si nécessaire
+            nom: document.getElementById('username').value,
+            salaire: parseFloat(document.getElementById('salaire').value),
+            estActif: document.getElementById('estActif').value === "true",
+            idMagasin: parseInt(idMagasin)
         };
 
         const file = avatarUpload.files[0];
         if (file) {
-            const formData = new FormData();
-            formData.append("avatar", file);
-            formData.append("nom", updatedData.nom);
-            formData.append("prenom", ""); // Ajoutez le prénom si nécessaire
-
-            fetch(`/api/uploadAvatar?id=${vendeurId}&nom=${updatedData.nom}`, {
-                method: "POST",
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        document.getElementById("avatar").src = `/avatars/${updatedData.nom.toLowerCase()}.png?${new Date().getTime()}`;
-                    } else {
-                        alert("Erreur lors de la mise à jour de la photo de profil.");
-                    }
-                })
-                .catch(error => console.error("Erreur lors de l'upload de la photo de profil:", error));
+            // Vérifiez les formats acceptés
+            const allowedFormats = ['image/png', 'image/jpeg', 'image/jpg'];
+            if (!allowedFormats.includes(file.type)) {
+                alert('Format de fichier non pris en charge. Veuillez sélectionner un fichier JPG, JPEG ou PNG.');
+                return;
+            }
         }
 
-        fetch(`/api/updateVendeur/${vendeurId}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(updatedData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert("Profil mis à jour avec succès !");
-                    initialData = updatedData;
-                    toggleEditMode(false);
-                } else {
-                    alert("Erreur lors de la mise à jour du profil.");
-                }
+        const imagePromise = file
+            ? uploadAvatar(file, updatedData.nom)
+            : Promise.resolve(); // Ne rien faire si aucun fichier n'est uploadé
+
+        const profilePromise = updateProfile(updatedData);
+
+        Promise.all([imagePromise, profilePromise])
+            .then(() => {
+                alert("Profil et image mis à jour avec succès !");
+                toggleEditMode(false);
             })
-            .catch(error => console.error("Erreur lors de la mise à jour du profil:", error));
+            .catch((error) => {
+                console.error("Erreur lors de la mise à jour :", error);
+                alert("Une erreur est survenue lors de la mise à jour du profil ou de l'image.");
+            });
+    }
+
+    function uploadAvatar(file, nom) {
+        const formData = new FormData();
+        formData.append("avatar", file);
+        formData.append("nom", nom);
+        formData.append("prenom", ""); // Remplacez par le prénom si nécessaire
+
+        return fetch(`/api/uploadAvatar?id=1&nom=${nom}`, {
+            method: "POST",
+            body: formData
+        }).then(response => {
+            console.log("Réponse de l'upload:", response.status, response.statusText);
+            if (!response.ok) {
+                throw new Error("Erreur lors de l'upload de l'image.");
+            }
+        });
+    }
+
+    function updateProfile(data) {
+        return fetch("/api/updateVendeur/1", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("Erreur lors de la mise à jour du profil.");
+            }
+        });
     }
 });
