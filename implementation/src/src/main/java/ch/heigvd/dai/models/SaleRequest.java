@@ -1,10 +1,12 @@
 package ch.heigvd.dai.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SaleRequest {
     public List<String> customDate;
     public List<String> saler;
