@@ -33,19 +33,32 @@ document.addEventListener("DOMContentLoaded", function () {
         saveProfile();
     });
 
+    let magasinsLoaded = false; // Variable pour suivre si les magasins ont été chargés
+
     function fetchMagasins(forceReload = false) {
+        if (magasinsLoaded && !forceReload) {
+            console.log("fetchMagasins ignoré, déjà chargé.");
+            return Promise.resolve(); // Ignorer l'appel si les magasins ont déjà été chargés
+        }
+        magasinsLoaded = true; // Marque les magasins comme chargés
+
         const magasinSelect = document.getElementById('idMagasin');
         magasinSelect.innerHTML = ''; // Efface toutes les options existantes
 
         return fetch('/api/magasins')
             .then(response => response.json())
             .then(data => {
+                const addedIds = new Set(); // Utilisé pour éviter les doublons
                 data.forEach(magasin => {
-                    const option = document.createElement('option');
-                    option.value = magasin.id;
-                    option.textContent = magasin.nom;
-                    magasinSelect.appendChild(option);
+                    if (!addedIds.has(magasin.id)) {
+                        const option = document.createElement('option');
+                        option.value = magasin.id;
+                        option.textContent = magasin.nom;
+                        magasinSelect.appendChild(option);
+                        addedIds.add(magasin.id); // Marque l'ID comme ajouté
+                    }
                 });
+                console.log("Magasins chargés :", data);
             })
             .catch(error => console.error('Erreur lors du chargement des magasins:', error));
     }
