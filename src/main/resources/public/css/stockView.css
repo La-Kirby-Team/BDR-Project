@@ -1,0 +1,34 @@
+/* Search bar styling */
+#searchStock {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+/* Table styling */
+#stock-table th {
+    background-color: #444; /* Dark mode */
+    color: white;
+    text-align: left;
+}
+
+body.light-mode #stock-table th {
+    background-color: #ddd; /* Light mode */
+    color: black;
+}
+
+/* Table hover effect */
+#stock-table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    cursor: pointer;
+}
+#stock-table tr {
+    cursor: pointer; /* Changes cursor to pointer */
+    transition: background-color 0.2s ease-in-out;
+}
+
+#stock-table tr:hover {
+    background-color: rgba(0, 123, 255, 0.2); /* Subtle highlight effect */
+}
