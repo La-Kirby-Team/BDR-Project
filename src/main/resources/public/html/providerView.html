@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Winventory - Gestion des Fournisseurs</title>
+</head>
+<body>
+
+<!-- Navbar & Sidebar -->
+<div id="navbar-placeholder"></div>
+<div id="sidebar-placeholder"></div>
+
+<!-- Main Content -->
+<div class="container-fluid content-wrapper">
+  <div class="row w-75 mx-auto mt-4">
+    <div class="col-12">
+      <div class="info-box">
+        <h5>Fournisseurs</h5>
+
+        <!-- Add Provider Button -->
+        <button id="add-provider-button" class="btn btn-success mb-3">Ajouter un fournisseur</button>
+
+        <!-- Search Bar -->
+        <input type="text" id="search-provider" class="form-control" placeholder="Rechercher un fournisseur..." style="margin-bottom: 3%">
+
+        <!-- Provider Table -->
+        <table id="provider-table" class="table table-dark table-striped">
+          <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Adresse</th>
+            <th>Numéro de Téléphone</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Dynamic content inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>Blablé, rue des Canettes 25<br>Winventory SA</p>
+</footer>
+
+<!-- Scripts / Style -->
+<script src="../js/providerView.js"></script>
+<link rel="stylesheet" href="../css/mainStyle.css">
+<link rel="stylesheet" href="../css/providerView.css">
+<script src="../js/navSideBars.js"></script>
+
+</body>
+</html>

@@ -59,7 +59,7 @@ public class Main {
 
 
 
-        app.get("/api/vendeur/{id}", ctx -> {
+    app.get("/api/vendeur/{id}", ctx -> {
             String vendeurId = ctx.pathParam("id");
             String infoVendeur = "SELECT id, idMagasin, nom, salaire, estActif FROM Vendeur WHERE id = ?";
 
@@ -83,7 +83,7 @@ public class Main {
             }
         });
 
-        app.get("/api/magasins", ctx -> {
+    app.get("/api/magasins", ctx -> {
             String idMagasin = "SELECT id, nom FROM Magasin";
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(idMagasin);
             QueryResult queryResult = future.get();
@@ -96,43 +96,43 @@ public class Main {
                     .toList());
         });
 
-        app.post("/api/updateVendeur/{id}", ctx -> {
-            String vendeurId = ctx.pathParam("id");
-            ObjectMapper mapper = new ObjectMapper();
-            Map updatedData = mapper.readValue(ctx.body(), Map.class);
+    app.post("/api/updateVendeur/{id}", ctx -> {
+                    String vendeurId = ctx.pathParam("id");
+                    ObjectMapper mapper = new ObjectMapper();
+                    Map updatedData = mapper.readValue(ctx.body(), Map.class);
 
-            String ancienNom = (String) updatedData.get("ancienNom");
-            String ancienPrenom = (String) updatedData.get("ancienPrenom");
-            String nouveauNom = (String) updatedData.get("nom");
-            String nouveauPrenom = (String) updatedData.get("prenom");
+                    String ancienNom = (String) updatedData.get("ancienNom");
+                    String ancienPrenom = (String) updatedData.get("ancienPrenom");
+                    String nouveauNom = (String) updatedData.get("nom");
+                    String nouveauPrenom = (String) updatedData.get("prenom");
 
-            // Supprimez l'ancienne image si le nom ou prénom change
-            if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
-                String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
-                String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
-                Files.deleteIfExists(Paths.get(ancienFilePath));
-            }
+                    // Supprimez l'ancienne image si le nom ou prénom change
+                    if (!ancienNom.equalsIgnoreCase(nouveauNom) || !ancienPrenom.equalsIgnoreCase(nouveauPrenom)) {
+                        String ancienFileName = ancienPrenom.toLowerCase() + "_" + ancienNom.toLowerCase() + ".png";
+                        String ancienFilePath = "src/main/resources/public/avatars/" + ancienFileName;
+                        Files.deleteIfExists(Paths.get(ancienFilePath));
+                    }
 
-            String updateQuery = """
+                    String updateQuery = """
                     
-                                                UPDATE Vendeur
-                                                                    SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
-                                                                       WHERE i
-                    """;
+                            UPDATE Vendeur
+                                                SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
+                                                   WHERE i
+""";
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
-                    updateQuery, Arrays.asList(
-                            updatedData.get(
-                                    "idMagasin"),
+                            updateQuery, Arrays.asList(
+                    updatedData.get(
+                            "idMagasin"),
                             nouveauNom,
-                            updatedData.get(
-                                    "salaire"),
-                            updatedData.get("estActif"),
-                            Integer.parseInt(
+                    updatedData.get(
+                            "salaire"),
+                    updatedData.get("estActif"),
+                    Integer.parseInt(
 
-                                    vendeurId)
-                    ));
-        });
+                vendeurId)
+            ));
+            });
 
         app.post("/api/uploadAvatar", ctx -> {
             String vendeurId = ctx.queryParam("id");
@@ -180,20 +180,21 @@ public class Main {
         stockController.registerRoutes(app, connection);
 
 
-        // Initialiser le SupplyController
+      // Initialiser le SupplyController
         SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
-        //Inialiser le AddProviderController
-        AddProviderController appProviderController = new AddProviderController();
-        appProviderController.registerRoutes(app, connection);
+      //Inialiser le AddProviderController
+      AddProviderController appProviderController = new AddProviderController();
+      appProviderController.registerRoutes(app, connection);
 
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
-        app.get("/manage-suppliers", ctx -> ctx.redirect("html/supply.html"));
+        app.get("/orders", ctx -> ctx.redirect("html/supply.html"));
         app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
         app.get("/add-provider", ctx -> ctx.redirect("html/addProvider.html"));
+        app.get("/providerView", ctx -> ctx.redirect("html/providerView.html"));
 
 
     }
