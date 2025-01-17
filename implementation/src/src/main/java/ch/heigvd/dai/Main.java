@@ -314,9 +314,24 @@ public class Main {
             });
         });
 
+      app.get("/api/providers", ctx -> {
+          String query = "SELECT id, nom, adresse, numeroTelephone FROM Fournisseur ORDER BY nom;";
+          CompletableFuture<QueryResult> future = connection.sendPreparedStatement(query);
+          QueryResult queryResult = future.get();
+          ctx.json(queryResult.getRows().stream()
+                  .map(row -> Map.of(
+                          "id", row.get(0),
+                          "nom", row.get(1),
+                          "adresse", row.get(2),
+                          "numeroTelephone", row.get(3)
+                  ))
+                  .toList());
+      });
 
 
-        // Initialiser le SupplyController
+
+
+      // Initialiser le SupplyController
         SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
@@ -327,7 +342,7 @@ public class Main {
 
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
-        app.get("/manage-suppliers", ctx -> ctx.redirect("html/supply.html"));
+        app.get("/orders", ctx -> ctx.redirect("html/supply.html"));
         app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
         app.get("/add-provider", ctx -> ctx.redirect("html/addProvider.html"));
         app.get("/providerView", ctx -> ctx.redirect("html/providerView.html"));

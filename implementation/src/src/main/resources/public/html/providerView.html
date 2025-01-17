@@ -4,7 +4,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Winventory - Gestion de Stock de Vin</title>
+  <title>Winventory - Gestion des Fournisseurs</title>
 </head>
 <body>
 
@@ -19,17 +19,19 @@
       <div class="info-box">
         <h5>Fournisseurs</h5>
 
-        <!-- Search Bar -->
-        <input type="text" id="search-stock" class="form-control" placeholder="Rechercher un fournisseur..." style="margin-bottom: 3%">
+        <!-- Add Provider Button -->
+        <button id="add-provider-button" class="btn btn-success mb-3">Ajouter un fournisseur</button>
 
-        <!-- Stock Table -->
-        <table id="stock-table" class="table table-dark table-striped">
+        <!-- Search Bar -->
+        <input type="text" id="search-provider" class="form-control" placeholder="Rechercher un fournisseur..." style="margin-bottom: 3%">
+
+        <!-- Provider Table -->
+        <table id="provider-table" class="table table-dark table-striped">
           <thead>
           <tr>
-            <th>Nom du produit</th>
-            <th>Volume</th>
-            <th>Recipient</th>
-            <th>Quantité</th>
+            <th>Nom</th>
+            <th>Adresse</th>
+            <th>Numéro de Téléphone</th>
           </tr>
           </thead>
           <tbody>
@@ -46,44 +48,11 @@
   <p>Blablé, rue des Canettes 25<br>Winventory SA</p>
 </footer>
 
-<!-- Stock Edit Modal -->
-<div class="modal fade" id="editStockModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modifier Stock - <span id="modalProductName"></span></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="modalVolume" class="form-label">Volume :</label>
-            <input type="number" id="modalVolume" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="modalRecipient" class="form-label">Recipient :</label>
-            <input type="text" id="modalRecipient" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="modalQuantity" class="form-label">Quantité :</label>
-            <input type="number" id="modalQuantity" class="form-control" required />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary" id="confirmUpdateButton">Sauvegarder</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Scripts -->
-<script src="../js/navSideBars.js"></script>
-<script src="../js/stockView.js"></script>
+<!-- Scripts / Style -->
+<script src="../js/providerView.js"></script>
 <link rel="stylesheet" href="../css/mainStyle.css">
-<link rel="stylesheet" href="../css/stockView.css">
+<link rel="stylesheet" href="../css/providerView.css">
+<script src="../js/navSideBars.js"></script>
 
 </body>
 </html>
