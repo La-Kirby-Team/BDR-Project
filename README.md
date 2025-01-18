@@ -1,318 +1,506 @@
-# Projet de BDR
+# **Winventory - Gestion Intelligente des Stocks de Boissons** 🍷📦
 
-## Descriptif
+## **📢 Table des matières**
+- [👨‍💻 Équipe](#-équipe)
+- [📚 Description du Projet](#-description-du-projet)
+- [📌 Fonctionnalités Principales](#-fonctionnalités-principales)
+- [🎯 Objectif](#-objectif)
+- [🚀 Compilation, édition et lancement du projet](#compilation-édition-et-lancement-du-projet)
+- [📖 Documentation de l'API](#-documentation-de-lapi)
+- [📝 Détails de l'API](#-détails-de-lapi)
 
-Réaliser, par groupe de 3, une application complète de base de données relationnelle
+## **👨‍💻 Équipe** 
+- **Lestiboudois Maxime**
+- **Parisod Nathan**
+- **Surbeck Léon**
 
-Le projet comprendra les étapes suivantes :
+## **📚 Description du Projet**
+**Winventory** est une application web conçue pour faciliter la gestion des stocks de boissons, en particulier pour les cavistes, bars, restaurants et distributeurs. Grâce à une interface intuitive, Winventory permet de suivre les entrées et sorties de stock, gérer les fournisseurs, et optimiser l’approvisionnement en fonction des ventes et des besoins.
 
-- **Etape 1 : Cahier des charges**<br/>
-  Description détaillée de l’analyse des besoins. Cette analyse comprendra à la fois les
-  besoins en données et les besoins fonctionnels.
+---
 
-- **Etape 2 : Modélisation conceptuelle**<br/>
-  Réalisation du schéma conceptuel (schéma EA au format UML) de la base de données.
+## **📌 Fonctionnalités Principales**
 
-- **Etape 3 : Modélisation relationnelle**<br/>
-  Transformer le schéma EA en schéma relationnel.<br/>
-  Création de la base de données (script SQL) contenant les tables et les contraintes
-  d’intégrités référentielles.
+### **🛒 Gestion des Stocks**
+- Visualisation en temps réel des articles en stock.
+- Alertes automatiques pour les produits à faible quantité.
 
-- **Etape 4 : Requêtes, vues et triggers/procédures stockées**<br/>
-  Ecriture des requêtes qui seront utilisées dans l’application.<br/>
-  Création des vues, triggers/procédures stockées dans la base de données.
+### **📦 Gestion des Commandes et Approvisionnements**
+- Consultation des commandes en attente.
+- Mise à jour des réceptions de marchandises avec validation des quantités.
 
-- **Etape 5 : Application**<br/>
-  Réalisation de l’application web ou desktop.<br/>
-  Utilisation d’une API de connexion de l’application à la base de données (par ex JDBC).<br/>
-  Cette étape peut être commencée avant que les précédentes ne soient finies, c’est même
-  recommandé.
+### **👥 Gestion des Fournisseurs**
+- Ajout des fournisseurs via une interface dédiée.
 
-## Instructions générales
+### **🌐 Interface Web Moderne et Ergonomique**
+- Navigation fluide et design optimisé pour une expérience utilisateur agréable.
+- Thème clair/sombre pour un confort visuel personnalisé.
+- Menu interactif avec accès rapide aux différentes sections.
 
-- La base de données doit être en PostgreSQL
-- Une interface graphique claire et fonctionnelle suffit <br/>
-  L’effort doit être mis sur la partie base de données
-- Langages recommandés : <br/>
-  o Java <br/>
-  o C#  <br/>
-  o PHP <br/>
-- Technologies autorisées :<br/>
-  o Librairies graphiques (Bootstrap, JavaFX, …)
-  o Frameworks (Blazor, Play, …)
-  Il n’y a aucune obligation d’en utiliser, il est même souvent préférable de ne pas les
-  utiliser si vous n’avez aucunes connaissances préalables dans ces technologies.
-- Toutes les requêtes doivent être écrites "à la main" en SQL (pas avec des "langages
-  intermédiaires" tels que LINQ ni des ORM)
+### **⚡ Technologie**
+- API RESTful basée sur **Javalin** et **PostgreSQL**.
+- Déploiement avec **Docker & Traefik** pour une infrastructure robuste et scalable.
 
-**Tous les livrables sont à déposer sur Cyberlearn** <br/>
-La note sera mise sur le rendu final (avec la présentation), les rendus précédents (étapes 1
-à 3) donneront lieu à un feedback non noté.
+---
 
-## Rapport
+## **🎯 Objectif**
+Winventory vise à **simplifier** la gestion des stocks de boissons en offrant un suivi précis et une visibilité accrue sur les stocks, les commandes et les fournisseurs.
 
-Le rapport devra être complet, son contenu (schémas, …) être à jour, et contenir au moins :
+Que vous soyez un **gérant de bar**, un **responsable de stock**, ou un **caviste**, **Winventory** vous aide à éviter les ruptures de stock et à optimiser vos commandes pour une gestion plus efficace.
 
-- Une page de titre et une table des matières
-- Une introduction/description du projet
-- Le modèle EA (schéma + descriptions)
-- Le modèle relationnel
-- La description de l’application réalisée (manuel utilisateur)
-- Une liste des éventuels bugs connus
-- Une conclusion
-- Des annexes (guide d’installation/de déploiement, …)
+**Gérez vos stocks intelligemment avec Winventory !**
 
-## Deadlines
+---
+# Compilation, édition et lancement du projet
 
-| Livrables                                                                                                                                                                                |      Date de remise       |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------:|
-| **Etape 1:** <br/>Cahier des charges                                                                                                                                                     | **13.10.2024** <br/>23h59 |
-| **Etape 2:** <br/>Schéma UML                                                                                                                                                             | **06.11.2024** <br/>23h59 |
-| **Etape 3:** <br/>- Schéma relationnel<br/>- Fichier de script SQL de création de la base des données(tables et contrainte d'intégrité référentielle) et insertion des tuples initiaux   | **01.12.2024**</br>23h59  |
-| **Présentation:** <br/>- Durée: 10-15 minutes par groupe (7-10 slides)<br/>- Description du projet, shéma EA, choix d'implémentation, démo...<br/>**A remettre:** slides de présentation | **24.01.2025** <br/>10h25 |
-| **Rendu final:** <br/>- Rapport au format PDF<br/>- Le script SQL complet de la création de la base de données<br/>- Le code source de l'application                                     |       **26.01.2025**<br/>23h59        |
+Note : Il vous faudra Java temurin 21 et Maven installés sur votre machine pour compiler et lancer ce projet.
+Vous pouvez les installer facilement grâce à [ce guide](#installation-et-configuration-dune-machine-virtuelle)
 
-# Notre projet - Winventory
+## **🚀 Compiler et lancer le projet en direct sur la machine hôte**
+Note : pour run le projet en local, il faut avoir une base de données PostgreSQL avec les réglages suivants (N'oubliez pas de mettre à jour le mot de passe dans le fichier `src/main/java/ch/heigvd/dai/Main.java`):
+- **Nom de la Base de données** : `winventory`
+- **Nom d'utilisateur** : `postgres`
+- **Mot de passe** : `WhateverYouWant`
+- **Port** : `5432`
 
-## Cahier des charges
+Le script SQL pour créer et remplir la base de données avec des données de base se trouve dans le dossier `db-scripts`. Vous devez les exécuter dans l'ordre pour vous assurer que l'application fonctionne correctement et que les données sont correctement insérées.
+Une fois cela fait, vous pouvez suivre les étapes suivantes pour compiler et lancer le projet en local :
+1. **Cloner le dépôt** : `git clone git@github.com:La-Kirby-Team/BDR-Project.git`
+2. **(Optionnel) Éditions** : Faites les modifications nécessaires dans le code source.
+3. **Compiler le projet** : `mvn clean package`
+4. **Lancer l'application** : `java -jar target/Winventory-0.9.jar`
 
-[Cahier des charges](CdC.md)
 
-## Modélisation conceptuelle (UML)
+## **🐳 Lancer le Projet avec Docker compose (DB incluse)**
+Note : pour run le projet avec Docker, il faut avoir [Docker](https://www.docker.com) et [Docker-compose](https://docs.docker.com/compose/) installés sur votre machine.
+1. **Cloner le dépôt** : `git clone git@github.com:La-Kirby-Team/BDR-Project.git`
+2. **(Optionnel) Éditions** : Faites les modifications nécessaires dans le code source.
+3. **Compiler le projet** : `mvn clean package`
+4. **Construire l'image Docker** : `docker build -t winventory .`
+5. **Lancer les conteneurs Docker (Vérifiez bien que votre terminal se trouve dans le dossier racine du projet)** : `docker compose up`
+6. **(Optionnel) Démarrer uniquement le serveur web** : `docker run --rm --name winventory_web -p 80:8080 winventory:latest` (Assurez-vous qu'une base de données PostgreSQL soit accessible depuis le conteneur Docker)
 
-![Schema](images/Schema_UML.png)
+Une fois cela fait, votre serveur web devrait être accessible à l'adresse `http://localhost:8080` si vous avez lancé le serveur web en local, sinon, vous pouvez accéder à l'application web via l'adresse que vous devez changer dans le docker-compose.yml (les règles de redirections de Traefik).
 
-## Modèle Relationnel
+## **📦 Publier l'Application avec Docker**
+Pour publier une image Docker sur ghcr.io, il vous faudra un compte GitHub et un token d'authentification [cliquez ici](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) pour la marche à suivre en anglais pour en créer / récupérer un (Chapitre Authenticating with a personal access token (classic)).
+1. **Cloner le dépôt** : `git clone git@github.com:La-Kirby-Team/BDR-Project.git`
+2. **(Optionnel) Éditions** : Faites les modifications nécessaires dans le code source.
+3. **Compiler le projet** : `mvn clean package`
+4. **Construire l'image Docker** : `docker build -t winventory .`
+5. **Taguer l'image pour le dépôt Docker Hub** : `docker tag winventory your-dockerhub-username/winventory:latest`
+6. **Se connecter à Docker Hub** : `docker login ghcr.io -u <Nom d'utilisatuer>` puis entrez votre token d'authentification.
+7. **Pousser l'image vers Docker Hub** : `docker push your-dockerhub-username/winventory:latest`
 
-Voici le modèle relationnel de notre projet:
+Assurez-vous de remplacer `your-dockerhub-username` par votre nom d'utilisateur Docker Hub.
 
-```
-Provenance(<u>id</u>, pays, région, producteur)
+Une fois l'image publiée, vous pouvez la déployer sur n'importe quel serveur en utilisant Docker :
 
-Produit(<u>idProduit</u>, idProvenance, nom, tauxAlcool)
-    Produit.idProvenance référence Provenance.id
-    Produit.idProvenance NOT NULL
+1. **Tirer l'image depuis Docker Hub** : `docker pull ghcr.io/VotrePseudoGithubICI/winventory:latest`
+2. **Lancer un conteneur avec l'image** : `docker run --rm --name winventory_web -p 80:8080 winventory:latest`
 
-Article(<u>idProduit, volume, recipient</u>, prix, datePeremption, dateFinDeVente)
-    Article.idProduit référence Produit.id
+Assurez vous qu'une base de données PostgreSQL soit accessible depuis le conteneur Docker, le docker-compose.yml qui est fourni vous permettra de lancer le projet ainsi que sa base de données.
+Pour faire fonctionner le docker-compose, il suffit de lancer la commande `docker-compose up` dans le dossier racine du projet.
+Cela permettra de déployer l'application et sa base de données sur votre serveur.
 
-MouvementStock(<u>id</u>, idMagasin, idProduit, volume, recipient, date, quantite)
-    MouvementStock.idMagasin référence Magasin.id
-    MouvementStock.idProduit, volume, recipient référence Article.idProduit, volume, recipient
-    MouvementStock.idProduit, volume, recipient NOT NULL
+---
 
-Magasin(<u>id</u>, nom, adresse, dateFermeture)
+## **📖 Documentation de l'API**
 
-Vendeur(<u>id</u>, idMagasin, nom, salaire, estActif)
-    Vendeur.idMagasin référence Magasin.id
-    Vendeur.idMagasin NOT NULL
+L'API RESTful de Winventory permet d'interagir avec les différentes fonctionnalités de l'application. Voici un aperçu des principales routes disponibles :
 
-Vente(<u>idMouvementStockt</u>, idVendeur, idClient)
-    Vente.idMouvementStock référence MouvementStock.id
-    Vente.idVendeur référence Vendeur.id
-    Vente.idVendeur NOT NULL
-    Vente.idClient référence Client.id
-    Vente.idClient NOT NULL
+### **🔒 Authentification**
+- `POST /api/auth/login` : Authentification de l'utilisateur.
 
-Approvisionnement(<u>idMouvementStock</u>, dateCommande)
-    Approvisionnement.idMouvementStock référence MouvementStock.id
+### **🛒 Vue des Stocks**
+- `GET /api/stock` : Récupérer la liste des articles en stock. 
 
-Client(<u>id</u>, nom, adresse, email, pointDeFidelite, annéeNaissance)
-    Client.email UNIQUE
+### **📦 Gestion des Commandes**
+- `GET /api/orders-waiting` : Récupérer la liste des commandes en attente (pas encore livrées).
+- `PUT /api/orders-confirm` : Confirmation de la livraison d'une commande.
 
-Fournisseur(<u>id</u>, nom, adresse, numeroTelephone)
+### **👥 Gestion des Fournisseurs**
+- `GET /api/providers` : Récupérer la liste des fournisseurs.
+- `POST /api/providers` : Ajouter un nouveau fournisseur.
+- `DELETE /api/providers/{id}` : Supprimer le fournisseur avec l'ID spécifié.
 
-Approvisionnement_Fournisseur(<u>idMouvementStock, idFournisseur</u>)
-    Approvisionnement_Fournisseur.idMouvementStock référence MouvementStock.id
-    Approvisionnement_Fournisseur.idFournisseur référence Fournisseur.id
-  
-```
+Toutes les routes nécessitent une authentification préalable via le endpoint `/api/auth/login`. Pour plus de détails, cliquez [ici](#-détails-de-lapi)
 
-## Création des tables SQL
 
-Voici le script SQL utilisé pour créer les tables de notre projet :
+---
 
-```
-CREATE TABLE IF NOT EXISTS Provenance(
-    id SERIAL,
-    pays VARCHAR(80),
-    region VARCHAR(80),
-    producteur VARCHAR(80),
-    CONSTRAINT PK_Provenance PRIMARY KEY (id)
-);
+## **🌐 Utilisation de l'application web avec cURL**
 
---CREATE TYPE typeRecipient AS ENUM ('bouteille', 'canette');
+Voici quelques exemples de commandes cURL pour interagir avec l'API RESTful de Winventory.
 
-CREATE TABLE IF NOT EXISTS Produit(
-    id SERIAL,
-    idProduit INTEGER NOT NULL,
-    nom VARCHAR(80) NOT NULL,
-    tauxAlcool DOUBLE PRECISION NOT NULL,
-    CONSTRAINT PK_Produit PRIMARY KEY (id)
-);
+### **🔒 Authentification**
+...
 
-CREATE TABLE IF NOT EXISTS Article(
-    idProduit INTEGER,
-    volume INTEGER,
-    recipient typeRecipient,
-    prix DOUBLE PRECISION NOT NULL,
-    datePeremption DATE NOT NULL,
-    dateFinDeVente DATE,
-    CONSTRAINT PK_Article PRIMARY KEY (idProduit, volume, recipient),
-    CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+### **🛒 Vue des Stocks**
 
-CREATE TABLE IF NOT EXISTS Magasin(
-    id SERIAL,
-    nom VARCHAR(80) NOT NULL,
-    adresse VARCHAR(350) NOT NULL,
-    dateFermeture DATE,
-    CONSTRAINT PK_Magasin PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS MouvementStock(
-    id SERIAL,
-    idMagasin INTEGER NOT NULL,
-    idProduit INTEGER NOT NULL,
-    volume INTEGER NOT NULL,
-    recipient typeRecipient NOT NULL,
-    date DATE,
-    quantite INTEGER,
-    CONSTRAINT PK_MouvementStock PRIMARY KEY (id),
-    CONSTRAINT FK_MouvementStock_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT FK_MouvementStock_Article FOREIGN KEY (idProduit, volume, recipient) REFERENCES Article(idProduit, volume, recipient) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Vendeur(
-    id SERIAL,
-    idMagasin INTEGER NOT NULL,
-    nom VARCHAR(80),
-    salaire DOUBLE PRECISION,
-    estActif BOOL NOT NULL,
-    CONSTRAINT PK_Vendeur PRIMARY KEY (id),
-    CONSTRAINT FK_Vendeur_Magasin FOREIGN KEY (idMagasin) REFERENCES Magasin(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Client(
-    id SERIAL,
-    nom VARCHAR(80),
-    adresse VARCHAR(150),
-    email VARCHAR(100) UNIQUE,
-    pointDeFidelite INTEGER,
-    anneeNaissance INTEGER,
-    CONSTRAINT PK_Client PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS Vente(
-    idMouvementStock INTEGER,
-    idVendeur INTEGER NOT NULL,
-    idClient INTEGER NOT NULL,
-    CONSTRAINT PK_Vente PRIMARY KEY (idMouvementStock),
-    CONSTRAINT FK_Vente_MouvementStock FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT FK_Vente_Vendeur FOREIGN KEY (idVendeur) REFERENCES Vendeur(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT FK_Vente_Client FOREIGN KEY (idClient) REFERENCES Client(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS Approvisionnement(
-    idMouvementStock INTEGER,
-    dateCommande DATE NOT NULL,
-    CONSTRAINT PK_Approvisionnement PRIMARY KEY (idMouvementStock),
-    CONSTRAINT FK_Approvisionnement_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT check_DateCommande CHECK (dateCommande < CURRENT_DATE)
-);
-
-CREATE TABLE IF NOT EXISTS Fournisseur(
-    id SERIAL,
-    nom VARCHAR(80),
-    adresse VARCHAR(150),
-    numeroTelephone VARCHAR(30),
-    CONSTRAINT PK_Fournisseur PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS Approvisionnement_Fournisseur(
-    idMouvementStock INTEGER,
-    idFournisseur INTEGER,
-    CONSTRAINT PK_Approvisionnement_Fournisseur PRIMARY KEY (idMouvementStock, idFournisseur),
-    CONSTRAINT FK_Approvisionnement_Fournisseur_idMouvementStock FOREIGN KEY (idMouvementStock) REFERENCES Approvisionnement(idMouvementStock) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT FK_Approvisionnement_Fournisseur_idFournisseur FOREIGN KEY (idFournisseur) REFERENCES Fournisseur(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
+**Requête :**
+```sh
+curl -X GET http://localhost:8080/api/stock
 ```
 
-## Remplissage des tables SQL
-
-Voici le script SQL utilisé pour remplir les tables de notre projet :
-
+**Réponse :**
+```json
+[
+    ["1", "Vin Rouge", "750", "Bouteille", "20"],
+    ["2", "Vin Blanc", "500", "Bouteille", "5"],
+    ["3", "Champagne", "750", "Bouteille", "2"]
+]
 ```
--- Remplissage de la table Provenance
-INSERT INTO Provenance (pays, region, producteur) VALUES
-('France', 'Bordeaux', 'Château Margaux'),
-('Espagne', 'Ribera del Duero', 'Bodega Vega Sicilia'),
-('Italie', 'Toscane', 'Antinori'),
-('France', 'Champagne', 'Moët & Chandon'),
-('USA', 'Napa Valley', 'Robert Mondavi');
 
--- Remplissage de la table Produit
-INSERT INTO Produit (idProduit, nom, tauxAlcool) VALUES
-(1, 'Vin Rouge Bordeaux', 13.5),
-(2, 'Vin Blanc Chardonnay', 12.0),
-(3, 'Champagne Brut', 12.5),
-(4, 'Whiskey Single Malt', 40.0),
-(5, 'Bière Blonde', 5.0);
+### **📦 Gestion des Commandes**
 
--- Remplissage de la table Article
-INSERT INTO Article (idProduit, volume, recipient, datePeremption, prix) VALUES
-(1, 750, 'bouteille', '2025-12-31', 45.99),
-(1, 1500, 'bouteille', '2025-12-31', 89.99),
-(2, 750, 'bouteille', '2024-11-30', 35.99),
-(3, 750, 'bouteille', '2026-06-30', 55.00),
-(4, 700, 'bouteille', '2030-01-01', 120.00),
-(5, 330, 'canette', '2023-12-31', 2.50);
+**Requête :**
+```sh
+curl -X GET http://localhost:8080/api/orders-waiting
+```
 
--- Remplissage de la table Magasin
-INSERT INTO Magasin (nom, adresse) VALUES
-('Cave de Paris', '12 rue de la Paix, Paris, France'),
-('Wine World', '45 High Street, London, UK'),
-('Enoteca Roma', 'Via Condotti, 25, Rome, Italy');
+**Réponse :**
+```json
+[
+    {
+        "produit": "Vin Rouge",
+        "quantite": 50,
+        "dateCommande": "2023-10-01",
+        "joursDepuisCommande": 10,
+        "mouvementStockId": 1
+    },
+    {
+        "produit": "Vin Blanc",
+        "quantite": 30,
+        "dateCommande": "2023-10-05",
+        "joursDepuisCommande": 6,
+        "mouvementStockId": 2
+    }
+]
+```
 
--- Remplissage de la table MouvementStock
-INSERT INTO MouvementStock (idMagasin, idProduit, volume, recipient, date, quantite) VALUES
-(1, 1, 750, 'bouteille', '2024-01-10', 100),
-(1, 2, 750, 'bouteille', '2024-01-15', 50),
-(2, 3, 750, 'bouteille', '2024-01-20', 30),
-(2, 5, 330, 'canette', '2023-12-01', 500),
-(3, 4, 700, 'bouteille', '2023-11-25', 20);
+**Requête :**
+```sh
+curl -X PUT http://localhost:8080/api/orders-confirm -H "Content-Type: application/json" -d '{"id":1,"date":"2023-10-11","quantite":50}'
+```
 
--- Remplissage de la table Vendeur
-INSERT INTO Vendeur (idMagasin, nom, salaire) VALUES
-(1, 'Alice Dupont', 2500.00),
-(2, 'John Smith', 2200.00),
-(3, 'Giulia Rossi', 2400.00);
+**Réponse :**
+```json
+{
+    "message": "Commande confirmée avec succès."
+}
+```
 
--- Remplissage de la table Client
-INSERT INTO Client (nom, adresse, email, pointDeFidelite, anneeNaissance) VALUES
-('Paul Morel', '34 avenue des Champs, Paris, France', 'paul.morel@example.com', 120, 1985),
-('Anna Garcia', '23 Carrer Major, Barcelona, Spain', 'anna.garcia@example.com', 80, 1990),
-('James Taylor', '56 Broadway, New York, USA', 'james.taylor@example.com', 200, 1980);
+### **👥 Gestion des Fournisseurs**
 
--- Remplissage de la table Vente
-INSERT INTO Vente (idMouvementStock, idVendeur, idClient) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 2, 3);
+**Requête :**
+```sh
+curl -X GET http://localhost:8080/api/providers
+```
 
--- Remplissage de la table Approvisionnement
-INSERT INTO Approvisionnement (idMouvementStock, dateCommande) VALUES
-(4, '2023-11-01'),
-(5, '2023-10-15');
+**Réponse :**
+```json
+[
+    {
+        "id": 1,
+        "nom": "Fournisseur A",
+        "adresse": "123 Rue Principale",
+        "numeroTelephone": "+41 78 123 45 67"
+    },
+    {
+        "id": 2,
+        "nom": "Fournisseur B",
+        "adresse": "456 Avenue Secondaire",
+        "numeroTelephone": "+41 78 765 43 21"
+    }
+]
+```
 
--- Remplissage de la table Fournisseur
-INSERT INTO Fournisseur (nom, adresse, numeroTelephone) VALUES
-('Distrib Vins France', '45 rue du Vin, Bordeaux, France', '+33 5 56 00 00 01'),
-('Champagne Select', '12 avenue de la Champagne, Reims, France', '+33 3 26 00 00 02'),
-('Global Spirits', '99 Whiskey Lane, Dublin, Ireland', '+353 1 00 00 03');
+**Requête :**
+```sh
+curl -X POST http://localhost:8080/api/providers -H "Content-Type: application/json" -d '{"name":"Fournisseur C","address":"789 Boulevard Tertiaire","phone":"+41 78 987 65 43"}'
+```
 
--- Remplissage de la table Approvisionnement_Fournisseur
-INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALUES
-(4, 1),
-(5, 3);
+**Réponse :**
+```json
+{
+    "message": "Fournisseur ajouté avec succès."
+}
+```
+
+**Requête :**
+```sh
+curl -X DELETE http://localhost:8080/api/providers/1"
+```
+
+**Réponse :**
+```json
+{
+    "message": "Fournisseur supprimé avec succès."
+}
+```
+---
+# Installation et Configuration d'une Machine Virtuelle
+Ce guide vous aidera à installer et configurer Winventory, mais nous partons du principe que vous possédez déjà une machine virtuelle avec une distribution Linux installée. Si vous n'avez pas encore de machine virtuelle, vous pouvez suivre ce [guide](https://www.geeksforgeeks.org/how-to-install-ubuntu-on-virtualbox/) pour installer Ubuntu 20.04 LTS sur VirtualBox. Vous pouvez également utiliser un fournisseur de cloud comme AWS, Azure ou Google Cloud pour créer une machine virtuelle.
+## **🚀 Installation de Docker et Docker Compose**
+1. **Mettre à jour l'index des paquets** :
+```sh
+sudo apt update
+```
+2. **Installer les paquets permettant à apt d'utiliser un dépôt via HTTPS** :
+```sh
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+```
+3. **Ajouter la clé GPG officielle de Docker** :
+```sh
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+4. **Configurer le dépôt stable** :
+```sh
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+5. **Mettre à jour l'index des paquets** :
+```sh
+sudo apt update
+```
+6. **Installer Docker** :
+```sh
+sudo apt install docker-ce docker-ce-cli containerd.io
+```
+7. **Vérifier que Docker est correctement installé** :
+```sh
+sudo docker --version
+```
+8. **Installer Docker Compose** :
+```sh
+sudo apt install docker-compose
+```
+9. **Vérifier que Docker Compose est correctement installé** :
+```sh
+sudo docker-compose --version
+```
+
+## **🚀 Installation de SDKMAN!, Java SDK et Maven**
+
+SDKMAN! est un outil pratique pour gérer plusieurs versions de SDK sur votre machine. Voici comment l'installer :
+
+1. **Installer SDKMAN!** :
+```sh
+curl -s "https://get.sdkman.io" | bash
+```
+
+2. **Suivre les instructions à l'écran** pour terminer l'installation. Vous devrez ouvrir un nouveau terminal ou exécuter la commande suivante pour initialiser SDKMAN! :
+```sh
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+```
+
+3. **Vérifier l'installation** :
+```sh
+sdk version
+```
+
+4. **Installer Java temurin 21** :
+```sh
+sdk install java 21.0.4-tem
+```
+
+5. **Installer Maven** :
+```sh
+sdk install maven
+```
+
+SDKMAN! est maintenant installé et configuré sur votre machine. Vous pouvez utiliser SDKMAN! pour gérer facilement les versions de Java et d'autres SDK nécessaires pour votre projet.
+
+## Configuration de la zone DNS pour accéder à l'application web avec DuckDNS
+
+Pour configurer la zone DNS et accéder à votre application web via un domaine DuckDNS au lieu de son adresse ip publique, suivez les étapes ci-dessous :
+
+### 1. Créer un compte DuckDNS
+Rendez-vous sur [DuckDNS](http://www.duckdns.org/) et connectez-vous avec votre compte GitHub.
+
+### 2. Ajouter un domaine
+Cliquez sur le bouton `Add Domain` et choisissez un nom de domaine. Ce domaine sera utilisé pour accéder à votre application web.
+
+### 3. Configurer les enregistrements DNS
+Ajoutez les enregistrements DNS nécessaires pour pointer vers l'adresse IP de votre machine virtuelle.
+
+#### Ajouter un enregistrement `A`
+- **Nom de domaine** : `votre-domaine.duckdns.org`
+- **Adresse IP** : `IP_de_votre_machine_virtuelle`
+
+#### Ajouter un enregistrement `A` générique (wildcard)
+- **Nom de domaine** : `*.votre-domaine.duckdns.org`
+- **Adresse IP** : `IP_de_votre_machine_virtuelle`
+
+### 4. Tester la résolution DNS
+Depuis votre machine locale et votre machine virtuelle, testez la résolution DNS avec la commande suivante :
+```sh
+nslookup votre-domaine.duckdns.org
+```
+Vous devriez obtenir une réponse avec l'adresse IP de votre machine virtuelle.
+
+### 5. Accéder à l'application web
+Utilisez le domaine configuré pour accéder à votre application web. Par exemple, `http://votre-domaine.duckdns.org`.
+
+En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à votre application web via DuckDNS.
+
+
+
+---
+
+## **📝 Détails de l'API**
+### **🔒 Authentification**
+...
+
+### **🛒 Vue des Stocks**
+#### Endpoints
+
+**GET /api/stock**
+
+- **Description**: Cet endpoint permet de récupérer la liste des articles en stock.
+- **Requête**: Aucune donnée spécifique n'est requise dans la requête.
+- **Réponse**: La réponse est une liste d'articles en stock, chaque article étant représenté par un tableau de chaînes de caractères. Chaque tableau contient les informations suivantes :
+  - **ID**: L'identifiant unique de l'article.
+  - **Nom du produit**: Le nom du produit.
+  - **Volume**: Le volume de l'article.
+  - **Recipient**: Le récipient de l'article.
+  - **Quantité**: La quantité disponible de l'article.
+
+**GET /api/articles-lowQT**
+
+- **Description**: Cet endpoint permet de récupérer la liste des articles dont la quantité est faible.
+- **Requête**: Aucune donnée spécifique n'est requise dans la requête.
+- **Réponse**: La réponse est similaire à celle de l'endpoint `/api/stock`, mais ne contient que les articles dont la quantité est considérée comme faible.
+
+#### Fonctionnement
+
+- **Contrôleur**: `StockController`
+  - Le contrôleur utilise Javalin pour définir les routes de l'API.
+  - Il utilise une connexion à une base de données asynchrone pour exécuter des requêtes SQL et récupérer les données.
+
+- **Requêtes SQL**:
+  - **`stockQuery.sql`**: Cette requête SQL récupère les informations sur les articles en stock en joignant plusieurs tables (`Produit`, `Article`, `MouvementStock`) et en utilisant des fonctions de regroupement et de coalescence pour obtenir les données nécessaires.
+  - **`lowQTArticles.sql`**: Cette requête SQL est similaire à `stockQuery.sql`, mais elle filtre les articles pour ne récupérer que ceux dont la quantité est faible.
+
+#### Exemple de Réponse JSON
+
+```json
+[
+  ["1", "Vin Rouge", "750", "Bouteille", "20"],
+  ["2", "Vin Blanc", "500", "Bouteille", "5"],
+  ["3", "Champagne", "750", "Bouteille", "2"]
+]
+```
+
+### **📦 Gestion des Commandes**
+
+#### Endpoints
+
+**GET /api/orders-waiting**
+
+- **Description**: Cet endpoint permet de récupérer la liste des commandes en attente.
+- **Requête**: Aucune donnée spécifique n'est requise dans la requête.
+- **Réponse**: La réponse est une liste de commandes en attente, chaque commande étant représentée par un objet JSON contenant les informations suivantes :
+  - **produit**: Le nom du produit commandé.
+  - **quantite**: La quantité commandée.
+  - **dateCommande**: La date de la commande.
+  - **joursDepuisCommande**: Le nombre de jours écoulés depuis la commande.
+  - **mouvementStockId**: L'identifiant unique du mouvement de stock associé à la commande.
+
+**PUT /api/orders-confirm**
+
+- **Description**: Cet endpoint permet de confirmer la réception d'une commande.
+- **Requête**: La requête doit contenir un objet JSON avec les informations suivantes :
+  - **id**: L'identifiant unique du mouvement de stock.
+  - **date**: La date de réception de la commande.
+  - **quantite**: La quantité reçue.
+- **Réponse**: La réponse indique si la mise à jour de la commande a été effectuée avec succès ou si une erreur s'est produite.
+
+#### Fonctionnement
+
+- **Contrôleur**: `OrderController`
+  - Le contrôleur utilise Javalin pour définir les routes de l'API.
+  - Il utilise une connexion à une base de données asynchrone pour exécuter des requêtes SQL et récupérer les données.
+
+- **Requêtes SQL**:
+  - **`waitingOrders.sql`**: Cette requête SQL récupère les informations sur les commandes en attente en joignant plusieurs tables (`Approvisionnement`, `MouvementStock`, `Article`, `Produit`) et en utilisant des fonctions de calcul pour obtenir les données nécessaires.
+
+#### Exemple de Réponse JSON
+
+```json
+[
+  {
+    "produit": "Vin Rouge",
+    "quantite": 50,
+    "dateCommande": "2023-10-01",
+    "joursDepuisCommande": 10,
+    "mouvementStockId": 1
+  },
+  {
+    "produit": "Vin Blanc",
+    "quantite": 30,
+    "dateCommande": "2023-10-05",
+    "joursDepuisCommande": 6,
+    "mouvementStockId": 2
+  }
+]
+```
+
+### **👥 Gestion des Fournisseurs**
+
+#### Endpoints
+
+**GET /api/providers**
+
+- **Description**: Cet endpoint permet de récupérer la liste des fournisseurs.
+- **Requête**: Aucune donnée spécifique n'est requise dans la requête.
+- **Réponse**: La réponse est une liste de fournisseurs, chaque fournisseur étant représenté par un objet JSON contenant les informations suivantes :
+  - **id**: L'identifiant unique du fournisseur.
+  - **nom**: Le nom du fournisseur.
+  - **adresse**: L'adresse du fournisseur.
+  - **numeroTelephone**: Le numéro de téléphone du fournisseur.
+
+**POST /api/providers**
+
+- **Description**: Cet endpoint permet d'ajouter un nouveau fournisseur.
+- **Requête**: La requête doit contenir un objet JSON avec les informations suivantes :
+  - **name**: Le nom du fournisseur.
+  - **address**: L'adresse du fournisseur.
+  - **phone**: Le numéro de téléphone du fournisseur.
+- **Réponse**: La réponse indique si l'ajout du fournisseur a été effectué avec succès ou si une erreur s'est produite.
+
+**DELETE /api/providers/{id}**
+
+- **Description**: Cet endpoint permet de supprimer un fournisseur avec l'ID spécifié.
+- **Requête**: Aucune donnée spécifique n'est requise dans la requête.
+- **Réponse**: La réponse indique si la suppression du fournisseur a été effectuée avec succès ou si une erreur s'est produite.
+
+#### Fonctionnement
+
+- **Contrôleur**: `ProviderController`
+  - Le contrôleur utilise Javalin pour définir les routes de l'API.
+  - Il utilise une connexion à une base de données asynchrone pour exécuter des requêtes SQL et récupérer les données.
+
+- **Requêtes SQL**:
+  - **`providerQuery.sql`**: Cette requête SQL récupère les informations sur les fournisseurs en les triant par nom.
+  - **`insertNewProvider.sql`**: Cette requête SQL insère un nouveau fournisseur dans la base de données.
+  - **`deleteProviderQuery.sql`**: Cette requête SQL supprime un fournisseur de la base de données en fonction de son ID.
+
+#### Exemple de Réponse JSON
+
+```json
+[
+  {
+    "id": 1,
+    "nom": "Fournisseur A",
+    "adresse": "123 Rue Principale",
+    "numeroTelephone": "+41 78 123 45 67"
+  },
+  {
+    "id": 2,
+    "nom": "Fournisseur B",
+    "adresse": "456 Avenue Secondaire",
+    "numeroTelephone": "+41 78 765 43 21"
+  }
+]
 ```

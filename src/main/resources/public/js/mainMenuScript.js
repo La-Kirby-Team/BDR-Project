@@ -30,12 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch('/api/orders-waiting')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             const articleTable = document.querySelector('#waiting-orders-table');
             articleTable.innerHTML = '';
@@ -52,36 +47,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Populate table with parsed data
             data.forEach(item => {
-                const [name, quantity, orderDate, daysSince, mouvementStockId] = item
-                    .replace(/[\[\]"]/g, '') // Remove brackets and quotes
-                    .split(',')
-                    .map(value => value.trim());
+                const { produit, quantite, dateCommande, joursDepuisCommande, mouvementStockId } = item;
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${name}</td>
-                    <td>${quantity}</td>
-                    <td>${orderDate}</td>
-                    <td>${daysSince} jours</td>
-                `;
+        <td>${produit}</td>
+        <td>${quantite}</td>
+        <td>${dateCommande}</td>
+        <td>${joursDepuisCommande} jours</td>
+    `;
 
-                // Add click event to show modal
                 row.addEventListener('click', () => {
-                    // Set up the modal with relevant data
-                    document.getElementById('productInfo').textContent = `Produit : ${name}, Quantité prévue : ${quantity}`;
-                    document.getElementById('receivedQuantity').value = quantity;
-
-                    // Pass the movementStock ID to the confirm button
+                    document.getElementById('productInfo').textContent = `Produit : ${produit}, Quantité prévue : ${quantite}`;
+                    document.getElementById('receivedQuantity').value = quantite;
                     const confirmButton = document.getElementById('confirmOrderButton');
-                    confirmButton.setAttribute('data-id', mouvementStockId); // Assign the ID to the button
+                    confirmButton.setAttribute('data-id', mouvementStockId);
 
-                    // Show the modal
                     const modal = new bootstrap.Modal(document.getElementById('orderModal'));
                     modal.show();
                 });
 
                 articleTable.appendChild(row);
             });
+
 
             // Handle confirmation
             document.getElementById('confirmOrderButton').addEventListener('click', function () {
@@ -92,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     : document.getElementById('receivedDateInput').value; // Custom date
 
                 fetch(`/api/orders-confirm?id=${id}`, {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },

@@ -3,8 +3,6 @@ package ch.heigvd.dai.controllers;
 import ch.heigvd.dai.models.SupplyRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
-import com.github.jasync.sql.db.pool.ConnectionPool;
-import com.github.jasync.sql.db.postgresql.PostgreSQLConnection;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
