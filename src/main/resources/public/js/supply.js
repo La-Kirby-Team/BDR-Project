@@ -212,26 +212,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
-document.addEventListener('DOMContentLoaded', function () {
-    const dateField = document.getElementById('dateJour');
-    const autoCheck = document.getElementById('auto-dateJour');
 
-    // Initialisation : remplir le champ avec la date du jour et le rendre readonly
-
-    initializeDateField(dateField, autoCheck); // Appel initial
-
-    // Gérer les interactions avec la case à cocher
-    autoCheck.addEventListener('change', function () {
-        if (autoCheck.checked) {
-            // Si la case est cochée, remplir automatiquement et verrouiller
-            dateField.value = getTodayDate();
-            dateField.setAttribute('readonly', true); // Lecture seule
-            dateField.removeAttribute('required');   // Non obligatoire
-        } else {
-            // Si la case est décochée, effacer, rendre modifiable et obligatoire
-            dateField.value = ''; // Effacer le champ
-            dateField.removeAttribute('readonly');   // Permettre l'édition
-            dateField.setAttribute('required', true); // Champ obligatoire
-        }
-    });
-});

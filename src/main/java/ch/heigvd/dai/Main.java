@@ -1,8 +1,10 @@
 package ch.heigvd.dai;
 
 import ch.heigvd.dai.controllers.AddProviderController;
+import ch.heigvd.dai.controllers.SaleController;
 import ch.heigvd.dai.controllers.SupplyController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.Javalin;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
 import com.github.jasync.sql.db.general.ArrayRowData;
@@ -296,17 +298,22 @@ public class Main {
         SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
-      //Inialiser le AddProviderController
+      //Initialiser le AddProviderController
       AddProviderController appProviderController = new AddProviderController();
       appProviderController.registerRoutes(app, connection);
 
 
+      SaleController saleController = new SaleController();
+      saleController.registerRoutes(app, connection);
+
         app.get("/", ctx -> ctx.redirect("html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
         app.get("/orders", ctx -> ctx.redirect("html/supply.html"));
+        app.get("/supply", ctx -> ctx.redirect("html/supply.html"));
         app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
         app.get("/add-provider", ctx -> ctx.redirect("html/addProvider.html"));
         app.get("/providerView", ctx -> ctx.redirect("html/providerView.html"));
+        app.get("/sale", ctx -> ctx.redirect("html/sale.html"));
 
 
     }
