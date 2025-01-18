@@ -26,8 +26,8 @@ public class Main {
         logger.info("starting info");
         logger.debug("starting debug");
         logger.trace("starting trace");
-        String host = "localhost";
-        int SQLport = 5666;
+        String host = "db";
+        int SQLport = 5432;
         String database = "bdr_project";
         String username = "postgres";
         String password = "trustno1";
