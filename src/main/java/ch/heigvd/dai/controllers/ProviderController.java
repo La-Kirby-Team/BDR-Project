@@ -1,6 +1,7 @@
 package ch.heigvd.dai.controllers;
 
 import ch.heigvd.dai.models.AddProvider;
+import ch.heigvd.dai.utils.SQLFileLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -18,7 +19,7 @@ public class ProviderController {
 
     public void registerRoutes(Javalin app, Connection connection){
         app.get("/api/providers", ctx -> {
-            String providerQuery = "SELECT id, nom, adresse, numeroTelephone FROM Fournisseur ORDER BY nom;";
+            String providerQuery = SQLFileLoader.loadSQLFile("sql/providerView.sql");
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(providerQuery);
             QueryResult queryResult = future.get();
             ctx.json(queryResult.getRows().stream().map(row -> {
@@ -44,16 +45,8 @@ public class ProviderController {
 
             try{
 
-                String providerAlreadyExist = """
-                        SELECT id FROM fournisseur WHERE nom = ?
-                                                  AND adresse = ?
-                                                  AND numeroTelephone = ?
-                                                  ;
-                        """;
-                String insertNewProvider = """
-                        INSERT INTO fournisseur (nom, adresse, numeroTelephone)
-                        VALUES (?, ?, ?);
-                        """;
+                String providerAlreadyExist = SQLFileLoader.loadSQLFile("sql/providerExists.sql");
+                String insertNewProvider = SQLFileLoader.loadSQLFile("sql/providerNew.sql");
 
                 String name = newProvider.name;
                 String adresse = newProvider.address;
@@ -92,7 +85,7 @@ public class ProviderController {
         app.delete("/api/providers/{id}", ctx -> {  // ✅ Fix: Define ID in the route
             try {
                 String providerId = ctx.pathParam("id"); // Retrieve the ID from the URL
-                String deleteProviderQuery = "DELETE FROM Fournisseur WHERE id = ?";
+                String deleteProviderQuery = SQLFileLoader.loadSQLFile("sql/providerDelete.sql");
 
                 CompletableFuture<QueryResult> future = connection.sendPreparedStatement(deleteProviderQuery, List.of(Integer.parseInt(providerId)));
                 QueryResult queryResult = future.get();

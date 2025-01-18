@@ -1,5 +1,6 @@
 package ch.heigvd.dai.controllers;
 
+import ch.heigvd.dai.utils.SQLFileLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -20,7 +21,7 @@ public class SellerController {
     public void registerRoutes(Javalin app, Connection connection){
         app.get("/api/vendeur/{id}", ctx -> {
             String vendeurId = ctx.pathParam("id");
-            String infoVendeur = "SELECT id, idMagasin, nom, salaire, estActif FROM Vendeur WHERE id = ?";
+            String infoVendeur = SQLFileLoader.loadSQLFile("sql/sellerGetID.sql");
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(infoVendeur, Arrays.asList(Integer.parseInt(vendeurId)));
             QueryResult queryResult = future.get();
@@ -57,11 +58,7 @@ public class SellerController {
                 Files.deleteIfExists(Paths.get(ancienFilePath));
             }
 
-            String updateQuery = """
-                    UPDATE Vendeur
-                    SET idMagasin = ?, nom = ?, salaire = ?, estActif = ?
-                    WHERE id = ?
-                    """;
+            String updateQuery = SQLFileLoader.loadSQLFile("sql/sellerUpdate.sql");
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(
                     updateQuery, Arrays.asList(
