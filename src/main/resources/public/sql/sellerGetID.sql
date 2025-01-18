@@ -1,0 +1,1 @@
+SELECT id, idMagasin, nom, salaire, estActif FROM Vendeur WHERE id = ?;

@@ -80,6 +80,8 @@ Note : pour run le projet avec Docker, il faut avoir [Docker](https://www.docker
 5. **Lancer les conteneurs Docker (Vérifiez bien que votre terminal se trouve dans le dossier racine du projet)** : `docker compose up`
 6. **(Optionnel) Démarrer uniquement le serveur web** : `docker run --rm --name winventory_web -p 80:8080 winventory:latest` (Assurez-vous qu'une base de données PostgreSQL soit accessible depuis le conteneur Docker)
 
+Une fois cela fait, votre serveur web devrait être accessible à l'adresse `http://localhost:8080` si vous avez lancé le serveur web en local, sinon, vous pouvez accéder à l'application web via l'adresse que vous devez changer dans le docker-compose.yml (les règles de redirections de Traefik).
+
 ## **📦 Publier l'Application avec Docker**
 Pour publier une image Docker sur ghcr.io, il vous faudra un compte GitHub et un token d'authentification [cliquez ici](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) pour la marche à suivre en anglais pour en créer / récupérer un (Chapitre Authenticating with a personal access token (classic)).
 1. **Cloner le dépôt** : `git clone git@github.com:La-Kirby-Team/BDR-Project.git`
@@ -502,9 +504,3 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
   }
 ]
 ```
-
-
-
-
-
-

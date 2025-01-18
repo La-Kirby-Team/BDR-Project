@@ -46,12 +46,7 @@ public class OrderController {
             String receivedDate = requestData.get("date").toString();
             int receivedQuantity = Integer.parseInt(requestData.get("quantite").toString());
 
-            String updateQuery =
-                    """
-                            UPDATE MouvementStock
-                            SET date = ?, quantite = ?
-                            WHERE id = ?
-                            """;
+            String updateQuery = SQLFileLoader.loadSQLFile("sql/confirmOrder.sql");
 
 
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(updateQuery, Arrays.asList(

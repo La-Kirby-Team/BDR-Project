@@ -1,1 +1,1 @@
-SELECT nom, adresse, numeroTelephone FROM Fournisseur ORDER BY nom;
+SELECT id, nom, adresse, numeroTelephone FROM Fournisseur ORDER BY nom;
