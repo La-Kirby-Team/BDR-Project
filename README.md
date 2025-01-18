@@ -1,7 +1,7 @@
 # **Winventory - Gestion Intelligente des Stocks de Boissons** 🍷📦
 
 ## **📢 Table des matières**
-- [👨‍💻 Équipe](#-équipe-)
+- [👨‍💻 Équipe](#-équipe)
 - [📚 Description du Projet](#-description-du-projet)
 - [📌 Fonctionnalités Principales](#-fonctionnalités-principales)
 - [🎯 Objectif](#-objectif)
