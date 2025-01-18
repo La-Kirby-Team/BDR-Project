@@ -61,3 +61,65 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 300);  // Delay to ensure the navbar is fully loaded
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Bouton de déconnexion
+    const logoutButton = document.getElementById('logout-btn');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async function () {
+            try {
+                // Envoyer une requête POST au backend pour la déconnexion
+                const response = await fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    alert("Déconnexion réussie !");
+                    window.location.href = '/index.html';  // Rediriger vers la page d'accueil après déconnexion
+                } else {
+                    alert("Erreur lors de la déconnexion. Veuillez réessayer.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la déconnexion : ", error);
+                alert("Une erreur est survenue. Veuillez réessayer.");
+            }
+        });
+    }
+
+    // Bouton de profil
+    const profileButton = document.getElementById('profile-btn');
+    if (profileButton) {
+        profileButton.addEventListener('click', async function () {
+            try {
+                // Envoyer une requête GET pour récupérer les informations du profil
+                const response = await fetch('/api/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const userProfile = await response.json();
+
+                    // Optionnel : Vous pouvez stocker ces informations dans le stockage local/sessionStorage
+                    // localStorage.setItem("userProfile", JSON.stringify(userProfile));
+
+                    console.log("Profil de l'utilisateur : ", userProfile);
+
+                    // Rediriger vers la page profil.html après la récupération du profil
+                    window.location.href = '/profil.html';  // Redirection vers le profil
+                } else {
+                    alert("Erreur lors de la récupération du profil. Veuillez réessayer.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération du profil : ", error);
+                alert("Une erreur est survenue. Veuillez réessayer.");
+            }
+        });
+    }
+});
+
