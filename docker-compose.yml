@@ -1,4 +1,34 @@
+version: "3.8"
+
 services:
+  # Traefik Reverse Proxy
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    restart: always
+    command:
+      - "--api.insecure=true" # Enables the Traefik Dashboard (remove for production)
+      - "--providers.docker=true" # Enables Docker provider
+      - "--providers.docker.exposedbydefault=false" # Services must be explicitly exposed
+      - "--entrypoints.web.address=:80" # HTTP
+      - "--entrypoints.websecure.address=:443" # HTTPS
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8081:8080" # Traefik Dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "traefik_letsencrypt:/letsencrypt"
+    networks:
+      - bdr_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)" # Change domain in production
+      - "traefik.http.routers.traefik.service=api@internal"
+
+  # Database
   db:
     container_name: bdr_postgresql_16
     image: postgres:16
@@ -6,28 +36,35 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=trustno1
-      - POSTGRES_DB=bdr_project
-    ports:
-      - '5432:5432'
+      - POSTGRES_DB=winventory
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db-scripts:/docker-entrypoint-initdb.d/
     networks:
       - bdr_network
 
+  # Web Application
   web:
-    container_name: bdr_web_16
-    image: bdr_web
+    container_name: winventory
+    image: winventory
     restart: always
-    ports:
-      - '8080:8080'
     volumes:
       - ./src:/app/src
     networks:
       - bdr_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.winventory.rule=Host(`winventory.localhost`)" # Change domain in production
+      - "traefik.http.routers.winventory.entrypoints=web"
+      - "traefik.http.routers.winventory.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.winventory-secure.rule=Host(`winventory.localhost`)"
+      - "traefik.http.routers.winventory-secure.entrypoints=websecure"
+      - "traefik.http.routers.winventory-secure.tls.certresolver=myresolver"
 
 volumes:
   pgdata:
+  traefik_letsencrypt:
 
 networks:
   bdr_network:

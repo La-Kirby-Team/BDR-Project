@@ -1,22 +1,20 @@
-// providerView.js - Updated search functionality and table rendering
-
 document.addEventListener("DOMContentLoaded", function () {
     fetch('/api/providers')
         .then(response => response.json())
         .then(data => {
             const providerTable = document.querySelector('#provider-table tbody');
             const searchInput = document.querySelector('#search-provider');
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteProviderModal'));
+            let selectedProviderId = null;
+
             providerTable.innerHTML = '';
 
             function renderTable(filteredData) {
                 providerTable.innerHTML = '';
 
                 filteredData.forEach(provider => {
-                    // Ensure we are accessing the correct object properties
                     const { id, nom, adresse, numeroTelephone } = provider;
 
-                    // Handle null or undefined values gracefully
-                    const formattedID = id ?? 'Non défini';
                     const formattedName = nom ?? 'Nom inconnu';
                     const formattedAddress = adresse ?? 'Adresse inconnue';
                     const formattedPhone = numeroTelephone ?? 'Non spécifié';
@@ -28,6 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${formattedPhone}</td>
                     `;
 
+                    // Attach click event to show delete confirmation modal
+                    row.addEventListener('click', () => {
+                        selectedProviderId = id;
+                        deleteModal.show();
+                    });
+
                     providerTable.appendChild(row);
                 });
             }
@@ -37,12 +41,31 @@ document.addEventListener("DOMContentLoaded", function () {
             // Search function
             searchInput.addEventListener('input', function () {
                 const searchValue = searchInput.value.toLowerCase();
-                const filteredData = data.filter(provider => {
-                    return provider.nom.toLowerCase().includes(searchValue) ||
-                        provider.adresse.toLowerCase().includes(searchValue) ||
-                        provider.numeroTelephone.toLowerCase().includes(searchValue);
-                });
+                const filteredData = data.filter(provider =>
+                    provider.nom.toLowerCase().includes(searchValue) ||
+                    provider.adresse.toLowerCase().includes(searchValue) ||
+                    provider.numeroTelephone.toLowerCase().includes(searchValue)
+                );
                 renderTable(filteredData);
+            });
+
+            // Handle delete confirmation
+            document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+                if (selectedProviderId) {
+                    fetch(`/api/providers/${selectedProviderId}`, {
+                        method: 'DELETE'
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Erreur lors de la suppression");
+                            return response.text();
+                        })
+                        .then(() => {
+                            deleteModal.hide();
+                            alert("Fournisseur supprimé avec succès !");
+                            location.reload(); // Refresh table
+                        })
+                        .catch(error => console.error("Erreur lors de la suppression :", error));
+                }
             });
 
             // Redirect to providerView on button click
