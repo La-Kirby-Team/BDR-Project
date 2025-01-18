@@ -1,6 +1,7 @@
 package ch.heigvd.dai;
 
 import ch.heigvd.dai.controllers.*;
+import ch.heigvd.dai.models.User;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.pool.ConnectionPool;
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnection;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 public class Main {
@@ -38,6 +40,27 @@ public class Main {
         ConnectionPool<PostgreSQLConnection> pool = PostgreSQLConnectionBuilder.createConnectionPool(url);
 
         Connection connection = pool.connect().get();
+
+        ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<>();
+
+        //Auth Controller
+        AuthController authController = new AuthController(users);
+        UserController usersController = new UserController(users);
+
+        // Auth routes
+        app.post("/api/login", authController::login);
+        app.post("/api/logout", authController::logout);
+        app.get("/api/profile", authController::profile);
+
+        //User routes
+        app.post("/users", usersController::create);
+        app.get("/users", usersController::getMany);
+        app.get("/users/{id}", usersController::getOne);
+        app.put("/users/{id}", usersController::update);
+        app.delete("/users/{id}", usersController::delete);
+
+
+
 
 
         // Initialize the ShopController
