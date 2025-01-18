@@ -76,7 +76,7 @@ Le rapport devra être complet, son contenu (schémas, …) être à jour, et co
 
 ## Cahier des charges
 
-[Cahier des charges](CdC.md)
+[Cahier des charges](HEIG/CdC.md)
 
 ## Modélisation conceptuelle (UML)
 

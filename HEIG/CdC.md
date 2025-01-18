@@ -1,4 +1,4 @@
-![Wineventory](images/Logo_fond_blanc.png)
+![Wineventory](../images/Logo_fond_blanc.png)
 
 
 ### **Table des matières**
