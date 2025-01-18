@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Envoi des données au backend via une requête POST
-            const response = await fetch('/api/add-provider', {
+            const response = await fetch('/api/providers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     : document.getElementById('receivedDateInput').value; // Custom date
 
                 fetch(`/api/orders-confirm?id=${id}`, {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },

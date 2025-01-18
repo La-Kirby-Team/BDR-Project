@@ -14,10 +14,10 @@ import java.util.concurrent.ExecutionException;
 
 public class Main {
     static final int port = 8080;
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
-        Javalin app = Javalin.create(config -> config.staticFiles.add("/public"));
+        Javalin app = Javalin.create(config -> config.staticFiles.add(staticFile -> staticFile.directory = "/public"));
 
         app.start(port);
 
@@ -26,9 +26,9 @@ public class Main {
         logger.info("starting info");
         logger.debug("starting debug");
         logger.trace("starting trace");
-        String host = "db";
+        String host = "localhost"; // "localhost"; if you are running the database locally or "db" if you are running the database in a docker container
         int SQLport = 5432;
-        String database = "bdr_project";
+        String database = "winventory";
         String username = "postgres";
         String password = "trustno1";
 
@@ -65,17 +65,15 @@ public class Main {
         SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
-        //Inialiser le AddProviderController
-        AddProviderController appProviderController = new AddProviderController();
-        appProviderController.registerRoutes(app, connection);
+
+        app.get("/", ctx -> ctx.redirect("/html/index.html"));
+        app.get("/mainMenu", ctx -> ctx.redirect("/html/mainMenu.html"));
+        app.get("/orders", ctx -> ctx.redirect("/html/supply.html"));
+        app.get("/stockView", ctx -> ctx.redirect("/html/stockView.html"));
+        app.get("/add-provider", ctx -> ctx.redirect("/html/addProvider.html"));
+        app.get("/providerView", ctx -> ctx.redirect("/html/providerView.html"));
 
 
-        app.get("/", ctx -> ctx.redirect("html/index.html"));
-        app.get("/mainMenu", ctx -> ctx.redirect("html/mainMenu.html"));
-        app.get("/orders", ctx -> ctx.redirect("html/supply.html"));
-        app.get("/stockView", ctx -> ctx.redirect("html/stockView.html"));
-        app.get("/add-provider", ctx -> ctx.redirect("html/addProvider.html"));
-        app.get("/providerView", ctx -> ctx.redirect("html/providerView.html"));
 
 
     }
