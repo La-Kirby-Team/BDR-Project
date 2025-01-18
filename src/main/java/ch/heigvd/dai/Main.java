@@ -65,6 +65,9 @@ public class Main {
         SupplyController supplyController = new SupplyController();
         supplyController.registerRoutes(app, connection);
 
+        SaleController saleController = new SaleController();
+        saleController.registerRoutes(app, connection);
+
 
         app.get("/", ctx -> ctx.redirect("/html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("/html/mainMenu.html"));
