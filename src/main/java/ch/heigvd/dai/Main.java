@@ -8,8 +8,10 @@ import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.time.LocalDateTime;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.ExecutionException;
 
 public class Main {
@@ -17,7 +19,9 @@ public class Main {
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
-        Javalin app = Javalin.create(config -> config.staticFiles.add(staticFile -> staticFile.directory = "/public"));
+        Javalin app = Javalin.create(config -> {config.staticFiles.add(staticFile -> staticFile.directory = "/public");
+            config.validation.register(LocalDateTime.class, LocalDateTime::parse);
+        });
 
         app.start(port);
 
