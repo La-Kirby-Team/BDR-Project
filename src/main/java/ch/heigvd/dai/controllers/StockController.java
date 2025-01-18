@@ -1,13 +1,10 @@
 package ch.heigvd.dai.controllers;
 
 import ch.heigvd.dai.utils.SQLFileLoader;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
 import com.github.jasync.sql.db.general.ArrayRowData;
 import io.javalin.Javalin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
