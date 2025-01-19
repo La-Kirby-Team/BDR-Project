@@ -558,13 +558,11 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 - **Requête**: La requête doit contenir un objet JSON avec les informations suivantes :
     - **username**: Le nom d'utilisateur du nouvel utilisateur.
     - **password**: Le mot de passe du nouvel utilisateur.
-    - **email**: L'adresse e-mail du nouvel utilisateur.
 
 ```json
 {
 "username": "nouvelUtilisateur",
-"password": "motdepasse456",
-"email": "email@example.com"
+"password": "motdepasse456"
 }
 ```
 
