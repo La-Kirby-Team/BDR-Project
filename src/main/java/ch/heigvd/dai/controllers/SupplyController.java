@@ -1,6 +1,7 @@
 package ch.heigvd.dai.controllers;
 
 import ch.heigvd.dai.models.SupplyRequest;
+import ch.heigvd.dai.utils.SQLFileLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import io.javalin.Javalin;
@@ -23,72 +24,25 @@ public class SupplyController {
 
       app.post("/api/add-supply", ctx -> {
 
-          logger.info("Requête reçue avec le corps suivant : {}", ctx.body());
-
           ObjectMapper objectMapper = new ObjectMapper();
 
+
+          String checkArticleQuery = SQLFileLoader.loadSQLFile("sql/supplyCheckArticlePrice.sql");
+          String checkProductExist = SQLFileLoader.loadSQLFile("sql/supplyIdProduct.sql");
+          String checkArticleExist = SQLFileLoader.loadSQLFile("sql/supplyArticleExist.sql");
+          String insertProductQuery = SQLFileLoader.loadSQLFile("sql/supplyInsertProduct.sql");
+          String insertArticleQuery = SQLFileLoader.loadSQLFile("sql/supplyInsertArticle.sql");
+          String insertMouvementStockQuery = SQLFileLoader.loadSQLFile("sql/supplyInsertMouvementStock.sql");
+          String insertApprovisionnementQuery = SQLFileLoader.loadSQLFile("sql/supplyInsertApprovisionnement.sql");
+          String findFournisseurQuery = SQLFileLoader.loadSQLFile("sql/supplyFindProvider.sql");
+          String insertApprovisionnementFournisseurQuery = SQLFileLoader.loadSQLFile("sql/supplyInsertApprovisionnementFournisseur.sql");
 
           SupplyRequest request = objectMapper.readValue(ctx.body(), SupplyRequest.class);
 
 
           try {
-              // Vérification si l'article existe avec le même prix
-              /*
 
-               */
-              String checkArticleQuery = """
-                        SELECT idProduit FROM Article
-                        WHERE idProduit = ?
-                            AND recipient = ?::typeRecipient
-                            AND volume = ?
-                            AND datePeremption = ?
-                            AND dateFinDeVente = ?
-                            AND prix != ?;
-                        """;
-
-              String checkProductExist = """
-                      SELECT idProduit FROM Produit WHERE nom = ?
-                                                      AND tauxAlcool = ?;
-                      """;
-              String checkArticleExist = """
-                      SELECT idProduit FROM Article
-                        WHERE idProduit = ?
-                            AND recipient = ?::typeRecipient
-                            AND volume = ?
-                            AND datePeremption = ?
-                            AND dateFinDeVente = ?
-                            AND prix = ?;
-                     """;
-
-              String insertProductQuery = """
-                        INSERT INTO Produit (idProvenance, nom, tauxAlcool)
-                        VALUES (?, ?, ?) RETURNING idProduit;
-                        """;
-
-              String insertArticleQuery = """
-                        INSERT INTO Article (idProduit, volume, recipient, prix, datePeremption, dateFinDeVente)
-                        VALUES (?, ?, ?::typeRecipient, ?, ?, ?);
-                        """;
-
-              String insertMouvementStockQuery = """
-                        INSERT INTO MouvementStock (idMagasin, idProduit, volume, recipient, quantite)
-                        VALUES (?, ?, ?, ?::typeRecipient, ?) RETURNING id;
-                        """;
-
-              String insertApprovisionnementQuery = """
-                        INSERT INTO Approvisionnement (idMouvementStock, dateCommande)
-                        VALUES (?, ?);
-                        """;
-              String findFournisseurQuery = """
-                        SELECT id FROM Fournisseur
-                        WHERE nom = ?;
-                        """;
-
-              String insertApprovisionnementFournisseurQuery = """
-                        INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur)
-                        VALUES (?, ?);
-                        """;
-                String customDate = request.customDate.getFirst();
+              String customDate = request.customDate.getFirst();
               for (int i = 0; i < request.product.size(); i++) {
                   String productName = request.product.get(i);
                   int productVolume = request.volume.get(i);
@@ -119,7 +73,7 @@ public class SupplyController {
                       }
                   }
                   else{
-                      //Récuper l'id du produit
+                      //Récupérer l'id du produit
                       idProduit = (int) checkProductFuture.get().getRows().getFirst().getFirst();
                   }
 
@@ -174,12 +128,6 @@ public class SupplyController {
                   if (findFournisseurResult.getRows().isEmpty()) {
                       ctx.status(400).json(Map.of("message", "Fournisseur inconnu"));
                       return;
-
-                      //TODO
-                      //throw new Exception("Fournisseur inconnu");
-
-                     // connection.sendPreparedStatement(insertApprovisionnementFournisseurQuery,
-                            //  Arrays.asList(idMouvementStock, null));
 
                   } else {
                       // Associer à un fournisseur

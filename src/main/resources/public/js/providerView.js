@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 renderTable(filteredData);
             });
 
-            // Handle delete confirmation
             document.getElementById('confirmDeleteButton').addEventListener('click', function () {
                 if (selectedProviderId) {
                     fetch(`/api/providers/${selectedProviderId}`, {
@@ -68,7 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Redirect to providerView on button click
             document.getElementById('add-provider-button').addEventListener('click', function () {
                 window.location.href = "/add-provider";
             });

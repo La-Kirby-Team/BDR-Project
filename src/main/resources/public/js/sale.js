@@ -139,18 +139,15 @@ document.addEventListener('DOMContentLoaded', function () {
             // Supprimer les crochets [] des clés
             const cleanedKey = key.replace('[]', '');
 
-            // Si la clé n'existe pas, créez un tableau
             if (!data[cleanedKey]) {
                 data[cleanedKey] = [];
             }
 
-            // Convertir les valeurs en fonction du type attendu (entier ou flottant)
             if (!isNaN(value)) {
-                // Si c'est un entier (par exemple "quantity[]"), utilisez parseInt
                 if (cleanedKey === 'quantity' || cleanedKey === 'volume') {
-                    value = parseInt(value); // Conversion en entier
+                    value = parseInt(value);
                 } else {
-                    value = parseFloat(value); // Conversion en flottant pour d'autres champs comme prix et taux d'alcool
+                    value = parseFloat(value);
                 }
             }
 
@@ -158,10 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data[cleanedKey].push(value);
         });
 
-        // Afficher les données envoyées
-        console.log("📡 Données envoyées :", JSON.stringify(data, null, 2));
 
-        // Envoyer les données via une seule requête POST
         try {
             const response = await fetch('/api/add-sale', {
                 method: 'POST',
@@ -175,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const result = await response.json();
-            alert(result.message);  // Affiche le message du serveur
+            alert(result.message);
         } catch (error) {
             console.error("❌ Erreur lors de l'envoi :", error);
             alert("Une erreur est survenue lors de l'envoi des données.");
@@ -197,23 +191,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Additionner le prix * quantité pour chaque produit
         for (let i = 0; i < prices.length; i++) {
-            const price = parseFloat(prices[i].value) || 0; // Utiliser 0 si le prix est vide ou invalide
-            const quantity = parseInt(quantities[i].value) || 0; // Utiliser 0 si la quantité est vide ou invalide
+            const price = parseFloat(prices[i].value) || 0;
+            const quantity = parseInt(quantities[i].value) || 0;
             total += price * quantity;
         }
 
         // Afficher le total
-        totalField.value = total.toFixed(2); // Formatage en 2 décimales
+        totalField.value = total.toFixed(2);
     }
 
-    // Ajouter un événement pour recalculer le total lorsque le prix ou la quantité change
     form.addEventListener('input', function(event) {
-        // Vérifier si l'élément modifié est l'un des champs de prix ou de quantité
         if (event.target.name === 'prix[]' || event.target.name === 'quantity[]') {
             updateTotal();
         }
     });
 
-    // Initialiser le total lorsque la page est chargée
     updateTotal();
 });

@@ -50,24 +50,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 data[cleanedKey] = [];
             }
 
-            // Convertir les valeurs en fonction du type attendu (entier ou flottant)
             if (!isNaN(value)) {
-                // Si c'est un entier (par exemple "quantity[]"), utilisez parseInt
                 if (cleanedKey === 'quantity' || cleanedKey === 'volume') {
-                    value = parseInt(value); // Conversion en entier
+                    value = parseInt(value);
                 } else {
-                    value = parseFloat(value); // Conversion en flottant pour d'autres champs comme prix et taux d'alcool
+                    value = parseFloat(value);
                 }
             }
 
-            // Ajoutez la valeur convertie au tableau correspondant
             data[cleanedKey].push(value);
         });
 
-        // Afficher les données envoyées
-        console.log("📡 Données envoyées :", JSON.stringify(data, null, 2));
-
-        // Envoyer les données via une seule requête POST
         try {
             const response = await fetch('/api/add-supply', {
                 method: 'POST',
@@ -90,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-//Ajout de nouveaux champs d'articles
 document.addEventListener('DOMContentLoaded', function() {
     let fieldCount = 1;
 
@@ -183,8 +175,8 @@ function getTodayDate() {
 function initializeDateField(dateField, autoCheck) {
     if (autoCheck.checked) {
         dateField.value = getTodayDate();
-        dateField.setAttribute('readonly', true); // Lecture seule
-        dateField.removeAttribute('required');   // Non obligatoire
+        dateField.setAttribute('readonly', true);
+        dateField.removeAttribute('required');
     }
 }
 
@@ -201,13 +193,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (autoCheck.checked) {
             // Si la case est cochée, remplir automatiquement et verrouiller
             dateField.value = getTodayDate();
-            dateField.setAttribute('readonly', true); // Lecture seule
-            dateField.removeAttribute('required');   // Non obligatoire
+            dateField.setAttribute('readonly', true);
+            dateField.removeAttribute('required');
         } else {
             // Si la case est décochée, effacer, rendre modifiable et obligatoire
-            dateField.value = ''; // Effacer le champ
-            dateField.removeAttribute('readonly');   // Permettre l'édition
-            dateField.setAttribute('required', true); // Champ obligatoire
+            dateField.value = '';
+            dateField.removeAttribute('readonly');
+            dateField.setAttribute('required', true);
         }
     });
 

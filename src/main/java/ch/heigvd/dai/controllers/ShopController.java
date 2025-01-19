@@ -1,5 +1,6 @@
 package ch.heigvd.dai.controllers;
 
+import ch.heigvd.dai.utils.SQLFileLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -10,8 +11,10 @@ import java.util.concurrent.CompletableFuture;
 public class ShopController {
 
     public void registerRoutes(Javalin app, Connection connection){
+
+        String idMagasin = SQLFileLoader.loadSQLFile("sql/allMagasin.sql");
+
         app.get("/api/magasins", ctx -> {
-            String idMagasin = "SELECT DISTINCT id, nom FROM Magasin";
             CompletableFuture<QueryResult> future = connection.sendPreparedStatement(idMagasin);
             QueryResult queryResult = future.get();
 

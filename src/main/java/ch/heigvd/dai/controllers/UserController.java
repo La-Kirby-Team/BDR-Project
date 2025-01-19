@@ -54,11 +54,10 @@ public class UserController {
             boolean authenticated = AuthService.authenticateUser(username, password);
 
             if (authenticated) {
-                // Generate a random session token
                 String sessionToken = UUID.randomUUID().toString();
 
                 // Set cookie (expires in 1 day)
-                ctx.cookie(SESSION_COOKIE_NAME, sessionToken, 86400); // 👈 Cookie valid for 24 hours
+                ctx.cookie(SESSION_COOKIE_NAME, sessionToken, 86400);
 
                 logger.info("✅ User '{}' logged in successfully. Session: {}", username, sessionToken);
                 ctx.status(200).json(Map.of("message", "Login successful"));
