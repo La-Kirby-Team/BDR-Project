@@ -38,14 +38,27 @@ public class SupplyController {
                */
               String checkArticleQuery = """
                         SELECT idProduit FROM Article
-                        WHERE idProduit = (SELECT idProduit FROM Produit WHERE nom = ? 
-                                                                           AND recipient = ?::typeRecipient
-                                                                            AND volume = ?
-                                                                           AND tauxAlcool = ?)
+                        WHERE idProduit = ?
+                            AND recipient = ?::typeRecipient
+                            AND volume = ?
                             AND datePeremption = ?
                             AND dateFinDeVente = ?
                             AND prix != ?;
                         """;
+
+              String checkProductExist = """
+                      SELECT idProduit FROM Produit WHERE nom = ?
+                                                      AND tauxAlcool = ?;
+                      """;
+              String checkArticleExist = """
+                      SELECT idProduit FROM Article
+                        WHERE idProduit = ?
+                            AND recipient = ?::typeRecipient
+                            AND volume = ?
+                            AND datePeremption = ?
+                            AND dateFinDeVente = ?
+                            AND prix = ?;
+                     """;
 
               String insertProductQuery = """
                         INSERT INTO Produit (idProvenance, nom, tauxAlcool)
@@ -87,10 +100,33 @@ public class SupplyController {
                   int productQuantity = request.quantity.get(i);
                   double productPrice = request.prix.get(i);
 
+
+                  int idProduit;
+                  //Regarde si le produit existe déjà
+                  CompletableFuture<QueryResult> checkProductFuture = connection.sendPreparedStatement(checkProductExist, Arrays.asList(productName, tauxAlcool));
+
+                  if(checkProductFuture.get().getRows().isEmpty()) {
+                      // Insérer un nouveau produit si inexistant
+                      CompletableFuture<QueryResult> productFuture = connection.sendPreparedStatement(insertProductQuery,
+                              Arrays.asList(1, productName, tauxAlcool));
+
+                      QueryResult productResult = productFuture.get();
+
+                      if (productResult.getRows().getFirst().getFirst() != null) {
+                          idProduit = (int) productResult.getRows().getFirst().getFirst();
+                      } else {
+                          throw new Exception("IdProduit manquant");
+                      }
+                  }
+                  else{
+                      //Récuper l'id du produit
+                      idProduit = (int) checkProductFuture.get().getRows().getFirst().getFirst();
+                  }
+
                   // Vérification si l'article avec un prix différent existe déjà
                   CompletableFuture<QueryResult> checkArticleFuture = connection.sendPreparedStatement(
                           checkArticleQuery, Arrays.asList(
-                                  productName, productRecipient, productVolume, tauxAlcool, productPeremption, productEndOfSales, productPrice
+                                  idProduit, productRecipient, productVolume, productPeremption, productEndOfSales, productPrice
                           )
                   );
 
@@ -101,24 +137,15 @@ public class SupplyController {
                       return;
                   }
 
+                  //Vérification si l'article existe déjà
+                  CompletableFuture<QueryResult> checkArticle = connection.sendPreparedStatement(checkArticleExist,
+                          Arrays.asList(idProduit, productRecipient, productVolume, productPeremption, productEndOfSales, productPrice));
 
-                  // Insérer un nouveau produit si inexistant
-                  CompletableFuture<QueryResult> productFuture = connection.sendPreparedStatement(insertProductQuery,
-                          Arrays.asList(1, productName, tauxAlcool));
-
-                  QueryResult productResult = productFuture.get();
-
-                  int idProduit;
-                  if (productResult.getRows().getFirst().getFirst() != null) {
-                      idProduit = (int) productResult.getRows().getFirst().getFirst();
-                  } else {
-                      throw new Exception("IdProduit manquant");
+                  if(checkArticle.get().getRows().isEmpty()) {
+                      // Insérer un nouvel article
+                      connection.sendPreparedStatement(insertArticleQuery,
+                              Arrays.asList(idProduit, productVolume, productRecipient, productPrice, productPeremption, productEndOfSales));
                   }
-
-                  // Insérer un nouvel article
-                  connection.sendPreparedStatement(insertArticleQuery,
-                          Arrays.asList(idProduit, productVolume, productRecipient, productPrice, productPeremption, productEndOfSales));
-
 
                   // Insérer le mouvement de stock
                   CompletableFuture<QueryResult> mouvementStockFuture = connection.sendPreparedStatement(
