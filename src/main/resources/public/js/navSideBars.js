@@ -8,11 +8,28 @@ document.addEventListener('DOMContentLoaded', function () {
             // Delay execution to allow DOM to update
             setTimeout(() => {
                 const themeToggle = document.getElementById('theme-toggle');
+                const body = document.body;
+
+                // 🟢 Load stored theme preference from localStorage
+                const storedTheme = localStorage.getItem('theme');
+                if (storedTheme === 'light') {
+                    body.classList.add('light-mode');
+                    themeToggle.textContent = 'Mode Sombre';
+                } else {
+                    body.classList.remove('light-mode');
+                    themeToggle.textContent = 'Mode Clair';
+                }
+
                 if (themeToggle) {
-                    const body = document.body;
                     themeToggle.addEventListener('click', () => {
                         body.classList.toggle('light-mode');
-                        themeToggle.textContent = body.classList.contains('light-mode') ? 'Mode Sombre' : 'Mode Clair';
+                        const isLightMode = body.classList.contains('light-mode');
+
+                        // 💾 Save theme preference in localStorage
+                        localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+
+                        // 🏷️ Update button text
+                        themeToggle.textContent = isLightMode ? 'Mode Sombre' : 'Mode Clair';
                     });
                 } else {
                     console.warn("⚠️ theme-toggle not found, skipping event listener.");
@@ -51,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error("Error loading sidebar:", error));
 });
 
+// Dropdown for user settings
 document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
         const dropdownToggle = document.querySelector("#userDropdown"); // Target the dropdown button
@@ -62,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300);  // Delay to ensure the navbar is fully loaded
 });
 
-
+// Logout functionality with timeout
 document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
         const logoutButton = document.getElementById("logout-button");
@@ -73,22 +91,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         logoutButton.addEventListener("click", async function (event) {
-            event.preventDefault(); // Empêche la navigation normale
+            event.preventDefault(); // Prevent normal navigation
             alert("Déconnexion en cours...");
 
-            // Ajoute un délai avant la requête de déconnexion
+            // ⏳ Delay before logout request
             setTimeout(async () => {
                 try {
                     const response = await fetch("/api/logout", {
                         method: "POST",
-                        credentials: "include", // Assure que les cookies de session sont inclus
+                        credentials: "include", // Ensure session cookies are included
                     });
-
                     if (response.ok) {
-                        // Supprime le cookie côté client
+                        // 🗑️ Remove the session cookie
                         document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-                        // Attendre 500ms avant de rediriger (effet plus fluide)
+                        // ⏳ Wait 500ms before redirecting (smooth transition)
                         setTimeout(() => {
                             window.location.href = "/html/index.html";
                         }, 500);
@@ -99,7 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("❌ Erreur lors de la requête de déconnexion :", error);
                     alert("Une erreur est survenue. Veuillez vérifier votre connexion.");
                 }
-            }, 500); // Attente de 500ms avant l'envoi de la requête
+            }, 500); // ⏳ Delay of 500ms before sending the logout request
         });
-    }, 300); // Attente de 300ms pour que le DOM soit prêt
+    }, 300); // ⏳ Delay of 300ms to ensure DOM is ready
 });
+

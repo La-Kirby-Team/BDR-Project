@@ -264,3 +264,94 @@ body.light-mode .modal-content {
 #waiting-orders-table tr:hover {
     background-color: var(--highlight-color);
 }
+
+:root {
+    --primary-bg-dark: #1c1c1c;
+    --secondary-bg-dark: #2c2c2c;
+    --text-dark: #f0f0f0;
+
+    --primary-bg-light: #f8f9fa;
+    --secondary-bg-light: #ffffff;
+    --text-light: #333;
+
+    --sidebar-dark-bg: #2c2c2c;
+    --sidebar-dark-hover: rgba(255, 255, 255, 0.1);
+
+    --sidebar-light-bg: #ffffff;
+    --sidebar-light-hover: rgba(0, 0, 0, 0.05);
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    height: 100%;
+    background-color: var(--primary-bg-dark);
+    color: var(--text-dark);
+}
+
+body.light-mode {
+    background-color: var(--primary-bg-light);
+    color: var(--text-light);
+}
+
+/* 🟢 SIDEBAR STYLING */
+.sidebar {
+    position: fixed;
+    top: 10%;
+    left: 0;
+    width: 250px;
+    background-color: var(--sidebar-dark-bg);
+    color: var(--text-dark);
+    padding: 1rem;
+    height: 100%;
+    transform: translateX(-250px);
+    transition: transform 0.3s ease;
+    z-index: 9999;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar .nav-link {
+    color: var(--text-dark) !important;
+    margin: 0.5rem 0;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: var(--sidebar-dark-hover);
+}
+
+/* 🌞 LIGHT MODE FOR SIDEBAR */
+body.light-mode .sidebar {
+    background-color: var(--sidebar-light-bg);
+    color: var(--text-light);
+    border-right: 1px solid #ddd;
+}
+
+body.light-mode .sidebar .nav-link {
+    color: var(--text-light) !important;
+}
+
+body.light-mode .sidebar .nav-link:hover {
+    background-color: var(--sidebar-light-hover);
+}
+
+/* 🔵 ACTIVE NAV LINK */
+.sidebar .nav-link.active {
+    font-weight: bold;
+    background-color: var(--sidebar-dark-hover);
+}
+
+body.light-mode .sidebar .nav-link.active {
+    background-color: var(--sidebar-light-hover);
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
