@@ -113,7 +113,9 @@ Cela permettra de déployer l'application et sa base de données sur votre serve
 L'API RESTful de Winventory permet d'interagir avec les différentes fonctionnalités de l'application. Voici un aperçu des principales routes disponibles :
 
 ### **🔒 Authentification**
-- `POST /api/auth/login` : Authentification de l'utilisateur.
+- `POST /api/login` : Authentification de l'utilisateur.
+- `POST /api/logout` : Déconnexion de l'utilisateur.
+- `POST /api/register` : Inscription d'un nouvel utilisateur.
 
 ### **🛒 Vue des Stocks**
 - `GET /api/stock` : Récupérer la liste des articles en stock. 
