@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   # Traefik Reverse Proxy
   traefik:
@@ -7,7 +5,7 @@ services:
     container_name: winventory_traefik
     restart: always
     command:
-      - "--api.insecure=true" # Enables the Traefik Dashboard (remove for production)
+      #- "--api.insecure=true" # Enables the Traefik Dashboard (disabled for production)
       - "--providers.docker=true" # Enables Docker provider
       - "--providers.docker.exposedbydefault=false" # Services must be explicitly exposed
       - "--entrypoints.web.address=:80" # HTTP
@@ -25,7 +23,7 @@ services:
       - bdr_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)" # Change domain in production
+      - "traefik.http.routers.traefik.rule=Host(`traefik.duckdns.org`)" # Change domain .duckdns.org.traefik to .localhost if working locally
       - "traefik.http.routers.traefik.service=api@internal"
 
   # Database
@@ -46,19 +44,17 @@ services:
   # Web Application
   web:
     container_name: winventory_web
-    image: winventory
+    image: ghcr.io/bananonymous/winventory:latest
     restart: always
-    volumes:
-      - ./src:/app/src
     networks:
       - bdr_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.winventory.rule=Host(`winventory.localhost`)" # Change domain in production
+      - "traefik.http.routers.winventory.rule=Host(`winventory.duckdns.org`)" # Change domain .duckdns.org to .localhost if working locally
       - "traefik.http.routers.winventory.entrypoints=web"
       - "traefik.http.routers.winventory.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.winventory-secure.rule=Host(`winventory.localhost`)"
+      - "traefik.http.routers.winventory-secure.rule=Host(`winventory.duckdns.org`)"
       - "traefik.http.routers.winventory-secure.entrypoints=websecure"
       - "traefik.http.routers.winventory-secure.tls.certresolver=myresolver"
 
