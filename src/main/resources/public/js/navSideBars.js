@@ -101,10 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         credentials: "include", // Ensure session cookies are included
                     });
                     if (response.ok) {
-                        // 🗑️ Remove the session cookie
                         document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-                        // ⏳ Wait 500ms before redirecting (smooth transition)
+                        // Wait 500ms before redirecting (smooth transition)
                         setTimeout(() => {
                             window.location.href = "/html/index.html";
                         }, 50);
@@ -115,8 +114,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("❌ Erreur lors de la requête de déconnexion :", error);
                     alert("Une erreur est survenue. Veuillez vérifier votre connexion.");
                 }
-            }, 50); // ⏳ Delay of 500ms before sending the logout request
+            }, 50); // Delay of 500ms before sending the logout request
         });
-    }, 300); // ⏳ Delay of 300ms to ensure DOM is ready
+    }, 300); // Delay of 300ms to ensure DOM is ready
 });
 

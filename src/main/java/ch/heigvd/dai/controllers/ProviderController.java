@@ -35,8 +35,6 @@ public class ProviderController {
 
         app.post("/api/providers", ctx -> {
 
-            logger.info("Requête reçue avec le corps suivant : {}", ctx.body());
-
             ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -82,9 +80,9 @@ public class ProviderController {
 
         });
 
-        app.delete("/api/providers/{id}", ctx -> {  // ✅ Fix: Define ID in the route
+        app.delete("/api/providers/{id}", ctx -> {
             try {
-                String providerId = ctx.pathParam("id"); // Retrieve the ID from the URL
+                String providerId = ctx.pathParam("id");
                 String deleteProviderQuery = SQLFileLoader.loadSQLFile("sql/providerDelete.sql");
 
                 CompletableFuture<QueryResult> future = connection.sendPreparedStatement(deleteProviderQuery, List.of(Integer.parseInt(providerId)));

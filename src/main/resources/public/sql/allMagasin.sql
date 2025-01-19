@@ -1,0 +1,1 @@
+SELECT DISTINCT id, nom FROM Magasin

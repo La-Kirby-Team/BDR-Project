@@ -1,0 +1,1 @@
+SELECT id FROM Vendeur WHERE nom = ?;

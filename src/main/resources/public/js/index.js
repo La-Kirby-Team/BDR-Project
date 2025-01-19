@@ -4,11 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     loginForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        // Get input values
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        // Ensure JSON format
         const userCredentials = JSON.stringify({
             username: username,
             password: password

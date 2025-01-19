@@ -18,13 +18,11 @@ public class UserStorage {
      * Ensures that the storage directory and file exist.
      */
     private static void ensureFileExists() throws IOException {
-//        System.out.println("STORAGE_DIR: " + STORAGE_DIR);
         if (!Files.exists(STORAGE_DIR)) {
             Files.createDirectories(STORAGE_DIR);
         }
         if (!Files.exists(FILE_PATH)) {
 
-            // Copy from resources if available
             try (InputStream is = UserStorage.class.getResourceAsStream("/users.txt")) {
                 if (is != null) {
                     Files.copy(is, FILE_PATH);

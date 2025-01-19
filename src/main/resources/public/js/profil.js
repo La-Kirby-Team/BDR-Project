@@ -46,10 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("estActif").value = vendeur.estActif.toString();
                 document.getElementById("idMagasin").value = vendeur.idMagasin;
 
-                /*const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?timestamp=${Date.now()}`;
-                const avatarElement = document.getElementById("avatar");
-                avatarElement.src = avatarPath;*/
-
             });
     }
 

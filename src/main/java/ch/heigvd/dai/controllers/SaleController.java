@@ -1,7 +1,7 @@
 package ch.heigvd.dai.controllers;
 
 import ch.heigvd.dai.models.SaleRequest;
-import ch.heigvd.dai.models.SupplyRequest;
+import ch.heigvd.dai.utils.SQLFileLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.QueryResult;
@@ -17,50 +17,27 @@ import java.util.concurrent.CompletableFuture;
 public class SaleController {
     private static final Logger logger = LoggerFactory.getLogger(SaleController.class);
 
-
     public SaleController() {
     }
 
     public void registerRoutes(Javalin app, Connection connection) {
 
-        app.post("/api/add-sale", ctx -> {
+        String checkProductQuantity = SQLFileLoader.loadSQLFile("sql/saleQuantity.sql");
+        String insertMouvementStockQuery = SQLFileLoader.loadSQLFile("sql/saleInsertMouvementStock.sql");
+        String checkClient = SQLFileLoader.loadSQLFile("sql/saleCheckClient.sql");
+        String checkSaler = SQLFileLoader.loadSQLFile("sql/saleCheckSaler.sql");
+        String insertSale = SQLFileLoader.loadSQLFile("sql/saleInsert.sql");
 
-            logger.info("Requête reçue avec le corps suivant : {}", ctx.body());
+
+
+
+        app.post("/api/add-sale", ctx -> {
 
             ObjectMapper objectMapper = new ObjectMapper();
 
             SaleRequest request = objectMapper.readValue(ctx.body(), SaleRequest.class);
 
-            logger.info(request.toString());
-
-            logger.info("Données reçues : " + request);
-
             try {
-
-                String checkProductQuantity = """
-                        SELECT idProduit FROM Article WHERE idProduit = (SELECT idProduit FROM Produit WHERE nom = ?
-                                                                                             AND recipient = ?::typeRecipient
-                                                                                             AND volume = ?
-                                                                                             AND tauxAlcool = ?)
-                                                                AND prix = ?;
-                        """;
-                String insertMouvementStockQuery = """
-                        INSERT INTO MouvementStock (idMagasin, idProduit, volume, recipient, quantite, date)
-                        VALUES (?, ?, ?, ?::typeRecipient, ?, ?) RETURNING id;
-                        """;
-
-                String checkClient = """
-                        SELECT id FROM Client WHERE email = ?;
-                        """;
-
-                String checkSaler = """
-                       SELECT id FROM Vendeur WHERE nom = ?;
-                       """;
-
-                String insertSale = """
-                        INSERT INTO Vente (idMouvementStock, idVendeur, idClient)
-                        VALUES (?, ?, ?);
-                        """;
 
                 String customDate = request.customDate.getFirst();
                 String vendeur = request.saler.getFirst();
