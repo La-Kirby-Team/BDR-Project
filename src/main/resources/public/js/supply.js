@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="col-md-3">
                         <label for="volume-${fieldCount}" class="form-label text-left">Volume (cl)</label>
-                        <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" placeholder="33" required>
+                        <input type="number" id="volume-${fieldCount}" name="volume[]" class="form-control" step="0.1" placeholder="33" required min="0.1">
                     </div>
                     <div class="col-md-3">
                         <label for="recipient-${fieldCount}" class="form-label text-left">Récipient</label>
@@ -137,18 +137,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="col-md-3">
                         <label for="alcohol-${fieldCount}" class="form-label text-left">Taux d'alcool (%)</label>
-                        <input type="number" id="alcohol-${fieldCount}" name="tauxAlcool[]" class="form-control" placeholder="5.0" step="0.1" required>
+                        <input type="number" id="alcohol-${fieldCount}" name="tauxAlcool[]" class="form-control" placeholder="5.0" step="0.01" required min="0.01">
                     </div>
                 </div>
 
                 <div class="highlight row mb-3 justify-content-center">
                      <div class="col-md-4 ">
                          <label for="quantity-${fieldCount}" class="form-label text-left>">Quantité</label>
-                         <input type="number" id="quantity-${fieldCount}" name="quantity[]" class="form-control" placeholder="0" required>
+                         <input type="number" id="quantity-${fieldCount}" name="quantity[]" class="form-control" placeholder="0" required min="1">
                      </div>
                     <div class="col-md-4 ">
                         <label for="prix-${fieldCount}" class="form-label text-left>">Prix</label>
-                        <input type="number" id="prix-${fieldCount}" name="prix[]" class="form-control" placeholder="0.3" required>
+                        <input type="number" id="prix-${fieldCount}" name="prix[]" class="form-control" placeholder="0.3" step ="0.01" min="0" required>
                     </div>
                  </div>
 
