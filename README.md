@@ -152,7 +152,7 @@ des principales routes disponibles :
 
 - `POST /api/login` : Authentification de l'utilisateur.
 - `POST /api/logout` : Déconnexion de l'utilisateur.
-- `POST /api/register` : Inscription d'un nouvel utilisateur.
+- `PUT /api/register` : Inscription d'un nouvel utilisateur.
 
 ### **🛒 Vue des Stocks**
 
@@ -191,7 +191,7 @@ curl -X POST http://localhost:8080/api/login -H "Content-Type: application/json"
 
 ```json
 {
-  "message": "Logged out successfully"
+  "message": "Logged in successfully"
 }
 
 ```
@@ -520,19 +520,16 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 
 - **Description**: Cet endpoint permet à un utilisateur de se connecter en fournissant ses identifiants.
 - **Requête**:
-    - **Headers**:
-        - `Content-Type`: `application/json`
-    - **Body**: La requête doit contenir un objet JSON avec les informations suivantes :
-        - **username**: Le nom d'utilisateur.
-        - **password**: Le mot de passe de l'utilisateur.
-          ```json
-          {
-            "username": "utilisateur1",
-            "password": "motdepasse123"
-          }
-          ```
+
+  ```json
+  {
+    "username": "utilisateur1",
+    "password": "motdepasse123"
+  }
+  ```
 - **Réponse**: La réponse contient un message de succès et un token JWT si les informations d'identification sont
   valides.
+
     ```json
     {
       "message": "Logged in successfully",
@@ -545,8 +542,8 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 - **Description**: Cet endpoint permet à un utilisateur de se déconnecter en fournissant un token d'authentification
   valide.
 - **Requête**:
-    - **Headers**:
-        - `Authorization`: `Bearer <token>`
+Il n'y a pas de données spécifiques requises dans la requête, seul le cookie de la session est supprimé.
+
 - **Réponse**: La réponse indique si la déconnexion a été effectuée avec succès.
     ```json
     {
@@ -558,19 +555,15 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 
 - **Description**: Cet endpoint permet de créer un nouvel utilisateur en fournissant les informations nécessaires.
 - **Requête**:
-    - **Headers**:
-        - `Content-Type`: `application/json`
-    - **Body**: La requête doit contenir un objet JSON avec les informations suivantes :
-        - **username**: Le nom d'utilisateur souhaité.
-        - **password**: Le mot de passe souhaité.
-        - **email**: L'adresse e-mail de l'utilisateur.
-          ```json
-          {
-            "username": "nouvelUtilisateur",
-            "password": "motdepasse456",
-            "email": "email@example.com"
-          }
-          ```
+
+```json
+{
+"username": "nouvelUtilisateur",
+"password": "motdepasse456",
+"email": "email@example.com"
+}
+```
+
 - **Réponse**: La réponse contient un message indiquant si l'utilisateur a été enregistré avec succès.
     ```json
     {
@@ -580,17 +573,10 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 
 #### Fonctionnement
 
-- **Contrôleur**: `AuthController`
+- **Contrôleur**: `UserController`
     - Utilise Javalin pour définir les routes liées à l'authentification.
     - Gère les connexions, déconnexions et inscriptions des utilisateurs.
     - Vérifie les identifiants et génère des tokens JWT pour les connexions réussies.
-
-- **Requêtes SQL**:
-    - **`registerUser.sql`**: Cette requête insère un nouvel utilisateur dans la base de données, en stockant un hachage
-      sécurisé de son mot de passe.
-    - **`validateUser.sql`**: Cette requête vérifie si les identifiants fournis (nom d'utilisateur et mot de passe)
-      correspondent à un utilisateur existant.
-    - **`logout.sql`**: Met à jour ou révoque les tokens JWT liés à un utilisateur lors de la déconnexion.
 
 #### Exemple de Réponses JSON
 
