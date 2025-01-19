@@ -108,7 +108,7 @@ et [Docker-compose](https://docs.docker.com/compose/) installés sur votre machi
    `docker run --rm --name winventory_web -p 80:8080 winventory:latest` (Assurez-vous qu'une base de données PostgreSQL
    soit accessible depuis le conteneur Docker)
 
-Une fois cela fait, votre serveur web devrait être accessible à l'adresse `http://localhost:8080` si vous avez lancé le
+Une fois cela fait, votre serveur web devrait être accessible à l'adresse `http://localhost` si vous avez lancé le
 serveur web en local, sinon, vous pouvez accéder à l'application web via l'adresse que vous devez changer dans le
 docker-compose.yml (les règles de redirections de Traefik).
 
@@ -184,7 +184,7 @@ Voici quelques exemples de commandes cURL pour interagir avec l'API RESTful de W
 **Requête :**
 
 ```sh
-curl -X POST http://localhost:8080/api/login -H "Content-Type: application/json" -d '{"username":"utilisateur1","password":"motdepasse123"}'
+curl -X POST http://localhost/api/login -H "Content-Type: application/json" -d '{"username":"utilisateur1","password":"motdepasse123"}'
 ```
 
 **Réponse :**
@@ -199,7 +199,7 @@ curl -X POST http://localhost:8080/api/login -H "Content-Type: application/json"
 **Requête :**
 
 ```sh
-curl -X POST http://localhost:8080/api/logout -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+curl -X POST http://localhost/api/logout -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
 **Réponse :**
@@ -213,7 +213,7 @@ curl -X POST http://localhost:8080/api/logout -H "Authorization: Bearer eyJhbGci
 **Requête :**
 
 ```sh
-curl -X PUT http://localhost:8080/api/register -H "Content-Type: application/json" -d '{"username":"nouvelUtilisateur","password":"motdepasse456","email":"email@example.com"}'
+curl -X PUT http://localhost/api/register -H "Content-Type: application/json" -d '{"username":"nouvelUtilisateur","password":"motdepasse456","email":"email@example.com"}'
 ```
 
 **Réponse :**
@@ -229,7 +229,7 @@ curl -X PUT http://localhost:8080/api/register -H "Content-Type: application/jso
 **Requête :**
 
 ```sh
-curl -X GET http://localhost:8080/api/stock
+curl -X GET http://localhost/api/stock
 ```
 
 **Réponse :**
@@ -265,7 +265,7 @@ curl -X GET http://localhost:8080/api/stock
 **Requête :**
 
 ```sh
-curl -X GET http://localhost:8080/api/orders-waiting
+curl -X GET http://localhost/api/orders-waiting
 ```
 
 **Réponse :**
@@ -292,7 +292,7 @@ curl -X GET http://localhost:8080/api/orders-waiting
 **Requête :**
 
 ```sh
-curl -X PUT http://localhost:8080/api/orders-confirm -H "Content-Type: application/json" -d '{"id":1,"date":"2023-10-11","quantite":50}'
+curl -X PUT http://localhost/api/orders-confirm -H "Content-Type: application/json" -d '{"id":1,"date":"2023-10-11","quantite":50}'
 ```
 
 **Réponse :**
@@ -308,7 +308,7 @@ curl -X PUT http://localhost:8080/api/orders-confirm -H "Content-Type: applicati
 **Requête :**
 
 ```sh
-curl -X GET http://localhost:8080/api/providers
+curl -X GET http://localhost/api/providers
 ```
 
 **Réponse :**
@@ -333,7 +333,7 @@ curl -X GET http://localhost:8080/api/providers
 **Requête :**
 
 ```sh
-curl -X POST http://localhost:8080/api/providers -H "Content-Type: application/json" -d '{"name":"Fournisseur C","address":"789 Boulevard Tertiaire","phone":"+41 78 987 65 43"}'
+curl -X POST http://localhost/api/providers -H "Content-Type: application/json" -d '{"name":"Fournisseur C","address":"789 Boulevard Tertiaire","phone":"+41 78 987 65 43"}'
 ```
 
 **Réponse :**
@@ -347,7 +347,7 @@ curl -X POST http://localhost:8080/api/providers -H "Content-Type: application/j
 **Requête :**
 
 ```sh
-curl -X DELETE http://localhost:8080/api/providers/1"
+curl -X DELETE http://localhost/api/providers/1"
 ```
 
 **Réponse :**
