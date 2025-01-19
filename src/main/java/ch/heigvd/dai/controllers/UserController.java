@@ -1,121 +1,81 @@
 package ch.heigvd.dai.controllers;
 
+import ch.heigvd.dai.utils.AuthService;
+import io.javalin.Javalin;
+import io.javalin.http.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import ch.heigvd.dai.models.User;
-import io.javalin.http.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import java.io.IOException;
+import java.util.Map;
+import java.util.UUID;
 
 public class UserController {
-    private final ConcurrentHashMap<Integer, User> users;
-    private final AtomicInteger userId = new AtomicInteger(1);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final String SESSION_COOKIE_NAME = "session_token";
 
-    public UserController(ConcurrentHashMap<Integer, User> users) {
-        this.users = users;
+
+    public void registerRoutes(Javalin app) {
+        app.put("/api/register", this::registerUser);
+        app.post("/api/login", this::loginUser);
+        app.post("/api/logout", this::logoutUser);
     }
 
-    public void create(Context ctx) {
-        User newUser = ctx.bodyValidator(User.class).check(obj -> obj.firstName != null, "Missing first name")
-                .check(obj -> obj.lastName != null, "Missing last name")
-                .check(obj -> obj.email != null, "Missing email")
-                .check(obj -> obj.password != null, "Missing password")
-                .get();
+    private void registerUser(Context ctx) throws IOException {
+        Map<String, String> requestBody = ctx.bodyAsClass(Map.class);
+        String username = requestBody.get("username");
+        String password = requestBody.get("password");
 
-        for (User user : users.values()) {
-            if (user.email.equalsIgnoreCase(newUser.email)) {
-                throw new ConflictResponse();
-            }
+        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+            ctx.status(400).json(Map.of("message", "Username and password are required"));
+            return;
         }
 
-        User user = new User();
+        boolean registered = AuthService.registerUser(username, password);
 
-        user.id = userId.getAndIncrement();
-        user.firstName = newUser.firstName;
-        user.lastName = newUser.lastName;
-        user.email = newUser.email;
-        user.password = newUser.password;
-
-        users.put(user.id, user);
-
-        ctx.status(HttpStatus.CREATED);
-        ctx.json(user);
-    }
-
-    public void getOne(Context ctx) {
-        Integer id = ctx.pathParamAsClass("id", Integer.class).get();
-
-        User user = users.get(id);
-
-        if (user == null) {
-            throw new NotFoundResponse();
+        if (registered) {
+            ctx.status(201).json(Map.of("message", "User registered successfully"));
+        } else {
+            ctx.status(409).json(Map.of("message", "Username already exists"));
         }
-
-        ctx.json(user);
     }
 
-    public void getMany(Context ctx) {
-        String firstName = ctx.queryParam("firstName");
-        String lastName = ctx.queryParam("lastName");
+    private void loginUser(Context ctx) {
+        try {
+            Map requestBody = ctx.bodyAsClass(Map.class);
+            String username = (String) requestBody.get("username");
+            String password = (String) requestBody.get("password");
 
-        List<User> users = new ArrayList<>();
-
-        for (User user : this.users.values()) {
-            if (firstName != null && !user.firstName.equalsIgnoreCase(firstName)) {
-                continue;
+            if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+                ctx.status(400).json(Map.of("message", "Username and password are required"));
+                return;
             }
 
-            if (lastName != null && !user.lastName.equalsIgnoreCase(lastName)) {
-                continue;
+            boolean authenticated = AuthService.authenticateUser(username, password);
+
+            if (authenticated) {
+                // Generate a random session token
+                String sessionToken = UUID.randomUUID().toString();
+
+                // Set cookie (expires in 1 day)
+                ctx.cookie(SESSION_COOKIE_NAME, sessionToken, 86400); // 👈 Cookie valid for 24 hours
+
+                logger.info("✅ User '{}' logged in successfully. Session: {}", username, sessionToken);
+                ctx.status(200).json(Map.of("message", "Login successful"));
+            } else {
+                logger.warn("⚠️ Login failed for user '{}'", username);
+                ctx.status(401).json(Map.of("message", "Invalid username or password"));
             }
-
-            users.add(user);
+        } catch (Exception e) {
+            logger.error("❌ Error during login attempt: {}", e.getMessage());
+            ctx.status(500).json(Map.of("message", "Internal server error"));
         }
-
-        ctx.json(users);
     }
 
-    public void update(Context ctx) {
-        Integer id = ctx.pathParamAsClass("id", Integer.class).get();
-
-        User updateUser =
-                ctx.bodyValidator(User.class)
-                        .check(obj -> obj.firstName != null, "Missing first name")
-                        .check(obj -> obj.lastName != null, "Missing last name")
-                        .check(obj -> obj.email != null, "Missing email")
-                        .check(obj -> obj.password != null, "Missing password")
-                        .get();
-
-        User user = users.get(id);
-
-        if (user == null) {
-            throw new NotFoundResponse();
-        }
-
-        user.firstName = updateUser.firstName;
-        user.lastName = updateUser.lastName;
-        user.email = updateUser.email;
-        user.password = updateUser.password;
-
-        users.put(id, user);
-
-        ctx.json(user);
-    }
-
-    public void delete(Context ctx) {
-        Integer id = ctx.pathParamAsClass("id", Integer.class).get();
-
-        if (!users.containsKey(id)) {
-            throw new NotFoundResponse();
-        }
-
-        users.remove(id);
-
-        ctx.status(HttpStatus.NO_CONTENT);
+    private void logoutUser(Context ctx) {
+        // Invalidate the session by deleting the cookie
+        ctx.removeCookie(SESSION_COOKIE_NAME);
+        logger.info("✅ User logged out and session invalidated.");
+        ctx.status(200).json(Map.of("message", "Logged out successfully"));
     }
 }
-
-

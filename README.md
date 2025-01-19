@@ -483,7 +483,7 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 
 - **Requêtes SQL**:
   - **`providerQuery.sql`**: Cette requête SQL récupère les informations sur les fournisseurs en les triant par nom.
-  - **`insertNewProvider.sql`**: Cette requête SQL insère un nouveau fournisseur dans la base de données.
+  - **`providerNew.sql`**: Cette requête SQL insère un nouveau fournisseur dans la base de données.
   - **`deleteProviderQuery.sql`**: Cette requête SQL supprime un fournisseur de la base de données en fonction de son ID.
 
 #### Exemple de Réponse JSON
