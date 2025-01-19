@@ -10,7 +10,6 @@
 
 body {
     margin: 0;
-    overflow-x: hidden;
     height: 100%;
     background-color: var(--primary-bg-dark);
     color: var(--text-dark);
@@ -19,7 +18,6 @@ body {
 html, body {
     height: 100%;
     margin: 0;
-    overflow: hidden; /* Prevent scrolling unless needed */
 }
 
 body.light-mode {

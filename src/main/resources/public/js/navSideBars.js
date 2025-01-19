@@ -92,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         logoutButton.addEventListener("click", async function (event) {
             event.preventDefault(); // Prevent normal navigation
-            alert("Déconnexion en cours...");
 
             // ⏳ Delay before logout request
             setTimeout(async () => {
@@ -108,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // ⏳ Wait 500ms before redirecting (smooth transition)
                         setTimeout(() => {
                             window.location.href = "/html/index.html";
-                        }, 500);
+                        }, 50);
                     } else {
                         alert("Erreur lors de la déconnexion. Veuillez réessayer.");
                     }
@@ -116,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("❌ Erreur lors de la requête de déconnexion :", error);
                     alert("Une erreur est survenue. Veuillez vérifier votre connexion.");
                 }
-            }, 500); // ⏳ Delay of 500ms before sending the logout request
+            }, 50); // ⏳ Delay of 500ms before sending the logout request
         });
     }, 300); // ⏳ Delay of 300ms to ensure DOM is ready
 });
