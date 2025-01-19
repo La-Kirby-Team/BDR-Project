@@ -7,6 +7,7 @@ import com.github.jasync.sql.db.general.ArrayRowData;
 import io.javalin.Javalin;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,9 +38,9 @@ public class StockController {
                 CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockQuery);
                 QueryResult queryResult = future.get();
 
-                String data = queryResult.getRows().stream()
+                List<String> data = queryResult.getRows().stream()
                         .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-                        .toList().toString();
+                        .toList();
 
 
                 //Mettre à jour le cache
@@ -69,15 +70,15 @@ public class StockController {
 
     // Classe interne pour stocker les données mises en cache et leur timestamp
     private static class CacheData {
-        private final String data;
+        private final List<String> data;
         private final long timestamp;
 
-        public CacheData(String data, long timestamp) {
+        public CacheData(List<String> data, long timestamp) {
             this.data = data;
             this.timestamp = timestamp;
         }
 
-        public String getData() {
+        public List<String> getData() {
             return data;
         }
 
