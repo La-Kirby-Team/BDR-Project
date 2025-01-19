@@ -52,7 +52,13 @@ public class Main {
             String path = ctx.path();
 
             // Allow register and login endpoints without authentication
-            if (path.startsWith("/api/register") || path.startsWith("/api/login") || path.startsWith("/html/index.html") || path.startsWith("/html/register.html")) {
+            if (    path.startsWith("/api/register") ||
+                    path.startsWith("/api/login") ||
+                    path.startsWith("/html/index.html") ||
+                    path.startsWith("/html/register.html") ||
+                    path.startsWith("/css/accueilStyle.css") ||
+                    path.startsWith("/js/index.js") ||
+                    path.startsWith("/js/register.js")){
                 return; // Skip authentication check for these routes
             }
 

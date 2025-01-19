@@ -18,6 +18,7 @@ public class UserStorage {
      * Ensures that the storage directory and file exist.
      */
     private static void ensureFileExists() throws IOException {
+//        System.out.println("STORAGE_DIR: " + STORAGE_DIR);
         if (!Files.exists(STORAGE_DIR)) {
             Files.createDirectories(STORAGE_DIR);
         }
