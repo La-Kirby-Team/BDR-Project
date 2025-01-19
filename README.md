@@ -123,12 +123,12 @@ classic)).
 2. **(Optionnel) Éditions** : Faites les modifications nécessaires dans le code source.
 3. **Compiler le projet** : `mvn clean package`
 4. **Construire l'image Docker** : `docker build -t winventory .`
-5. **Taguer l'image pour le dépôt Docker Hub** : `docker tag winventory your-dockerhub-username/winventory:latest`
-6. **Se connecter à Docker Hub** : `docker login ghcr.io -u <Nom d'utilisatuer>` puis entrez votre token
+5. **Se connecter à GitHub Container Registry** : `docker login ghcr.io -u VotrePseudoGithubICI` puis entrez votre token
    d'authentification.
-7. **Pousser l'image vers Docker Hub** : `docker push your-dockerhub-username/winventory:latest`
+6. **Taguer l'image pour le dépôt Docker Hub** : `docker tag winventory ghcr.io/VotrePseudoGithubICI/winventory:latest`
+7. **Pousser l'image vers Docker Hub** : `docker push ghcr.io/VotrePseudoGithubICI/winventory`
 
-Assurez-vous de remplacer `your-dockerhub-username` par votre nom d'utilisateur Docker Hub.
+Assurez-vous de remplacer `VotrePseudoGithubICI` par votre nom d'utilisateur GitHub.
 
 Une fois l'image publiée, vous pouvez la déployer sur n'importe quel serveur en utilisant Docker :
 

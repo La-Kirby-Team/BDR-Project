@@ -34,7 +34,7 @@ public class Main {
         logger.info("starting info");
         logger.debug("starting debug");
         logger.trace("starting trace");
-        String host = "localhost"; // "localhost"; if you are running the database locally or "db" if you are running the database in a docker container
+        String host = "db"; // "localhost"; if you are running the database locally or "db" if you are running the database in a docker container
         int SQLport = 5432;
         String database = "winventory";
         String username = "postgres";
