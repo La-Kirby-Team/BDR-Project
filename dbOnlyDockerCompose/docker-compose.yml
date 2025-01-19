@@ -1,0 +1,18 @@
+# This file is used to create a docker container with a postgres database used for the winventory application and local development
+version: '3.8'
+services:
+  db:
+    container_name: bdr_postgresql_16
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=trustno1
+      - POSTGRES_DB=winventory
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+ 
+volumes:
+  pgdata:
