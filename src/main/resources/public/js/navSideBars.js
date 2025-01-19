@@ -8,11 +8,28 @@ document.addEventListener('DOMContentLoaded', function () {
             // Delay execution to allow DOM to update
             setTimeout(() => {
                 const themeToggle = document.getElementById('theme-toggle');
+                const body = document.body;
+
+                // 🟢 Load stored theme preference from localStorage
+                const storedTheme = localStorage.getItem('theme');
+                if (storedTheme === 'light') {
+                    body.classList.add('light-mode');
+                    themeToggle.textContent = 'Mode Sombre';
+                } else {
+                    body.classList.remove('light-mode');
+                    themeToggle.textContent = 'Mode Clair';
+                }
+
                 if (themeToggle) {
-                    const body = document.body;
                     themeToggle.addEventListener('click', () => {
                         body.classList.toggle('light-mode');
-                        themeToggle.textContent = body.classList.contains('light-mode') ? 'Mode Sombre' : 'Mode Clair';
+                        const isLightMode = body.classList.contains('light-mode');
+
+                        // 💾 Save theme preference in localStorage
+                        localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+
+                        // 🏷️ Update button text
+                        themeToggle.textContent = isLightMode ? 'Mode Sombre' : 'Mode Clair';
                     });
                 } else {
                     console.warn("⚠️ theme-toggle not found, skipping event listener.");
@@ -51,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error("Error loading sidebar:", error));
 });
 
+// Dropdown for user settings
 document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
         const dropdownToggle = document.querySelector("#userDropdown"); // Target the dropdown button
@@ -61,3 +79,45 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 300);  // Delay to ensure the navbar is fully loaded
 });
+
+// Logout functionality with timeout
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+        const logoutButton = document.getElementById("logout-button");
+
+        if (!logoutButton) {
+            console.warn("⚠️ Bouton de déconnexion introuvable !");
+            return;
+        }
+
+        logoutButton.addEventListener("click", async function (event) {
+            event.preventDefault(); // Prevent normal navigation
+            alert("Déconnexion en cours...");
+
+            // ⏳ Delay before logout request
+            setTimeout(async () => {
+                try {
+                    const response = await fetch("/api/logout", {
+                        method: "POST",
+                        credentials: "include", // Ensure session cookies are included
+                    });
+                    if (response.ok) {
+                        // 🗑️ Remove the session cookie
+                        document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+                        // ⏳ Wait 500ms before redirecting (smooth transition)
+                        setTimeout(() => {
+                            window.location.href = "/html/index.html";
+                        }, 500);
+                    } else {
+                        alert("Erreur lors de la déconnexion. Veuillez réessayer.");
+                    }
+                } catch (error) {
+                    console.error("❌ Erreur lors de la requête de déconnexion :", error);
+                    alert("Une erreur est survenue. Veuillez vérifier votre connexion.");
+                }
+            }, 500); // ⏳ Delay of 500ms before sending the logout request
+        });
+    }, 300); // ⏳ Delay of 300ms to ensure DOM is ready
+});
+

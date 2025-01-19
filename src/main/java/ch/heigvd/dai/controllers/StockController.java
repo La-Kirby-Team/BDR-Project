@@ -7,50 +7,21 @@ import com.github.jasync.sql.db.general.ArrayRowData;
 import io.javalin.Javalin;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class StockController {
-
-    // ConcurrentHashMap pour le cache (stocké par une clé "stock-cache")
-    private final ConcurrentHashMap<String, CacheData> stockCache = new ConcurrentHashMap<>();
-
-    // Temps d'expiration du cache en millisecondes (5 minutes)
-    private static final long CACHE_EXPIRATION_TIME = 300000;
-
-
     public void registerRoutes(Javalin app, Connection connection) {
 
         String stockQuery = SQLFileLoader.loadSQLFile("sql/stockQuery.sql");
         String lowQTQuery = SQLFileLoader.loadSQLFile("sql/lowQTArticles.sql");
 
         app.get("/api/stock", ctx -> {
-            String cacheKey= "stock-data";
+            CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockQuery);
+            QueryResult queryResult = future.get();
 
-            CacheData cachedData = stockCache.get(cacheKey);
-
-            if(cachedData != null && !isCacheExpired(cachedData)) {
-                System.out.println("Utilisation des données mises en cache");
-                ctx.json(cachedData.getData());
-            }
-            else{
-                CompletableFuture<QueryResult> future = connection.sendPreparedStatement(stockQuery);
-                QueryResult queryResult = future.get();
-
-                List<String> data = queryResult.getRows().stream()
-                        .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
-                        .toList();
-
-
-                //Mettre à jour le cache
-                stockCache.put(cacheKey, new CacheData(data, System.currentTimeMillis()));
-                ctx.json(data);
-            }
-
-
-
-
+            ctx.json(queryResult.getRows().stream()
+                    .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
+                    .toList());
         });
 
         app.get("/api/articles-lowQT", ctx -> {
@@ -61,29 +32,5 @@ public class StockController {
                     .map(row -> Arrays.toString(((ArrayRowData) row).getColumns()))
                     .toList());
         });
-    }
-
-    // Méthode pour vérifier si le cache est expiré
-    private boolean isCacheExpired(CacheData cachedData) {
-        return (System.currentTimeMillis() - cachedData.getTimestamp()) > CACHE_EXPIRATION_TIME;
-    }
-
-    // Classe interne pour stocker les données mises en cache et leur timestamp
-    private static class CacheData {
-        private final List<String> data;
-        private final long timestamp;
-
-        public CacheData(List<String> data, long timestamp) {
-            this.data = data;
-            this.timestamp = timestamp;
-        }
-
-        public List<String> getData() {
-            return data;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
-        }
     }
 }

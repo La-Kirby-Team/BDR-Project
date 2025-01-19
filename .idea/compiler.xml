@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="java-tcp-programming" />
+        <module name="Winventory" />
       </profile>
     </annotationProcessing>
   </component>

@@ -1,6 +1,8 @@
 package ch.heigvd.dai;
 
 import ch.heigvd.dai.controllers.*;
+import ch.heigvd.dai.models.User;
+import ch.heigvd.dai.utils.AuthService;
 import com.github.jasync.sql.db.Connection;
 import com.github.jasync.sql.db.pool.ConnectionPool;
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnection;
@@ -10,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 public class Main {
@@ -38,6 +42,44 @@ public class Main {
         ConnectionPool<PostgreSQLConnection> pool = PostgreSQLConnectionBuilder.createConnectionPool(url);
 
         Connection connection = pool.connect().get();
+
+
+        // Initialize UserController
+        UserController userController = new UserController();
+        userController.registerRoutes(app);
+
+        app.before(ctx -> {
+            String path = ctx.path();
+
+            // Allow register and login endpoints without authentication
+            if (    path.startsWith("/api/register") ||
+                    path.startsWith("/api/login") ||
+                    path.startsWith("/html/index.html") ||
+                    path.startsWith("/html/register.html") ||
+                    path.startsWith("/css/accueilStyle.css") ||
+                    path.startsWith("/js/index.js") ||
+                    path.startsWith("/js/register.js")){
+                return; // Skip authentication check for these routes
+            }
+
+            // Check if session cookie exists
+            String sessionToken = ctx.cookie("session_token");
+
+            if (sessionToken == null || sessionToken.isEmpty()) {
+                if (!path.startsWith("/html/")) {
+                    // If the request is an API request, return a JSON error
+                    ctx.status(401).json(Map.of("message", "Unauthorized. Please log in."));
+                } else {
+                    // If the request is for a page, redirect to the login page
+                    ctx.redirect("/html/index.html");
+                }
+            }
+        });
+
+
+
+
+
 
 
         // Initialize the ShopController
@@ -70,13 +112,13 @@ public class Main {
 
 
         app.get("/", ctx -> ctx.redirect("/html/index.html"));
+        app.get("/sales", ctx -> ctx.redirect("/html/sale.html"));
+        app.get("/register", ctx -> ctx.redirect("/html/register.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("/html/mainMenu.html"));
         app.get("/orders", ctx -> ctx.redirect("/html/supply.html"));
         app.get("/stockView", ctx -> ctx.redirect("/html/stockView.html"));
         app.get("/add-provider", ctx -> ctx.redirect("/html/addProvider.html"));
         app.get("/providerView", ctx -> ctx.redirect("/html/providerView.html"));
-
-
 
 
     }
