@@ -3,8 +3,8 @@ version: "3.8"
 services:
   # Traefik Reverse Proxy
   traefik:
-    image: "traefik:v2.10"
-    container_name: "traefik"
+    image: traefik:v2.10
+    container_name: winventory_traefik
     restart: always
     command:
       - "--api.insecure=true" # Enables the Traefik Dashboard (remove for production)
@@ -30,7 +30,7 @@ services:
 
   # Database
   db:
-    container_name: bdr_postgresql_16
+    container_name: winventory_db
     image: postgres:16
     restart: always
     environment:
@@ -45,7 +45,7 @@ services:
 
   # Web Application
   web:
-    container_name: winventory
+    container_name: winventory_web
     image: winventory
     restart: always
     volumes:
