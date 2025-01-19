@@ -9,6 +9,10 @@ import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
@@ -68,6 +72,20 @@ public class Main {
         SaleController saleController = new SaleController();
         saleController.registerRoutes(app, connection);
 
+
+        app.get("/avatars/{filename}", ctx -> {
+            String filename = ctx.pathParam("filename");
+            Path filePath = Paths.get("resources/public/avatars", filename);
+
+            if (Files.exists(filePath)) {
+                ctx.header("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+                ctx.header("Pragma", "no-cache");
+                ctx.header("Expires", "0");
+                ctx.result(Files.newInputStream(filePath));
+            } else {
+                ctx.status(404).result("Image de profil non trouvée");
+            }
+        });
 
         app.get("/", ctx -> ctx.redirect("/html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("/html/mainMenu.html"));

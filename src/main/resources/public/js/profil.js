@@ -58,17 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("estActif").value = vendeur.estActif.toString();
                 document.getElementById("idMagasin").value = vendeur.idMagasin;
 
-                const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
                 const avatarElement = document.getElementById("avatar");
-                const img = new Image();
-
-                img.onload = () => {
-                    avatarElement.src = avatarPath;
-                };
-                img.onerror = () => {
-                    avatarElement.src = "/imgs/Default_profile_picture.png";
-                };
-                img.src = avatarPath;
+                const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
+                document.getElementById("avatar").src = avatarPath;
             });
     }
 
@@ -108,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         Promise.all([imagePromise, profilePromise])
             .then(() => {
-                location.reload(); // Rafraîchir la page après mise à jour
+                fetchVendeur(vendeurId); // Recharger les données pour obtenir l'image mise à jour
             })
             .catch(() => {
                 alert("Une erreur est survenue lors de la mise à jour du profil ou de l'image.");
