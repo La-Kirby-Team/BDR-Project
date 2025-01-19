@@ -11,6 +11,10 @@ import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,7 +113,6 @@ public class Main {
 
         SaleController saleController = new SaleController();
         saleController.registerRoutes(app, connection);
-
 
         app.get("/", ctx -> ctx.redirect("/html/index.html"));
         app.get("/sales", ctx -> ctx.redirect("/html/sale.html"));
