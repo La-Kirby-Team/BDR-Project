@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     let initialData = {};
-    const vendeurId = 1;
+
+    Promise.all([fetchMagasins(), fetchVendeur(1)]);
 
     const editButton = document.getElementById("edit-button");
     const cancelButton = document.getElementById("cancel-button");
@@ -9,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const avatarContainer = document.getElementById("upload-avatar-container");
     const avatarUpload = document.getElementById("avatar-upload");
     const fields = form.querySelectorAll("input, select");
-
-    Promise.all([fetchMagasins(), fetchVendeur(vendeurId)]);
 
     editButton.addEventListener("click", () => toggleEditMode(true));
     cancelButton.addEventListener("click", () => {
@@ -23,27 +22,16 @@ document.addEventListener("DOMContentLoaded", function () {
         saveProfile();
     });
 
-    let magasinsLoaded = false;
-
-    function fetchMagasins(forceReload = false) {
-        if (magasinsLoaded && !forceReload) return Promise.resolve();
-        magasinsLoaded = true;
-
-        const magasinSelect = document.getElementById("idMagasin");
-        magasinSelect.innerHTML = "";
-
+    function fetchMagasins() {
         return fetch("/api/magasins")
             .then(response => response.json())
             .then(data => {
-                const addedIds = new Set();
+                const magasinSelect = document.getElementById("idMagasin");
                 data.forEach(magasin => {
-                    if (!addedIds.has(magasin.id)) {
-                        const option = document.createElement("option");
-                        option.value = magasin.id;
-                        option.textContent = magasin.nom;
-                        magasinSelect.appendChild(option);
-                        addedIds.add(magasin.id);
-                    }
+                    const option = document.createElement("option");
+                    option.value = magasin.id;
+                    option.textContent = magasin.nom;
+                    magasinSelect.appendChild(option);
                 });
             });
     }
@@ -58,9 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("estActif").value = vendeur.estActif.toString();
                 document.getElementById("idMagasin").value = vendeur.idMagasin;
 
+                /*const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?timestamp=${Date.now()}`;
                 const avatarElement = document.getElementById("avatar");
-                const avatarPath = `/avatars/${vendeur.nom.toLowerCase().replace(' ', '_')}.png?reload=${Date.now()}`;
-                document.getElementById("avatar").src = avatarPath;
+                avatarElement.src = avatarPath;*/
+
             });
     }
 
@@ -95,42 +84,30 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         const file = avatarUpload.files[0];
-        const imagePromise = file ? uploadAvatar(file, updatedData.nom) : Promise.resolve();
-        const profilePromise = updateProfile(updatedData);
+        if (file) {
+            const formData = new FormData();
+            formData.append("avatar", file);
+            formData.append("nom", updatedData.nom);
 
-        Promise.all([imagePromise, profilePromise])
-            .then(() => {
-                fetchVendeur(vendeurId); // Recharger les données pour obtenir l'image mise à jour
+            fetch(`/api/uploadAvatar?id=1&nom=${updatedData.nom}`, {
+                method: "POST",
+                body: formData
             })
-            .catch(() => {
-                alert("Une erreur est survenue lors de la mise à jour du profil ou de l'image.");
-            });
-    }
+                .catch(() => alert("Erreur lors de la mise à jour de la photo de profil."));
+        }
 
-    function uploadAvatar(file, nom) {
-        const formData = new FormData();
-        formData.append("avatar", file);
-        formData.append("nom", nom);
-
-        return fetch(`/api/uploadAvatar?id=1&nom=${nom}`, {
-            method: "POST",
-            body: formData
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de l'upload de l'image.");
-            }
-        });
-    }
-
-    function updateProfile(data) {
-        return fetch("/api/updateVendeur/1", {
+        fetch("/api/updateVendeur/1", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de la mise à jour du profil.");
-            }
-        });
+            body: JSON.stringify(updatedData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    toggleEditMode(false);
+                } else {
+                    alert("Erreur lors de la mise à jour du profil.");
+                }
+            })
+            .catch(() => alert("Erreur lors de la mise à jour du profil."));
     }
 });

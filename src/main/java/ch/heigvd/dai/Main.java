@@ -72,21 +72,6 @@ public class Main {
         SaleController saleController = new SaleController();
         saleController.registerRoutes(app, connection);
 
-
-        app.get("/avatars/{filename}", ctx -> {
-            String filename = ctx.pathParam("filename");
-            Path filePath = Paths.get("resources/public/avatars", filename);
-
-            if (Files.exists(filePath)) {
-                ctx.header("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-                ctx.header("Pragma", "no-cache");
-                ctx.header("Expires", "0");
-                ctx.result(Files.newInputStream(filePath));
-            } else {
-                ctx.status(404).result("Image de profil non trouvée");
-            }
-        });
-
         app.get("/", ctx -> ctx.redirect("/html/index.html"));
         app.get("/mainMenu", ctx -> ctx.redirect("/html/mainMenu.html"));
         app.get("/orders", ctx -> ctx.redirect("/html/supply.html"));
