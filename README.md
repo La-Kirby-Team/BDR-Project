@@ -7,6 +7,9 @@
 - [🎯 Objectif](#-objectif)
 - [🚀 Compilation, édition et lancement du projet](#compilation-édition-et-lancement-du-projet)
 - [📖 Documentation de l'API](#-documentation-de-lapi)
+- [🌐 Utilisation de l'application web avec cURL](#-utilisation-de-lapplication-web-avec-curl)
+- [📝 Installation et Configuration d'une Machine Virtuelle](#installation-et-configuration-dune-machine-virtuelle)
+- [🌐 Configuration de la zone DNS pour accéder à l'application web avec DuckDNS](#configuration-de-la-zone-dns-pour-accéder-à-lapplication-web-avec-duckdns)
 - [📝 Détails de l'API](#-détails-de-lapi)
 
 ## **👨‍💻 Équipe** 
