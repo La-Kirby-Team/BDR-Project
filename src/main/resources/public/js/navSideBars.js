@@ -61,3 +61,45 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 300);  // Delay to ensure the navbar is fully loaded
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+        const logoutButton = document.getElementById("logout-button");
+
+        if (!logoutButton) {
+            console.warn("⚠️ Bouton de déconnexion introuvable !");
+            return;
+        }
+
+        logoutButton.addEventListener("click", async function (event) {
+            event.preventDefault(); // Empêche la navigation normale
+            alert("Déconnexion en cours...");
+
+            // Ajoute un délai avant la requête de déconnexion
+            setTimeout(async () => {
+                try {
+                    const response = await fetch("/api/logout", {
+                        method: "POST",
+                        credentials: "include", // Assure que les cookies de session sont inclus
+                    });
+
+                    if (response.ok) {
+                        // Supprime le cookie côté client
+                        document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+                        // Attendre 500ms avant de rediriger (effet plus fluide)
+                        setTimeout(() => {
+                            window.location.href = "/html/index.html";
+                        }, 500);
+                    } else {
+                        alert("Erreur lors de la déconnexion. Veuillez réessayer.");
+                    }
+                } catch (error) {
+                    console.error("❌ Erreur lors de la requête de déconnexion :", error);
+                    alert("Une erreur est survenue. Veuillez vérifier votre connexion.");
+                }
+            }, 500); // Attente de 500ms avant l'envoi de la requête
+        });
+    }, 300); // Attente de 300ms pour que le DOM soit prêt
+});
