@@ -519,7 +519,9 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 **POST /api/login**
 
 - **Description**: Cet endpoint permet à un utilisateur de se connecter en fournissant ses identifiants.
-- **Requête**:
+- **Requête**: La requête doit contenir un objet JSON avec les informations suivantes :
+    - **username**: Le nom d'utilisateur de l'utilisateur.
+    - **password**: Le mot de passe de l'utilisateur.
 
   ```json
   {
@@ -541,8 +543,7 @@ En suivant ces étapes, vous pourrez configurer la zone DNS pour accéder à vot
 
 - **Description**: Cet endpoint permet à un utilisateur de se déconnecter en fournissant un token d'authentification
   valide.
-- **Requête**:
-Il n'y a pas de données spécifiques requises dans la requête, seul le cookie de la session est supprimé.
+- **Requête**: Il n'y a pas de données spécifiques requises dans la requête, seul le cookie de la session est supprimé.
 
 - **Réponse**: La réponse indique si la déconnexion a été effectuée avec succès.
     ```json
@@ -554,7 +555,10 @@ Il n'y a pas de données spécifiques requises dans la requête, seul le cookie 
 **PUT /api/register**
 
 - **Description**: Cet endpoint permet de créer un nouvel utilisateur en fournissant les informations nécessaires.
-- **Requête**:
+- **Requête**: La requête doit contenir un objet JSON avec les informations suivantes :
+    - **username**: Le nom d'utilisateur du nouvel utilisateur.
+    - **password**: Le mot de passe du nouvel utilisateur.
+    - **email**: L'adresse e-mail du nouvel utilisateur.
 
 ```json
 {
