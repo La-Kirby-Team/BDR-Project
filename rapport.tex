@@ -58,6 +58,77 @@
     \section*{Modèle relationnel}
     \addcontentsline{toc}{section}{Modèle relationnel}
 
+    \begin{itemize}
+        \item \textbf{Provenance}
+        \begin{itemize}
+            \item \underline{id}, pays, région, producteur
+        \end{itemize}
+
+        \item \textbf{Produit}
+        \begin{itemize}
+            \item \underline{idProduit}, idProvenance, nom, tauxAlcool
+            \item \textit{idProvenance} référence \textit{Provenance.id}, \textit{idProvenance NOT NULL}
+        \end{itemize}
+
+        \item \textbf{Article}
+        \begin{itemize}
+            \item \underline{idProduit, volume, recipient}, prix, datePeremption, dateFinDeVente
+            \item \textit{idProduit} référence \textit{Produit.id}
+        \end{itemize}
+
+        \item \textbf{MouvementStock}
+        \begin{itemize}
+            \item \underline{id}, idMagasin, idProduit, volume, recipient, date, quantite
+            \item \textit{idMagasin} référence \textit{Magasin.id}
+            \item \textit{idProduit, volume, recipient} référence \textit{Article.idProduit, volume, recipient}
+            \item \textit{idProduit, volume, recipient NOT NULL}
+        \end{itemize}
+
+        \item \textbf{Magasin}
+        \begin{itemize}
+            \item \underline{id}, nom, adresse, dateFermeture
+        \end{itemize}
+
+        \item \textbf{Vendeur}
+        \begin{itemize}
+            \item \underline{id}, idMagasin, nom, salaire, estActif
+            \item \textit{idMagasin} référence \textit{Magasin.id}, \textit{idMagasin NOT NULL}
+        \end{itemize}
+
+        \item \textbf{Vente}
+        \begin{itemize}
+            \item \underline{idMouvementStock}, idVendeur, idClient
+            \item \textit{idMouvementStock} référence \textit{MouvementStock.id}
+            \item \textit{idVendeur} référence \textit{Vendeur.id}, \textit{idVendeur NOT NULL}
+            \item \textit{idClient} référence \textit{Client.id}, \textit{idClient NOT NULL}
+        \end{itemize}
+
+        \item \textbf{Approvisionnement}
+        \begin{itemize}
+            \item \underline{idMouvementStock}, dateCommande
+            \item \textit{idMouvementStock} référence \textit{MouvementStock.id}
+        \end{itemize}
+
+        \item \textbf{Client}
+        \begin{itemize}
+            \item \underline{id}, nom, adresse, email, pointDeFidelite, annéeNaissance
+            \item \textit{email UNIQUE}
+        \end{itemize}
+
+        \item \textbf{Fournisseur}
+        \begin{itemize}
+            \item \underline{id}, nom, adresse, numeroTelephone
+        \end{itemize}
+
+        \item \textbf{Approvisionnement\_Fournisseur}
+        \begin{itemize}
+            \item \underline{idMouvementStock, idFournisseur}
+            \item \textit{idMouvementStock} référence \textit{MouvementStock.id}
+            \item \textit{idFournisseur} référence \textit{Fournisseur.id}
+        \end{itemize}
+
+    \end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%
 %Création de tables%
 %%%%%%%%%%%%%%%%%%%%
