@@ -144,11 +144,12 @@ CREATE TABLE IF NOT EXISTS Provenance(
 --CREATE TYPE typeRecipient AS ENUM ('bouteille', 'canette');
 
 CREATE TABLE IF NOT EXISTS Produit(
-    id SERIAL,
-    idProduit INTEGER NOT NULL,
+  idProduit SERIAL,    
+  idProvenance INTEGER NOT NULL,
     nom VARCHAR(80) NOT NULL,
     tauxAlcool DOUBLE PRECISION NOT NULL,
-    CONSTRAINT PK_Produit PRIMARY KEY (id)
+    CONSTRAINT PK_Produit PRIMARY KEY (idProduit),
+    constraint FK_idProvenance foreign KEY(idProvenance) references Provenance(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Article(
@@ -159,7 +160,7 @@ CREATE TABLE IF NOT EXISTS Article(
     datePeremption DATE NOT NULL,
     dateFinDeVente DATE,
     CONSTRAINT PK_Article PRIMARY KEY (idProduit, volume, recipient),
-    CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(id) ON UPDATE CASCADE ON DELETE RESTRICT
+    CONSTRAINT FK_Article_Produit FOREIGN KEY (idProduit) REFERENCES Produit(idProduit) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Magasin(
@@ -217,8 +218,8 @@ CREATE TABLE IF NOT EXISTS Approvisionnement(
     idMouvementStock INTEGER,
     dateCommande DATE NOT NULL,
     CONSTRAINT PK_Approvisionnement PRIMARY KEY (idMouvementStock),
-    CONSTRAINT FK_Approvisionnement_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT check_DateCommande CHECK (dateCommande < CURRENT_DATE)
+    CONSTRAINT FK_Approvisionnement_Approvisionnement FOREIGN KEY (idMouvementStock) REFERENCES MouvementStock(id) ON UPDATE CASCADE ON DELETE cascade,
+    CONSTRAINT check_DateCommande CHECK (dateCommande <= CURRENT_DATE)
 );
 
 CREATE TABLE IF NOT EXISTS Fournisseur(
