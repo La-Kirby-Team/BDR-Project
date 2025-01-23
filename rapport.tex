@@ -8,17 +8,28 @@
 \usepackage{listings}
 \lstset{language=SQL}
 \usepackage{hyperref}
+\usepackage{appendix}
+\usepackage{tikz}
+\usepackage{caption}
+\usepackage{float}
+
+
+
+\renewcommand{\appendixpagename}{Annexes}
+\renewcommand{\appendixtocname}{Annexes}
+
 \setlength{\parindent}{0pt}
 
 \title{Winventory \\ \large BDR-Projet}
-\author{Lestiboudois Maxime \& Parisod Nathan \& Surbeck Léon}
+\author{Lestiboudois Maxime \& \\Parisod Nathan \& \\Surbeck Léon}
 \date{24.01.2025}
 
 % Redéfinir \maketitle pour inclure l'image sous le titre
 \pretitle{\begin{center}\Huge\bfseries}
 \posttitle{\par\end{center}\vspace{0.5cm}
 \begin{center}
-\includegraphics[scale = 0.6]{images/Logo_court}
+\hspace*{2cm}
+\includegraphics[scale = 1]{images/Logo_court}
 \end{center}\vspace{0.5cm}}
 
 
@@ -53,6 +64,11 @@
 %%%%%%%%%%%%%%%%%%%%
     \section*{Modèle EA}
     \addcontentsline{toc}{section}{Modèle EA}
+
+    \begin{center}
+    \includegraphics[scale = 0.6]{images/Schema_UML}
+    \end{center}\vspace{0.5cm}
+
 %%%%%%%%%%%%%%%%%%%%
 %% Modèle relationnel %%
 %%%%%%%%%%%%%%%%%%%%
@@ -139,7 +155,7 @@
     Voici le script SQL nous permettant de créer les tables de notre base de données:
     \newline
     \newline
-    \begin{lstlisting}
+    \begin{lstlisting}[breaklines=true]
         CREATE TABLE IF NOT EXISTS Provenance(
     id SERIAL,
     pays VARCHAR(80),
@@ -255,7 +271,7 @@ CREATE TABLE IF NOT EXISTS Approvisionnement_Fournisseur(
     Ce script SQL suivant nous a permis de remplir les tables de notre base de données:
     \newline
     \newline
-    \begin{lstlisting}
+    \begin{lstlisting}[breaklines=true]
         -- Remplissage de la table Provenance
 INSERT INTO Provenance (pays, region, producteur) VALUES
 ('France', 'Bordeaux', 'Château Margaux'),
@@ -338,15 +354,83 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
     \addcontentsline{toc}{section}{Description de l'application}
 L'application permet de gérer et de voir le contenu des stocks d'un magasin (pour l'instant).
     \newline
+    \subsection*{Accès à l'application}
+    \addcontentsline{toc}{subsection}{Accès à l'application}
     Pour accéder à l'application, il y a deux manières possibles:
     \begin{enumerate}
         \item en local, il suffit de cloner le répertoire Github au lieu suivant : \href{https://github.com/La-Kirby-Team/BDR-Project}{https://github.com/La-Kirby-Team/BDR-Project}.
-        \newline Une fois le répertoire cloné en local, il suffit de suivre les instructions contenues dans le fichier \href{https://github.com/La-Kirby-Team/BDR-Project/blob/main/README.md}{README.md}
+        \newline Une fois le répertoire cloné en local, il suffit de suivre les instructions contenues dans le fichier \href{https://github.com/La-Kirby-Team/BDR-Project/blob/main/README.md}{README.md} (voir Annexe 1)
         \item l'application est également disponible sur le site \href{winventory.duckdns.org}{winventory.duckdns.org}.
     \end{enumerate}
 
     Tout le monde peut avoir accès à la page du magasin, à condition d'avoir créé un compte pour se connecter.
+    \newline
+
+    \subsection*{Les différentes page de l'application}
+    \addcontentsline{toc}{subsection}{Les différentes page de l'application}
+    L'application comprend plusieurs pages :
+    \begin{enumerate}
+        \item La page d'accueil
+        \item La vue des stocks
+        \item Le formulaire de commandes
+        \item Le formulaire de vente
+        \item La vue des fournisseurs
+        \item Le formulaire d'ajout de fournisseur
+        \item La page profil du vendeur
+    \end{enumerate}
+
+    \subsection*{Page d'accueil}
+    \addcontentsline{toc}{subsection}{Page d'accueil}
+    \begin{figure}[H]
+        % Première image dans une minipage
+        \begin{tikzpicture}
+            % --- Première image ---
+            \node[anchor=south west] (img1) at (0,0) {\includegraphics[width=0.5\textwidth]{images/index1}};
+            % Annotation sur la première image
+            \draw[red, thick] (1, 1) ellipse (0.5cm and 0.25cm);
+
+            \hspace{0.2\textwidth} % Espacement horizontal entre les images (5% de la largeur totale)
+            % --- Deuxième image, placée à droite ---
+            \node[anchor=south west] (img2) at (6,0) {\includegraphics[width=0.5\textwidth]{images/index1}};
+            % Annotation sur la deuxième image
+            \draw[blue, thick] (7, 1) ellipse (0.5cm and 0.25cm);
+        \end{tikzpicture}
+        \caption{Cliquer pour créer un compte \\ Figure 2: Cliquer pour se connecter}
+    \end{figure}
 
 
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%   Bugs connus  %%
+%%%%%%%%%%%%%%%%%%%%
+    \section*{Bugs connus}
+
+    \begin{itemize}
+        \item Une vente peut être effectuée par un vendeur quelconque, avec un email quelconque ou pour un produit quelconque.
+    \end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%   Conclusion   %%
+%%%%%%%%%%%%%%%%%%%%
+    \section*{Conclusion}
+
+%%%%%%%%%%%%%%%%%%%%
+%%     Annexes    %%
+%%%%%%%%%%%%%%%%%%%%
+    \appendix
+    \appendixpage
+    \addappheadtotoc
+    \section{Annexe 1}
+    (page suivante)
+    \includepdf[pages=-, pagecommand = {\thispagestyle{plain}}]{oldReadme.pdf}
 
 \end{document}
