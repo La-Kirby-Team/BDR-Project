@@ -383,6 +383,38 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
         \item La page profil du vendeur
     \end{enumerate}
 
+    \subsection*{Accès aux pages}
+    \addcontentsline{toc}{subsection}{Accès aux pages}
+    La page de connexion est la page par défaut lorsque l'utilisateur se connecte au site et qu'il n'est pas encore connecté
+    avec son compte.
+    \newline
+    La page d'accueil est accessible lorsqu'on vient de se connecter à l'application, ou en cliquant sur le logo présent
+    en haut à gauche de la page, dans la barre de menu. (cf. Figure 1).
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \node{\includegraphics[width=0.7\textwidth]{images/menu}};
+            % Annotation sur l'image
+            \draw[green, thick] (-4.3,4.2) rectangle (-1.5,5.7);
+        \end{tikzpicture}
+        \caption{Utilisateur enregistré}
+    \end{figure}
+    \newline
+    Les autres pages sont accessibles depuis le menu déroulant présent dans la barre de menu (cf. Figures 2 et 3)
+    \begin{figure}[H]
+        % Première image dans une minipage
+        \begin{tikzpicture}
+            % --- Première image ---
+            \node[anchor=north west] (img1) at (0,0) {\includegraphics[width=0.45\textwidth]{images/menu}};
+            % Annotation sur l'image
+            \draw[green, ultra thick] (0,-1.2) rectangle (1,-0.2);
+            \hspace{0.2\textwidth}
+            \node[anchor=north west] (img1) at (6,0) {\includegraphics[width=0.45\textwidth]{images/menu_deroulant}};
+            \draw[->, double, line width=4, green] (3,-4) -- (6,-4)
+        \end{tikzpicture}
+        \caption{Menu déroulant fermé\\ Figure 3: Menu déroulant ouvert}
+    \end{figure}
+
     \newpage
     \subsection*{Page de connexion}
     \addcontentsline{toc}{subsection}{Page de connexion}
@@ -446,7 +478,6 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
             \caption{Page d'accueil}
         \end{center}
     \end{figure}
-
     Sur cette page, on peut voir deux tableaux:
     \begin{enumerate}
         \item Les commandes en attente
@@ -473,13 +504,12 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
 
     \subsubsection*{Articles dont les stocks sont bas}
     \addcontentsline{toc}{subsubsection}{Articles dont les stocks sont bas}
+    Ce tableau affiche simplement les articles dont la quantité est faible. Cela permet de passer commande auprès
+    des fournisseurs avant d'être en rupture de stock.
 
 
-
-    \newpage
     \subsection*{Vue des stocks}
     \addcontentsline{toc}{subsection}{Vue des stocks}
-    %%TODO
 
     \newpage
     \subsection*{Formulaire de commandes}
