@@ -50,13 +50,15 @@
     \newline
     Grâce à une solution centralisée, Winventory simplifiera la gestion des stocks, le suivi des acquisitions et les
     retraits de produits, tout en offrant des fonctionnalités avancées d’analyse et de reporting via une interface utilisateur intuitive.
-
+    \newline
+    \newline
     Le système offrira une gestion centralisée des inventaires sur plusieurs magasins, rendant possible le transfert de
     stock entre différents sites tout en permettant une supervision globale. Par ailleurs, l’intégration des historiques
     d’achat des clients permettra de mieux anticiper les besoins, d’optimiser la préparation des stocks et de soutenir
     les actions marketing à travers des offres personnalisées et des prédictions sur les comportements d'achat.
     Enfin, Wineventory s’appuiera sur la robustesse de PostgreSQL pour garantir une performance optimale dans le traitement
-    des requêtes complexes et la production de rapports détaillés. Toutes les requêtes SQL seront écrites manuellement afin de garantir un contrôle total et d’assurer une transparence complète du système.
+    des requêtes complexes et la production de rapports détaillés.
+    \newline Toutes les requêtes SQL seront écrites manuellement afin de garantir un contrôle total et d’assurer une transparence complète du système.
 
 
 %%%%%%%%%%%%%%%%%%%%
@@ -66,7 +68,7 @@
     \addcontentsline{toc}{section}{Modèle EA}
 
     \begin{center}
-    \includegraphics[scale = 0.6]{images/Schema_UML}
+        \includegraphics[scale = 0.6]{images/Schema_UML}
     \end{center}\vspace{0.5cm}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -352,7 +354,7 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
 %%%%%%%%%%%%%%%%%%%%
     \section*{Description de l'application}
     \addcontentsline{toc}{section}{Description de l'application}
-L'application permet de gérer et de voir le contenu des stocks d'un magasin (pour l'instant).
+    L'application permet de gérer et de voir le contenu des stocks d'un magasin (pour l'instant).
     \newline
     \subsection*{Accès à l'application}
     \addcontentsline{toc}{subsection}{Accès à l'application}
@@ -370,6 +372,8 @@ L'application permet de gérer et de voir le contenu des stocks d'un magasin (po
     \addcontentsline{toc}{subsection}{Les différentes page de l'application}
     L'application comprend plusieurs pages :
     \begin{enumerate}
+        \item La page de connexion
+        \item La page d'enregistrement
         \item La page d'accueil
         \item La vue des stocks
         \item Le formulaire de commandes
@@ -379,39 +383,135 @@ L'application permet de gérer et de voir le contenu des stocks d'un magasin (po
         \item La page profil du vendeur
     \end{enumerate}
 
+    \newpage
+    \subsection*{Page de connexion}
+    \addcontentsline{toc}{subsection}{Page de connexion}
+
+    La page d'accueil comporte deux champs de texte et deux boutons:
+    \newline
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[scale=0.2]{images/index1}
+            \caption{Page de connexion}
+        \end{center}
+    \end{figure}
+    Si l'utilisateur a déjà un profil, il peut directement se connecter en remplissant les champs et en appuyant sur le
+    bouton "Connexion". Si ce n'est pas le cas, l'utilisateur peut se créer un compte en cliquant sur le bouton "Créer un compte":
+    \newline
+    \newline
+    Lorsque l'utilisateur clique sur le bouton "Créer un compte", il est redirigé sur la page d'enregistrement de l'utilisateur.
+
+%    \begin{figure}[H]
+%        % Première image dans une minipage
+%        \begin{tikzpicture}
+%            % --- Première image ---
+%            \node[anchor=south west] (img1) at (0,0) {\includegraphics[width=0.5\textwidth]{images/index1}};
+%            % Annotation sur la première image
+%            \draw[red, thick] (1, 1) ellipse (0.5cm and 0.25cm);
+%            \end{tikzpicture}
+%        \caption{Cliquer pour créer un compte \\ Figure 2: Cliquer pour se connecter}
+%    \end{figure}
+    \newpage
+    \subsection*{Page d'enregistrement}
+    \addcontentsline{toc}{subsection}{Page d'enregistrement}
+
+    Cette page permet à l'utilisateur de s'enregistrer pour avoir accès à l'application.
+
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[scale = 0.2]{images/register}
+            \caption{Page d'enregistrement}
+        \end{center}
+    \end{figure}
+    Pour s'enregistrer, il suffit simplement de trouver un nom et un mot de passe et de cliquer sur le bouton "S'inscrire".
+    Lorsque le nouvel utilisateur clique sur le bouton "S'inscrire", un label rouge s'affiche, indiquant si les informations de l'utilisateur
+    sont déjà utilisées ou si l'utilisateur a été correctement enregistré.
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \node{\includegraphics[width=0.7\textwidth]{images/registerDone}};
+            % Annotation sur l'image
+            \draw[green, thick] (-1.5,-1.9) rectangle (1.5,-1.4);
+        \end{tikzpicture}
+        \caption{Utilisateur enregistré}
+    \end{figure}
+    L'utilisateur peut alors retourner sur la page de connexion et se connecter avec le login qu'il vient de créer.
+
+    \newpage
     \subsection*{Page d'accueil}
     \addcontentsline{toc}{subsection}{Page d'accueil}
     \begin{figure}[H]
-        % Première image dans une minipage
-        \begin{tikzpicture}
-            % --- Première image ---
-            \node[anchor=south west] (img1) at (0,0) {\includegraphics[width=0.5\textwidth]{images/index1}};
-            % Annotation sur la première image
-            \draw[red, thick] (1, 1) ellipse (0.5cm and 0.25cm);
-
-            \hspace{0.2\textwidth} % Espacement horizontal entre les images (5% de la largeur totale)
-            % --- Deuxième image, placée à droite ---
-            \node[anchor=south west] (img2) at (6,0) {\includegraphics[width=0.5\textwidth]{images/index1}};
-            % Annotation sur la deuxième image
-            \draw[blue, thick] (7, 1) ellipse (0.5cm and 0.25cm);
-        \end{tikzpicture}
-        \caption{Cliquer pour créer un compte \\ Figure 2: Cliquer pour se connecter}
+        \begin{center}
+            \includegraphics[width =\textwidth]{images/pageAccueil}
+            \caption{Page d'accueil}
+        \end{center}
     \end{figure}
 
+    Sur cette page, on peut voir deux tableaux:
+    \begin{enumerate}
+        \item Les commandes en attente
+        \item Les articles dont la quantité en stock est basse
+    \end{enumerate}
+
+    \subsubsection*{Commandes en attente}
+    \addcontentsline{toc}{subsubsection}{Commandes en attente}
+    Ce tableau permet de percevoir toutes les commandes qui ont été passées mais qui ne sont pas encore "arrivées", elles sont
+    donc en attente et il faut les valider pour que leurs valeurs soient enregistrées et appliquées dans la vue des stocks.
+    \newline
+    \newline
+    Pour les approuver, il suffit de cliquer sur l'article dont il est question et la fenêtre suivante s'affiche:
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[width = 0.8\textwidth]{images/commandeEnAttente}
+            \caption{Approuver la commande}
+        \end{center}
+    \end{figure}
+    On peut alors modifier la quantité reçue si cette dernière ne correspond pas à la livraison réelle et modifier la date
+    de réception (si jamais la modification des stocks est faite en retard).
+    \newline
+    Lorsque la commande est enregistrée, elle disparait du tableau "Commandes en attente".
+
+    \subsubsection*{Articles dont les stocks sont bas}
+    \addcontentsline{toc}{subsubsection}{Articles dont les stocks sont bas}
 
 
 
+    \newpage
+    \subsection*{Vue des stocks}
+    \addcontentsline{toc}{subsection}{Vue des stocks}
+    %%TODO
 
+    \newpage
+    \subsection*{Formulaire de commandes}
+    \addcontentsline{toc}{subsection}{Formulaire de commandes}
+    %%TODO
 
+    \newpage
+    \subsection*{Formulaire de ventes}
+    \addcontentsline{toc}{subsection}{Formulaire de ventes}
+    %%TODO
 
+    \newpage
+    \subsection*{Fournisseurs}
+    \addcontentsline{toc}{subsection}{Fournisseurs}
+    %%TODO
 
+    \newpage
+    \subsection*{Ajouter un fournisseur}
+    \addcontentsline{toc}{subsection}{Ajouter un fournisseur}
+    %%TODO
 
+    \newpage
+    \subsection*{Profil du vendeur}
+    \addcontentsline{toc}{subsection}{Profil du vendeur}
+    %%TODO
 
 
 %%%%%%%%%%%%%%%%%%%%
 %%   Bugs connus  %%
 %%%%%%%%%%%%%%%%%%%%
     \section*{Bugs connus}
+    \addcontentsline{toc}{section}{Bugs connus}
 
     \begin{itemize}
         \item Une vente peut être effectuée par un vendeur quelconque, avec un email quelconque ou pour un produit quelconque.
@@ -422,6 +522,7 @@ L'application permet de gérer et de voir le contenu des stocks d'un magasin (po
 %%   Conclusion   %%
 %%%%%%%%%%%%%%%%%%%%
     \section*{Conclusion}
+    \addcontentsline{toc}{section}{Conclusion}
 
 %%%%%%%%%%%%%%%%%%%%
 %%     Annexes    %%
@@ -429,7 +530,7 @@ L'application permet de gérer et de voir le contenu des stocks d'un magasin (po
     \appendix
     \appendixpage
     \addappheadtotoc
-    \section{Annexe 1}
+    \section{Annexe 1 - Accès à l'application, DAI}
     (page suivante)
     \includepdf[pages=-, pagecommand = {\thispagestyle{plain}}]{oldReadme.pdf}
 
