@@ -412,7 +412,7 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
             \node[anchor=north west] (img1) at (6,0) {\includegraphics[width=0.45\textwidth]{images/menu_deroulant}};
             \draw[->, double, line width=4, green] (3,-4) -- (6,-4)
         \end{tikzpicture}
-        \caption{Menu déroulant fermé\\ Figure 3: Menu déroulant ouvert}
+        \caption{Menu déroulant fermé\\ Figure 2.1: Menu déroulant ouvert}
     \end{figure}
 
     \newpage
@@ -511,30 +511,125 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
     \subsection*{Vue des stocks}
     \addcontentsline{toc}{subsection}{Vue des stocks}
 
+    Cette page affiche les différents articles en stock, on retrouve leur nom, leur volume, le type de récipient (canette/bouteille)
+    et la quantité qu'il y a en stock.
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[width = 0.8\textwidth]{images/stockView}
+            \caption{Vue des stocks}
+        \end{center}
+    \end{figure}
+    Lorsqu'une commande est en attente, elle apparait également dans la vue des stocks, avec une quantité valant 0. La quantité
+    est ensuite mise à jour lorsque la commande est approuvée.
+    \newline
+    \newline
+    Il est également possible de rechercher des produits via la barre de recherche. Il est donc possible de filtrer par nom, volume,
+    type de récipient ou quantité.
+
     \newpage
     \subsection*{Formulaire de commandes}
     \addcontentsline{toc}{subsection}{Formulaire de commandes}
-    %%TODO
+    Cette page sert à enregistrer une commande qui a été passée auprès d'un ou plusieurs fournisseurs.
+    Il est possible d'inclure plusieurs produits/articles en rajoutant des champs via le bouton "Ajouter un produit". Il est
+    également possible d'enlever un champ avec le bouton "Retirer un produit" si un champ de trop a été ajouté. Il doit y avoir
+    au minimum un champ pour effectuer la commande.
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \node(img1) at (-5,0){\includegraphics[width=0.5\textwidth]{images/commande1}};
+            %\hspace{0.1\textwidth}
+            \node(img2) at (3,0){\includegraphics[width = 0.45\textwidth]{images/commande2}}
+        \end{tikzpicture}
+        \caption{Formulaire d'enregistrement de commande à un champ \\ Figure 9.1: Formulaire d'enregistrement de commande à plusieurs champs}
+    \end{figure}
 
+    Il faut obligatoirement remplir tous les champs pour pouvoir enregistrer la commande.
+    \newline
+    Si la commande a été faite le jour même,
+    il suffit de cocher la case pour que le champ soit rempli automatiquement, il est alors impossible de changer manuellement la date.
+    Cette option est mise en place par défaut
+\newline
+    \newline
+    Lorsqu'on ajoute un nouvel article,
+    ce dernier est ajouté dans la base de données en tant que produit et article.
+    \newline
+    \newline
+    Ce formulaire sert donc à ajouter des articles dans la base de données (mouvements de stock entrant).
     \newpage
     \subsection*{Formulaire de ventes}
     \addcontentsline{toc}{subsection}{Formulaire de ventes}
-    %%TODO
+    Ce formulaire permet de simuler une vente faite par un vendeur auprès d'un client.
+    \newline
+    Il faut donc renseigner la date de la vente, le nom du vendeur (un vendeur existant), l'email du client (existant déjà également),
+    ainsi que tous les autres champs décrivant l'article.
+    \newline
+    \newline
+    Tout comme le formulaire de commande, il est possible d'ajouter et de retirer des champs pour les différents articles.
+    Chaque vente est effectuée par un seul vendeur et auprès d'un seul client.
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \node(img1) at (-5,0){\includegraphics[width=0.5\textwidth]{images/vente1}};
+            %\hspace{0.1\textwidth}
+            \node(img2) at (3,0){\includegraphics[width = 0.45\textwidth]{images/vente2}}
+        \end{tikzpicture}
+        \caption{Formulaire d'enregistrement de vente à un champ \\ Figure 10.1: Formulaire d'enregistrement de vente à plusieurs champs}
+    \end{figure}
 
+    Le prix total, en fonction de la quantité et du prix de chaque produit, est affiché
+    en bas de la page.
     \newpage
     \subsection*{Fournisseurs}
     \addcontentsline{toc}{subsection}{Fournisseurs}
-    %%TODO
+    Tous les fournisseurs du magasin sont affichés sur cette page.
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[width = 0.8\textwidth]{images/fournisseur}
+            \caption{Page fournisseur}
+        \end{center}
+    \end{figure}
+
+    Si le fournisseur n'existe pas encore dans la base de données, il est possible d'accéder au formulaire d'ajout des fournisseurs
+    via le bouton "Ajouter un fournisseur".
+    \newline
+    \newline
+    Il est également possible de rechercher un fournisseur via la barre de recherche.
+    \newline
+    \newline
+    Dans le cas où les informations fournies pour le fournisseur sont incorrectes, il est possible
+    de supprimer le dit-fournisseur et de le re-créer par la suite:
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[width = 0.8\textwidth]{images/delete_fournisseur}
+            \caption{Supprimer un fournisseur}
+        \end{center}
+    \end{figure}
 
     \newpage
     \subsection*{Ajouter un fournisseur}
     \addcontentsline{toc}{subsection}{Ajouter un fournisseur}
+    Cette page est accessible depuis la page fournisseur, via le bouton "Ajouter un fournisseur".
+    \newline
+    Il est alors simplement nécessaire de remplir les champs demandant le nom, l'adresse et le numéro de téléphone
+    du fournisseur.
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[width = 0.8\textwidth]{images/ajout_fournisseur}
+            \caption{Page fournisseur}
+        \end{center}
+    \end{figure}
+
+%    \newpage
+%    \subsection*{Profil du vendeur}
+%    \addcontentsline{toc}{subsection}{Profil du vendeur}
     %%TODO
 
-    \newpage
-    \subsection*{Profil du vendeur}
-    \addcontentsline{toc}{subsection}{Profil du vendeur}
-    %%TODO
+    \subsection*{Quelques spécificités}
+    \addcontentsline{toc}{subsection}{Quelques spécificités}
+    Si vous êtes partis pris de la lumière, notre affichage "dark mode" a dû vous piquer les yeux.
+    \newline
+    Rien que pour vous! Nous avons implémenter un mode clair (light mode). Pour l'afficher, il faut simplement cliquer sur le
+    bouton "Mode clair" dans la barre de menu:
 
 
 %%%%%%%%%%%%%%%%%%%%
