@@ -182,7 +182,7 @@
     CONSTRAINT PK_Provenance PRIMARY KEY (id)
 );
 
---CREATE TYPE typeRecipient AS ENUM ('bouteille', 'canette');
+CREATE TYPE typeRecipient AS ENUM ('bouteille', 'canette');
 
 CREATE TABLE IF NOT EXISTS Produit(
   idProduit SERIAL,
@@ -449,16 +449,6 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
     \newline
     Lorsque l'utilisateur clique sur le bouton "Créer un compte", il est redirigé sur la page d'enregistrement de l'utilisateur.
 
-%    \begin{figure}[H]
-%        % Première image dans une minipage
-%        \begin{tikzpicture}
-%            % --- Première image ---
-%            \node[anchor=south west] (img1) at (0,0) {\includegraphics[width=0.5\textwidth]{images/index1}};
-%            % Annotation sur la première image
-%            \draw[red, thick] (1, 1) ellipse (0.5cm and 0.25cm);
-%            \end{tikzpicture}
-%        \caption{Cliquer pour créer un compte \\ Figure 2: Cliquer pour se connecter}
-%    \end{figure}
     \newpage
     \subsection*{Page d'enregistrement}
     \addcontentsline{toc}{subsection}{Page d'enregistrement}
@@ -553,7 +543,6 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
         \centering
         \begin{tikzpicture}
             \node(img1) at (-5,0){\includegraphics[width=0.5\textwidth]{images/commande1}};
-            %\hspace{0.1\textwidth}
             \node(img2) at (3,0){\includegraphics[width = 0.45\textwidth]{images/commande2}}
         \end{tikzpicture}
         \caption{Formulaire d'enregistrement de commande à un champ \\ Figure 9.1: Formulaire d'enregistrement de commande à plusieurs champs}
@@ -564,7 +553,7 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
     Si la commande a été faite le jour même,
     il suffit de cocher la case pour que le champ soit rempli automatiquement, il est alors impossible de changer manuellement la date.
     Cette option est mise en place par défaut
-\newline
+    \newline
     \newline
     Lorsqu'on ajoute un nouvel article,
     ce dernier est ajouté dans la base de données en tant que produit et article.
@@ -586,7 +575,6 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
         \centering
         \begin{tikzpicture}
             \node(img1) at (-5,0){\includegraphics[width=0.5\textwidth]{images/vente1}};
-            %\hspace{0.1\textwidth}
             \node(img2) at (3,0){\includegraphics[width = 0.45\textwidth]{images/vente2}}
         \end{tikzpicture}
         \caption{Formulaire d'enregistrement de vente à un champ \\ Figure 10.1: Formulaire d'enregistrement de vente à plusieurs champs}
@@ -635,10 +623,31 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
         \end{center}
     \end{figure}
 
-%    \newpage
-%    \subsection*{Profil du vendeur}
-%    \addcontentsline{toc}{subsection}{Profil du vendeur}
-    %%TODO
+    \newpage
+    \subsection*{Profil du vendeur}
+    \addcontentsline{toc}{subsection}{Profil du vendeur}
+    Cette page n'est pas accessible depuis le menu déroulant car elle est en cours de développement. Cependant, vous pouvez
+    y accéder en tapant directement l'URL suivante une fois connecté:
+    \href{winventory.duckdns.org/html/profil.html}{winventory.duckdns.org/html/profil.html}.
+    \newline
+    Cette page affiche les informations stockées dans la base de donnée d'un vendeur, telles que son nom, son salaire et
+    son statut (actif ou non). Nous avons également ajouté un bouton "Modifier" qui permet de modifier les informations
+    du vendeur, puis de sauvegarder dans la base de donnée ou non ces changements. Pour l'instant, il faut recharger la
+    page pour afficher les changements effectués. La photo de profil est également en cours de développement, elle ne peut
+    être modifiée.
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \node(img1) at (-5,0){\includegraphics[width=0.5\textwidth]{images/profil1}};
+            \node(img2) at (3,0){\includegraphics[width = 0.45\textwidth]{images/profil2}}
+        \end{tikzpicture}
+        \caption{Page de profil initiale \\ Figure 14.1: Page de profil en cours de modification}
+    \end{figure}
+
+    \newline
+    Comme cette page est en développement, le vendeur affiché est systématiquement le premier vendeur de la base de données,
+    mais dans le futur, le vendeur affiché sera le vendeur connecté.
+
     \newpage
     \subsection*{Spécificité}
     \addcontentsline{toc}{subsection}{Quelques spécificités}
@@ -651,16 +660,14 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
         \centering
         \begin{tikzpicture}
             \node(img1) at (-5,0){\includegraphics[width=\textwidth]{images/dark_menu}};
-            %\hspace{0.1\textwidth}
         \end{tikzpicture}
     \end{figure}
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}
             \node(img2) at (3,0){\includegraphics[width = \textwidth]{images/light_menu}}
-            %\hspace{0.1\textwidth}
         \end{tikzpicture}
-        \caption{Dark mode \\ Figure 14.1: Light mode}
+        \caption{Dark mode \\ Figure 15.1: Light mode}
     \end{figure}
 
 
@@ -705,6 +712,13 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
 %%%%%%%%%%%%%%%%%%%%
     \section*{Conclusion}
     \addcontentsline{toc}{section}{Conclusion}
+
+    La création de \textbf{Winventory} et son intégration à une base de données relationnelle ont permis de proposer une
+    solution centralisée et intuitive pour gérer les stocks de divers produits. Les fonctionnalités actuelles, telles que
+    la gestion des commandes, des ventes ou encore l’ajout de fournisseurs, posent de solides bases pour une extension future.
+    L’application offre déjà une vue claire de l’état des stocks et des approvisionnements, et pourrait être étendue pour
+    prendre en charge plusieurs magasins, renforcer la sécurité ou encore proposer des analyses statistiques avancées.
+    Ce projet constitue donc un socle prometteur pour une gestion optimisée des inventaires.
 
 %%%%%%%%%%%%%%%%%%%%
 %%     Annexes    %%
