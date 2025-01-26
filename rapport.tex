@@ -12,6 +12,19 @@
 \usepackage{tikz}
 \usepackage{caption}
 \usepackage{float}
+\lstset{showstringspaces=false}
+\lstset{
+    literate={é}{{\'e}}1
+        {è}{{\`e}}1
+        {ê}{{\^e}}1
+        {ë}{{\"e}}1
+        {â}{{\^a}}1
+        {à}{{\`a}}1
+        {ç}{{\c{c}}}1
+        {œ}{{\oe}}1
+        {É}{{\'E}}1
+}
+
 
 
 
@@ -46,19 +59,22 @@
     \addcontentsline{toc}{section}{Introduction}
 
     Le projet \textbf{Winventory} a pour ambition de concevoir une base de données relationnelle performante et innovante,
-    spécialement pensée pour gérer les inventaires de vins, bières, spiritueux, boissons non alcoolisées, apéritifs et équipements.
-    \newline
-    Grâce à une solution centralisée, Winventory simplifiera la gestion des stocks, le suivi des acquisitions et les
-    retraits de produits, tout en offrant des fonctionnalités avancées d’analyse et de reporting via une interface utilisateur intuitive.
+    spécialement pensée pour gérer les inventaires de vins, bières, spiritueux, boissons non alcoolisées, et autres liquides
+    destinés à la consommation.
     \newline
     \newline
-    Le système offrira une gestion centralisée des inventaires sur plusieurs magasins, rendant possible le transfert de
-    stock entre différents sites tout en permettant une supervision globale. Par ailleurs, l’intégration des historiques
-    d’achat des clients permettra de mieux anticiper les besoins, d’optimiser la préparation des stocks et de soutenir
-    les actions marketing à travers des offres personnalisées et des prédictions sur les comportements d'achat.
-    Enfin, Wineventory s’appuiera sur la robustesse de PostgreSQL pour garantir une performance optimale dans le traitement
-    des requêtes complexes et la production de rapports détaillés.
-    \newline Toutes les requêtes SQL seront écrites manuellement afin de garantir un contrôle total et d’assurer une transparence complète du système.
+    Grâce à une solution centralisée, \textbf{Winventory} simplifie la gestion des stocks, le suivi des acquisitions/commandes et les
+    retraits/ventes de produits, dans le but d'offrir à terme des fonctionnalités avancées d’analyse et de reporting via une interface utilisateur intuitive.
+    \newline
+    \newline
+    Le système offre une gestion centralisée de l'inventaire d'un magasin.
+    Les vues des stocks offertes par l'application permettent de mieux anticiper les besoins et d’optimiser la préparation des stocks.
+    \newline
+    \newline
+    \textbf{Winventory} s’appuie sur la robustesse de PostgreSQL pour garantir une performance optimale dans le traitement
+    des requêtes.
+    \newline
+    Toutes les requêtes SQL sont écrites manuellement afin de garantir un contrôle total et d’assurer une transparence complète du système.
 
 
 %%%%%%%%%%%%%%%%%%%%
@@ -158,7 +174,7 @@
     \newline
     \newline
     \begin{lstlisting}[breaklines=true]
-        CREATE TABLE IF NOT EXISTS Provenance(
+    CREATE TABLE IF NOT EXISTS Provenance(
     id SERIAL,
     pays VARCHAR(80),
     region VARCHAR(80),
@@ -174,7 +190,7 @@ CREATE TABLE IF NOT EXISTS Produit(
     nom VARCHAR(80) NOT NULL,
     tauxAlcool DOUBLE PRECISION NOT NULL,
     CONSTRAINT PK_Produit PRIMARY KEY (idProduit),
-    constraint FK_idProvenance foreign KEY(idProvenance) references Provenance(id) ON UPDATE CASCADE ON DELETE RESTRICT
+    CONSTRAINT FK_idProvenance foreign KEY(idProvenance) references Provenance(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Article(
@@ -274,7 +290,7 @@ CREATE TABLE IF NOT EXISTS Approvisionnement_Fournisseur(
     \newline
     \newline
     \begin{lstlisting}[breaklines=true]
-        -- Remplissage de la table Provenance
+- - Remplissage de la table Provenance
 INSERT INTO Provenance (pays, region, producteur) VALUES
 ('France', 'Bordeaux', 'Château Margaux'),
 ('Italie', 'Toscane', 'Antinori'),
@@ -282,7 +298,7 @@ INSERT INTO Provenance (pays, region, producteur) VALUES
 ('USA', 'Napa Valley', 'Robert Mondavi'),
 ('France', 'Champagne', 'Moët & Chandon');
 
--- Remplissage de la table Produit
+- - Remplissage de la table Produit
 INSERT INTO Produit (nom, tauxAlcool, idProvenance) VALUES
 ('Vin Rouge Bordeaux', 13.5, 1),
 ('Vin Blanc Chardonnay', 12.0, 2),
@@ -290,7 +306,7 @@ INSERT INTO Produit (nom, tauxAlcool, idProvenance) VALUES
 ('Whisky Single Malt', 40.0, 3),
 ('Bière Blonde', 5.0, 1);
 
--- Remplissage de la table Article
+- - Remplissage de la table Article
 INSERT INTO Article (idProduit, volume, recipient, prix, datePeremption, dateFinDeVente) VALUES
 (1, 750, 'bouteille', 45.99, '2025-12-31', NULL),
 (1, 1500, 'bouteille', 89.99, '2025-12-31', NULL),
@@ -299,13 +315,13 @@ INSERT INTO Article (idProduit, volume, recipient, prix, datePeremption, dateFin
 (4, 700, 'bouteille', 120.00, '2030-01-01', NULL),
 (5, 330, 'canette', 2.50, '2023-12-31', '2023-11-01');
 
--- Remplissage de la table Magasin
+- - Remplissage de la table Magasin
 INSERT INTO Magasin (nom, adresse, dateFermeture) VALUES
 ('Cave de Paris', '12 rue de la Paix, Paris, France', NULL),
 ('Wine World', '45 High Street, London, UK', NULL),
 ('Enoteca Roma', 'Via Condotti, 25, Rome, Italy', '2025-01-01');
 
--- Remplissage de la table MouvementStock
+- - Remplissage de la table MouvementStock
 INSERT INTO MouvementStock (idMagasin, idProduit, volume, recipient, date, quantite) VALUES
 (1, 1, 750, 'bouteille', '2024-01-10', 100),
 (1, 2, 750, 'bouteille', '2024-01-15', 50),
@@ -313,36 +329,36 @@ INSERT INTO MouvementStock (idMagasin, idProduit, volume, recipient, date, quant
 (2, 5, 330, 'canette', '2023-12-01', 500),
 (3, 4, 700, 'bouteille', '2023-11-25', 20);
 
--- Remplissage de la table Vendeur
+- - Remplissage de la table Vendeur
 INSERT INTO Vendeur (idMagasin, nom, salaire, estActif) VALUES
 (1, 'Alice Dupont', 2500.00, TRUE),
 (2, 'John Smith', 2200.00, TRUE),
 (3, 'Giulia Rossi', 2400.00, FALSE);
 
--- Remplissage de la table Client
+- - Remplissage de la table Client
 INSERT INTO Client (nom, adresse, email, pointDeFidelite, anneeNaissance) VALUES
 ('Paul Morel', '34 avenue des Champs, Paris, France', 'paul.morel@example.com', 120, 1985),
 ('Anna Garcia', '23 Carrer Major, Barcelona, Spain', 'anna.garcia@example.com', 80, 1990),
 ('James Taylor', '56 Broadway, New York, USA', 'james.taylor@example.com', 200, 1980);
 
--- Remplissage de la table Vente
+- - Remplissage de la table Vente
 INSERT INTO Vente (idMouvementStock, idVendeur, idClient) VALUES
 (1, 1, 1),
 (2, 1, 2),
 (3, 2, 3);
 
--- Remplissage de la table Approvisionnement
+- - Remplissage de la table Approvisionnement
 INSERT INTO Approvisionnement (idMouvementStock, dateCommande) VALUES
 (4, '2023-11-01'),
 (5, '2023-10-15');
 
--- Remplissage de la table Fournisseur
+- - Remplissage de la table Fournisseur
 INSERT INTO Fournisseur (nom, adresse, numeroTelephone) VALUES
 ('Distrib Vins France', '45 rue du Vin, Bordeaux, France', '+33 5 56 00 00 01'),
 ('Champagne Select', '12 avenue de la Champagne, Reims, France', '+33 3 26 00 00 02'),
 ('Global Spirits', '99 Whiskey Lane, Dublin, Ireland', '+353 1 00 00 03');
 
--- Remplissage de la table Approvisionnement_Fournisseur
+- - Remplissage de la table Approvisionnement_Fournisseur
 INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALUES
 (4, 1),
 (5, 3);
@@ -623,13 +639,29 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
 %    \subsection*{Profil du vendeur}
 %    \addcontentsline{toc}{subsection}{Profil du vendeur}
     %%TODO
-
-    \subsection*{Quelques spécificités}
+    \newpage
+    \subsection*{Spécificité}
     \addcontentsline{toc}{subsection}{Quelques spécificités}
     Si vous êtes partis pris de la lumière, notre affichage "dark mode" a dû vous piquer les yeux.
     \newline
-    Rien que pour vous! Nous avons implémenter un mode clair (light mode). Pour l'afficher, il faut simplement cliquer sur le
+    Rien que pour vous, nous avons implémenter un mode clair (light mode). Pour l'afficher, il faut simplement cliquer sur le
     bouton "Mode clair" dans la barre de menu:
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \node(img1) at (-5,0){\includegraphics[width=\textwidth]{images/dark_menu}};
+            %\hspace{0.1\textwidth}
+        \end{tikzpicture}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \node(img2) at (3,0){\includegraphics[width = \textwidth]{images/light_menu}}
+            %\hspace{0.1\textwidth}
+        \end{tikzpicture}
+        \caption{Dark mode \\ Figure 14.1: Light mode}
+    \end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%
@@ -639,9 +671,34 @@ INSERT INTO Approvisionnement_Fournisseur (idMouvementStock, idFournisseur) VALU
     \addcontentsline{toc}{section}{Bugs connus}
 
     \begin{itemize}
-        \item Une vente peut être effectuée par un vendeur quelconque, avec un email quelconque ou pour un produit quelconque.
+        \item Une vente peut être effectuée:
+        \begin{itemize}
+            \item par un vendeur n'étant pas enregistré dans la base de données
+            \item avec l'email quelconque d'un potentiel client
+            \item pour un produit n'existant pas dans les stocks.
+        \end{itemize}
+        \item N'importe qui peut se connecter à l'application à condition de s'enregistrer.
+        \item Il est impossible de référencer la provenance d'un produit (manquement dans l'implémentation du frontend)
     \end{itemize}
 
+
+%%%%%%%%%%%%%%%%%%%%
+%%  Amélioration  %%
+%%%%%%%%%%%%%%%%%%%%
+    \section*{Perspectives d'avenir}
+    \addcontentsline{toc}{section}{Perspectives d'avenir}
+    L'application telle qu'elle existe aujourd'hui n'apporte pas toutes les spécificités que nous aurions voulu implémenter.
+    Nous continuerons le développement de l'application \textbf{Winventory} avec les points suivants:
+    \begin{itemize}
+        \item Ajouter la page "profil" pour les vendeurs, page référençant leurs informations et étant liée au login (seuls les
+        vendeurs actifs ou managers, à décider, auront accès à l'application).
+        \item Ajouter une page référençant tous les clients et une page permettant de les enregistrer dans la base de données.
+        \item Implémenter la fonctionnalité de gérer plusieurs magasins au lieu d'un seul.
+        \item Ajouter une couche de sécurité afin que l'application soit "sûre".
+        \item Ajouter une page permettant d'afficher les statistiques des différents produits, lesquels sont les plus ou moins vendus
+        \item Implémenter les points fidélité pour les clients
+        \item Ajouter un attribut aux produits afin de pouvoir par la suite les modifier en fonction de potentiels rabais.
+    \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%
 %%   Conclusion   %%
